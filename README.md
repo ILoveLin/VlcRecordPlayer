@@ -10,7 +10,16 @@
 
 #### 动图欣赏
 
+
+
+
+
 ![](picture/gif/1.gif) 
+
+
+
+
+
 
 
 ## License
