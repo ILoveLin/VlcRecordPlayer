@@ -6,15 +6,15 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="17"
-8-->C:\Users\Administrator\Desktop\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+8-->C:\Users\Administrator\Desktop\abcdef\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="30" />
-9-->C:\Users\Administrator\Desktop\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+9-->C:\Users\Administrator\Desktop\abcdef\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
 10
 11    <uses-feature
-11-->C:\Users\Administrator\Desktop\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:5-78
+11-->C:\Users\Administrator\Desktop\abcdef\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:5-78
 12        android:glEsVersion="0x00020000"
-12-->C:\Users\Administrator\Desktop\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:19-51
+12-->C:\Users\Administrator\Desktop\abcdef\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:19-51
 13        android:required="true" />
-13-->C:\Users\Administrator\Desktop\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:52-75
+13-->C:\Users\Administrator\Desktop\abcdef\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:52-75
 14
 15</manifest>

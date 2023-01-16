@@ -9,10 +9,11 @@
 #### 动图欣赏
 
 ![](picture/dialog/1.jpg) ![](picture/dialog/2.jpg)
-![image](https://github.com/Yesi-hoang/TaoBaoTopLine/blob/master/Gif/TaoBaoTopLineGif.1gif)
-![image](https://github.com/Yesi-hoang/TaoBaoTopLine/blob/master/Gif/TaoBaoTopLineGif.2gif)
+![image](https://github.com/ILoveLin/VlcRecordPlayer/blob/main/picture/gif/1.gif)
+![image](https://github.com/ILoveLin/VlcRecordPlayer/blob/main/picture/gif/2.gif)
 ![image](https://github.com/ILoveLin/VlcRecordPlayer/blob/main/picture/gif/1.gif )
 ![](https://github.com/ILoveLin/VlcRecordPlayer/blob/main/picture/gif/1.gif)
+
 <img src="https://github.com/ILoveLin/VlcRecordPlayer/blob/main/picture/gif/1.gif" width=1080 height=1920 />
 
 #### 项目使用
