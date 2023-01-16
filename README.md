@@ -21,15 +21,12 @@
 
 
 #### 使用指南
+
+
  * 主要功能(录像,截图)，我封装在MyControlVlcVideoView，这个自定义View里面去了，可以直接下载Demo查看代码。搜索“截图”，“录像”，即可。
  * 主要功能(录像,截图)，我封装在MyControlVlcVideoView，这个自定义View里面去了，可以直接下载Demo查看代码。搜索“截图”，“录像”，即可。
- 
-
-
-
- * VlcPlayerActivity:此界面是播放界面:只做视频的播放   mPlayerView.setStartLive(mPath01);   
- * MyControlVlcVideoView:自己封装的播放控制View:我把所有功能都封装在这个View里面。如:截图,录像,切换高清播放,打开相册,全屏显示,锁屏功能,设置标题,退出界面等等(可以自行添加自己需要的功能)     
-
+  VlcPlayerActivity:此界面是播放界面:只做视频的播放   mPlayerView.setStartLive(mPath01);   
+  MyControlVlcVideoView:自己封装的播放控制View:我把所有功能都封装在这个View里面。如:截图,录像,切换高清播放,打开相册,全屏显示,锁屏功能,设置标题,退出界面等等(可以自行添加自己需要的功能)     
 
 
 ## License
