@@ -1,0 +1,3 @@
+include ':libvlc'
+include ':app'
+rootProject.name = "VlcRecordPlayer"

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="download">
+        <!-- 左边 -->
+        <attr name="download_download_line_color" format="color"/>
+        <attr name="download_download_bg_line_color" format="color"/>
+        <attr name="download_download_text_color" format="color" />
+        <attr name="download_download_line_width" format="dimension" />
+        <attr name="download_download_bg_line_width" format="dimension" />
+        <attr name="download_download_text_size" format="dimension" />
+
+    </declare-styleable>
+
+    <declare-styleable name="play">
+        <!-- 左边 -->
+        <attr name="play_play_line_color" format="color"/>
+        <attr name="play_play_bg_line_color" format="color"/>
+        <attr name="play_play_line_width" format="color" />
+        <attr name="play_play_bg_line_width" format="dimension" />
+    </declare-styleable>
+
+
+
+</resources>

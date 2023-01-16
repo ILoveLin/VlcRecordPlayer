@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">VlcRecordPlayer</string>
+
+
+
+    <!--VLC播放界面-->
+    <string name="vlc_HD">高清</string>
+    <string name="vlc_SD">标清</string>
+    <string name="vlc_open">开启</string>
+    <string name="vlc_close">关闭</string>
+    <string name="vlc_error">错误</string>
+    <string name="vlc_photo">相册</string>
+    <string name="vlc_video">录像</string>
+    <string name="vlc_screenshot">截图</string>
+    <string name="video_try_reconnect">视频读取错误,请尝试重新读取!</string>
+    <string name="vlc_toast01">请输入正确的ip地址,确保语音能正常使用!</string>
+    <string name="vlc_toast02">只有在播放的时候才能打开相册</string>
+    <string name="vlc_toast03">神州转播只有高清模式噢!</string>
+    <string name="vlc_toast04">只有在播放的时候才能录像!</string>
+    <string name="vlc_toast05">截图成功</string>
+    <string name="vlc_toast06">只有在播放的时候才能截图</string>
+    <string name="vlc_toast07">暂未开启直播</string>
+    <string name="vlc_toast08">当前直播没有语音功能</string>
+    <string name="vlc_toast09">录像成功</string>
+    <string name="vlc_toast10">已经是</string>
+    <string name="vlc_toast11">连接成功</string>
+    <string name="vlc_toast12">从新加载视频流!</string>
+    <string name="vlc_toast13">连接失败</string>
+    <string name="vlc_toast14">断开连接</string>
+    <string name="vlc_toast15">语音控制服务器连接断开</string>
+    <string name="vlc_toast16">语音控制服务器连接已恢复</string>
+    <string name="vlc_toast17">权限申请成功,请开始录像</string>
+    <string name="vlc_toast18">权限申请成功,请开始截图</string>
+</resources>
