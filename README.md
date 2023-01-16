@@ -8,7 +8,7 @@
 
 #### 动图欣赏
 
-![](picture/gif/1.gif) 
+![](picture/dialog/1.jpg) ![](picture/dialog/2.jpg)
 
 #### 项目使用
 * 备注：您不需要编译任何东西，只需要下载Demo，拷贝main目录下的 jniLibs包下的所有so依赖库 和app/libs目录下 ijkplayer-java-release.aar   （这个是ijk工程里面的java代码）到你自己的项目里面.
