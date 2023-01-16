@@ -6,6 +6,9 @@
 #### 使用VLC，作为播放器来实现，录像，截图功能(点播,直播都支持!) 所以在此我觉得把这个Demo开源出来，希望能帮助到需要的人！
 
 
+#### 动图欣赏
+
+![](picture/gif/1.gif) 
 #### 项目使用
 * 备注：您不需要编译任何东西，只需要下载Demo，拷贝main目录下的 jniLibs包下的所有so依赖库 和app/libs目录下 ijkplayer-java-release.aar   （这个是ijk工程里面的java代码）到你自己的项目里面.
 *
