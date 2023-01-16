@@ -27,11 +27,8 @@
 
 
 
- * VlcPlayerActivity             
-    此界面是播放界面:只做视频的播放   mPlayerView.setStartLive(mPath01);   
- * MyControlVlcVideoView。
-    自己封装的播放控制View:我把所有功能都封装在这个View里面。
-    如:截图,录像,切换高清播放,打开相册,全屏显示,锁屏功能,设置标题,退出界面等等(可以自行添加自己需要的功能)     
+ * VlcPlayerActivity:此界面是播放界面:只做视频的播放   mPlayerView.setStartLive(mPath01);   
+ * MyControlVlcVideoView:自己封装的播放控制View:我把所有功能都封装在这个View里面。如:截图,录像,切换高清播放,打开相册,全屏显示,锁屏功能,设置标题,退出界面等等(可以自行添加自己需要的功能)     
 
 
 
