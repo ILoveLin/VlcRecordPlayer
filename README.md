@@ -23,7 +23,8 @@
 #### 使用指南
  * 主要功能(录像,截图)，我封装在MyControlVlcVideoView，这个自定义View里面去了，可以直接下载Demo查看代码。搜索“截图”，“录像”，即可。
  * 主要功能(录像,截图)，我封装在MyControlVlcVideoView，这个自定义View里面去了，可以直接下载Demo查看代码。搜索“截图”，“录像”，即可。
-
+ 
+```text
 
  * VlcPlayerActivity             
     此界面是播放界面:只做视频的播放   mPlayerView.setStartLive(mPath01);   
