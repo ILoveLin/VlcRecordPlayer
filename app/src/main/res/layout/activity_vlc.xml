@@ -6,7 +6,7 @@
     android:background="@android:color/black"
     tools:ignore="MissingDefaultResource">
 
-    <com.shenma.vlcrecordplayer.vlc.MyVlcVideoView
+    <com.shenma.vlcrecordplayer.vlc.MyControlVlcVideoView
         android:id="@+id/player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

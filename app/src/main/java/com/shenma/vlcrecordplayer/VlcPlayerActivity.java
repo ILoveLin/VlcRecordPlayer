@@ -7,7 +7,7 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.shenma.vlcrecordplayer.vlc.MyVlcVideoView;
+import com.shenma.vlcrecordplayer.vlc.MyControlVlcVideoView;
 
 
 /**
@@ -18,7 +18,7 @@ import com.shenma.vlcrecordplayer.vlc.MyVlcVideoView;
  */
 public class VlcPlayerActivity extends AppCompatActivity {
     private RelativeLayout rootView;
-    private MyVlcVideoView mPlayerView;
+    private MyControlVlcVideoView mPlayerView;
     private View.OnTouchListener onTouchVideoListener;
 
     @Override
@@ -42,7 +42,7 @@ public class VlcPlayerActivity extends AppCompatActivity {
 
         mPlayerView.setPlayerTitle("你好，我是手动设置传入的标题");
 
-        mPlayerView.setVlcControllerLayoutListener(new MyVlcVideoView.onVlcControllerLayoutListener() {
+        mPlayerView.setVlcControllerLayoutListener(new MyControlVlcVideoView.onVlcControllerLayoutListener() {
             @Override
             public void finishActivity() {
                 finish();

@@ -33,7 +33,7 @@ import com.shenma.vlcrecordplayer.util.FileUtil;
 import com.shenma.vlcrecordplayer.util.LogUtils;
 import com.shenma.vlcrecordplayer.vlc.ENDownloadView;
 import com.shenma.vlcrecordplayer.vlc.ENPlayView;
-import com.shenma.vlcrecordplayer.vlc.MyVlcVideoView;
+import com.shenma.vlcrecordplayer.vlc.MyControlVlcVideoView;
 import com.vlc.lib.RecordEvent;
 import com.vlc.lib.VlcVideoView;
 import com.vlc.lib.listener.MediaListenerEvent;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mControlLeftLayout;
     private LinearLayout mControlRightLayout;
     private LinearLayout mControlMiddleLayout;
-    private MyVlcVideoView mPlayerView;
+    private MyControlVlcVideoView mPlayerView;
     private RelativeLayout rootView;
     private RelativeLayout mRelativeAll;
     private View.OnTouchListener onTouchVideoListener;
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRightShot.setOnClickListener(this);
 
         //点击事情,控制主动显示或者隐藏所有的控制布局
-        mPlayerView.setVlcControllerLayoutListener(new MyVlcVideoView.onVlcControllerLayoutListener() {
+        mPlayerView.setVlcControllerLayoutListener(new MyControlVlcVideoView.onVlcControllerLayoutListener() {
             @Override
             public void finishActivity() {
 

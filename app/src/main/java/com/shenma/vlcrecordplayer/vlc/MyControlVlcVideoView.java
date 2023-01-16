@@ -54,7 +54,7 @@ import io.reactivex.disposables.Disposable;
  * time：2023/1/12 15:13
  * desc：自定义包裹-播放器View-控制布局-手势
  */
-public class MyVlcVideoView extends RelativeLayout implements GestureDetector.OnGestureListener, View.OnClickListener {
+public class MyControlVlcVideoView extends RelativeLayout implements GestureDetector.OnGestureListener, View.OnClickListener {
     private Context mContext;
     private RelativeLayout mRootLayout;
     private LinearLayout mVideoGestureLayout;
@@ -92,7 +92,7 @@ public class MyVlcVideoView extends RelativeLayout implements GestureDetector.On
     private LinearLayout mControlLeftLayout;
     private LinearLayout mControlRightLayout;
     private LinearLayout mControlMiddleLayout;
-    private MyVlcVideoView mPlayerView;
+    private MyControlVlcVideoView mPlayerView;
     private RelativeLayout rootView;
     private RelativeLayout mRelativeAll;
     private View.OnTouchListener onTouchVideoListener;
@@ -144,17 +144,17 @@ public class MyVlcVideoView extends RelativeLayout implements GestureDetector.On
         }
     };
 
-    public MyVlcVideoView(Context context) {
+    public MyControlVlcVideoView(Context context) {
         super(context);
         initView(context);
     }
 
-    public MyVlcVideoView(Context context, AttributeSet attrs) {
+    public MyControlVlcVideoView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context);
     }
 
-    public MyVlcVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MyControlVlcVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
 
