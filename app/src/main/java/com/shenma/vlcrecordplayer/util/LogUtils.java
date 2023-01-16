@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class LogUtils {
 
-	private static final String TAG = "ijkPlayer";
+	private static final String TAG = "VlcRecordPlayer:" ;
 
 	public static final boolean DEBUG = true;
 
