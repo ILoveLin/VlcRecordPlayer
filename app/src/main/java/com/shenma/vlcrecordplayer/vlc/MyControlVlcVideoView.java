@@ -210,7 +210,6 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         //设置播放样式
         setPageType(EnumConfig.PageType.SHRINK);
 
-        startLive(mPath01);
         responseListener();
 
 
@@ -557,7 +556,6 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                 showToast("相册");
                 break;
             case R.id.recordStart:  //录像
-
                 showToast("录像");
                 break;
             case R.id.snapShot:     //截图
@@ -776,8 +774,13 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
      *
      * @param path
      */
-    private void startLive(String path) {
+    public void setStartLive(String path) {
         handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_SHOW_LOADING_VIEW);
+        startLive(path);
+
+    }
+
+    private void startLive(String path) {
         mVlcVideoView.setPath(path);
         mVlcVideoView.startPlay();
     }

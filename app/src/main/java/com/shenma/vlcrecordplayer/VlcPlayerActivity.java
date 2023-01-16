@@ -14,9 +14,12 @@ import com.shenma.vlcrecordplayer.vlc.MyControlVlcVideoView;
  * company：江西神州医疗设备有限公司
  * author： LoveLin
  * time：2023/1/16 10:13
- * desc：
+ * desc：播放界面
  */
 public class VlcPlayerActivity extends AppCompatActivity {
+    //苹果点播视频链接
+    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
+
     private RelativeLayout rootView;
     private MyControlVlcVideoView mPlayerView;
     private View.OnTouchListener onTouchVideoListener;
@@ -49,6 +52,8 @@ public class VlcPlayerActivity extends AppCompatActivity {
             }
         });
 
+        //开始播放
+        mPlayerView.setStartLive(mPath01);
 
     }
 
@@ -71,6 +76,7 @@ public class VlcPlayerActivity extends AppCompatActivity {
         mPlayerView.onStop();
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
