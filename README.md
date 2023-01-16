@@ -11,11 +11,16 @@
 
 ![](picture/gif/1.gif) ![](picture/gif/2.gif) ![](picture/gif/3.gif)
 
-![](picture/gif/4.gif) ![](picture/gif/5.gif) ![](picture/gif/6.gif)
+![image](picture/gif/1.gif) ![image](picture/gif/2.gif) ![](picture/gif/6.gif)
 
 ![](picture/gif/7.gif) ![](picture/gif/8.gif) ![](picture/gif/9.gif)
 
 ![](picture/gif/10.gif) ![](picture/gif/11.gif) ![](picture/gif/12.gif)
+
+![image](https://github.com/ILoveLin/VlcRecordPlayer/blob/main/picture/gif/1.gif)
+![image](https://github.com/ILoveLin/VlcRecordPlayer/blob/main/picture/gif/2.gif)
+![image](https://github.com/ILoveLin/VlcRecordPlayer/blob/main/picture/gif/1.gif )
+![](https://github.com/ILoveLin/VlcRecordPlayer/blob/main/picture/gif/1.gif)
 
 ## License
 
