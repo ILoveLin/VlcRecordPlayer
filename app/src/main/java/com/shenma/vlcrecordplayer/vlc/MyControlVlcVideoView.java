@@ -604,8 +604,8 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                 .subscribe(count -> {
                     String currentTime = CoreUtil.secToTime(Integer.parseInt(count + ""));
                     showPlayerTime(currentTime);
-                    LogUtils.e("显示定时器====currentTime：" + currentTime);
-                    LogUtils.e("显示定时器====count：" + count);
+//                    LogUtils.e("显示定时器====currentTime：" + currentTime);
+//                    LogUtils.e("显示定时器====count：" + count);
 
                 });
     }
