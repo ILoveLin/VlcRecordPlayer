@@ -18,8 +18,8 @@ import com.shenma.vlcrecordplayer.vlc.MyControlVlcVideoView;
  */
 public class VlcPlayerActivity extends AppCompatActivity {
     //苹果点播视频链接,网络不好会一直loading,建议使用本地推流地址,如果没有去下载OBS(Open Broadcaster Software是一个免费的开源的视频录制和视频实时交流软件) 电脑屏幕推流即可
-    public static String mPath01 = "rtsp://root:root@192.168.66.31:7788/session0.mpg";
-    public static String mPath02 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
+//    public static String mPath01 = "rtsp://root:root@192.168.66.31:7788/session0.mpg";
+    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
 
     private RelativeLayout rootView;
     private MyControlVlcVideoView mPlayerView;
