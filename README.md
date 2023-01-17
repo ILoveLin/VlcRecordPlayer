@@ -14,7 +14,7 @@
 
 
 
-![](picture/gif/vlcDemo.gif) 
+![](picture/gif/1.gif) 
 
 
 
