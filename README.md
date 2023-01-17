@@ -22,7 +22,7 @@
 
 
 
-![](picture/gif/1.gif) 
+![](picture/gif/1.gif) ![](picture/gif/1.gif) ![](picture/gif/1.gif) 
 
 
 
