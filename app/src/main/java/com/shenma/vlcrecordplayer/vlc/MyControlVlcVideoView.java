@@ -75,7 +75,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     private static final String TAG = "MyVlcVideoView,自定义View中:";
 
     public String mTitle = "我是标题";
-    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
+    public static String mPath01 = "rtsp://root:root@192.168.66.31:7788/session0.mpg";
     public static String mPath02 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
     //vlc录像的Event
     private RecordEvent recordEvent = new RecordEvent();
@@ -96,7 +96,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     private RelativeLayout rootView;
     private RelativeLayout mRelativeAll;
     private View.OnTouchListener onTouchVideoListener;
-    private VlcVideoView mVlcVideoView;
+    private VlcVideoView mVlcVideoPlayerView;
     private TextView mVlvErrorTextView;
     private ENDownloadView mVlvLoadingView;
     private ENPlayView mVlvPlayView;
@@ -163,7 +163,9 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
 
     private void initView(Context context) {
         mContext = context;
-        LayoutInflater.from(context).inflate(R.layout.vlc_videoview_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.vlc_video_palyer_control_view_layout, this);
+        mVlcVideoPlayerView = findViewById(R.id.vlc_video_view);      //vlc播放器View
+
         //初始化控件
         initControlView();
         mVideoGestureLayout.getBackground().setAlpha(110);
@@ -179,7 +181,6 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         mPlayerView = findViewById(R.id.player);
 
         //控制相关
-        mVlcVideoView = findViewById(R.id.vlc_video_view);
         mControlTopLayout = findViewById(R.id.layout_control_top);
         mTopTitle = findViewById(R.id.tv_top_title);
         mTopBack = findViewById(R.id.iv_back);
@@ -457,16 +458,21 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         mRightRecord.setOnClickListener(this);
         mRightShot.setOnClickListener(this);
         mVlvPlayView.setOnClickListener(this);
-        mVlcVideoView.setMediaListenerEvent(new MediaListenerEvent() {
+        mVlcVideoPlayerView.setMediaListenerEvent(new MediaListenerEvent() {
             @Override
             public void eventBuffing(int event, float buffing) {
                 if (buffing < 100) {
                     mPlayStatueType = EnumConfig.PlayState.STATE_LOAD;
+                    if (mVlvLoadingView.getVisibility()==VISIBLE){
+                        return;
+                    }
                     handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_SHOW_LOADING_VIEW);
-
+                    LogUtils.e(TAG + "mMediaListenerEvent====eventBuffing方法==buffing < 100==:" + buffing);
                     //缓冲时不允许手势操作
 //                    mPlayerView.setGestureEnable(false);
                 } else if (buffing == 100) {
+                    LogUtils.e(TAG + "mMediaListenerEvent====eventBuffing方法==buffing == 100==:" + buffing);
+
 //                    mPlayerView.setGestureEnable(true);
                     mPlayStatueType = EnumConfig.PlayState.STATE_PLAY;
                     handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_HIDE_LOADING_PLAY_VIEW);
@@ -526,8 +532,8 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                mVlcVideoView.setAddSlave(null);
-                mVlcVideoView.onStop();
+                mVlcVideoPlayerView.setAddSlave(null);
+                mVlcVideoPlayerView.onStop();
                 mListener.finishActivity();
                 break;
             case R.id.iv_left_lock: //锁屏
@@ -659,8 +665,8 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                             //直播状态
                             if (mPlayStatueType == EnumConfig.PlayState.STATE_PLAY) {
 
-                                if (mVlcVideoView.isPrepare()) {
-                                    Media.VideoTrack mVideoTrack = mVlcVideoView.getVideoTrack();
+                                if (mVlcVideoPlayerView.isPrepare()) {
+                                    Media.VideoTrack mVideoTrack = mVlcVideoPlayerView.getVideoTrack();
                                     if (mVideoTrack != null) {
                                         showToast("截图成功");
                                         //原图
@@ -669,12 +675,12 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                                         if (!localFile.exists()) {
                                             localFile.mkdir();
                                         }
-                                        recordEvent.takeSnapshot(mVlcVideoView.getMediaPlayer(), takeSnapshotFile.getAbsolutePath(), 0, 0);
+                                        recordEvent.takeSnapshot(mVlcVideoPlayerView.getMediaPlayer(), takeSnapshotFile.getAbsolutePath(), 0, 0);
                                         //插入相册01,有些设备刷新会出问题 01,02都行
 //                                       MediaStore.Images.Media.insertImage(getContentResolver(), mVlcVideoView.getBitmap(), "", "");
                                         String nowString = TimeUtils.getNowString().trim();
 
-                                        MediaStore.Images.Media.insertImage(mContext.getContentResolver(), mVlcVideoView.getBitmap(), nowString, null);
+                                        MediaStore.Images.Media.insertImage(mContext.getContentResolver(), mVlcVideoPlayerView.getBitmap(), nowString, null);
 
 //                                        MediaStore.Images.Media.insertImage(getContentResolver(), mVlcVideoView.getBitmap(), "", "");
                                         //刷新相册02,以下解决,(最好的效果)此问题在android 10.0 的版本上会出现。图库不刷新问题java.lang.IllegalStateException: Failed to build unique file
@@ -734,11 +740,11 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         LogUtils.e(TAG + "==onPause");
 
         //手动清空字幕
-        if (null != mVlcVideoView) {
-            mVlcVideoView.setAddSlave(null);
+        if (null != mVlcVideoPlayerView) {
+            mVlcVideoPlayerView.setAddSlave(null);
             //直接调用stop 或者onPause(自己新增的方法),不然回ANR
             // vlcVideoView.onStop();
-            mVlcVideoView.onPause();
+            mVlcVideoPlayerView.onPause();
         }
     }
 
@@ -751,14 +757,14 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         LogUtils.e(TAG + "==onDestroy");
 
         //手动清空字幕
-        if (null != mVlcVideoView) {
-            mVlcVideoView.setAddSlave(null);
+        if (null != mVlcVideoPlayerView) {
+            mVlcVideoPlayerView.setAddSlave(null);
             //直接调用stop 不然回ANR
-            mVlcVideoView.onStop();
-            mVlcVideoView.onDestroy();
+            mVlcVideoPlayerView.onStop();
+            mVlcVideoPlayerView.onDestroy();
         }
-        if (null != mVlcVideoView) {
-            mVlcVideoView.setMediaListenerEvent(null);
+        if (null != mVlcVideoPlayerView) {
+            mVlcVideoPlayerView.setMediaListenerEvent(null);
         }
         if (null != mPlayerTimeDis) {
             mPlayerTimeDis.dispose();
@@ -781,8 +787,8 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     }
 
     private void startLive(String path) {
-        mVlcVideoView.setPath(path);
-        mVlcVideoView.startPlay();
+        mVlcVideoPlayerView.setPath(path);
+        mVlcVideoPlayerView.startPlay();
     }
 
     /**

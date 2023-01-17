@@ -27,8 +27,6 @@ import java.util.ArrayList;
  * 只是提供参考的实例代码
  * <p>
  * 如果有bug请在github留言
- *
- * @author https://github.com/mengzhidaren
  */
 public class VlcVideoView extends TextureView implements MediaPlayerControl, VideoSizeChange {
     private VlcPlayer videoMediaLogic;

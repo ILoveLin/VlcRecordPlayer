@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Surface;
 
 import org.videolan.libvlc.LibVLC;
@@ -69,7 +70,7 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
     //切换view.parent时的2秒黑屏用seek恢复
     public boolean clearVideoTrackCache = false;
     //硬件加速
-    public boolean HWDecoderEnable = false;
+    public boolean HWDecoderEnable = true;
 
     private MediaPlayer mMediaPlayer;
     private Surface surfaceSlave;//字幕画布
@@ -148,6 +149,14 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
     }
 
     private void attachSurface() {
+        if (mMediaPlayer == null) {
+            Log.e("VlcPlayer界面", "attachSurface方法(153行),MediaPlayer==null,直接return");
+            return;
+        }
+        if (null == mMediaPlayer.getVLCVout()) {
+            Log.e("VlcPlayer界面", "attachSurface方法(155行),libvlc.MediaPlayer.getVLCVout()==null,直接return");
+            return;
+        }
         if (!mMediaPlayer.getVLCVout().areViewsAttached() && isSurfaceAvailable && !isAttachedSurface) {
             LogUtils.i(tag, "attachSurface");
 
@@ -311,11 +320,11 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
             LogUtils.i("异常  没有视频可加载");
         }
     }
+
     /**
-     *
      * 自己手动新增的方法,onPause,退到后台能继续播放vlc
-     *       //删除,isAttachedSurface(surface是否关联) 的判断条件不然多次进入退出会ANR
-     *       //   if (isAttachedSurface && isLoadMedia) {}
+     * //删除,isAttachedSurface(surface是否关联) 的判断条件不然多次进入退出会ANR
+     * //   if (isAttachedSurface && isLoadMedia) {}
      */
     private void onPauseVideo() {
         LogUtils.i(tag, "release");
@@ -399,8 +408,8 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
          *@param1 如果为真，将使用hw解码器
          *@param2 强制hw加速，即使未知设备
          */
-        media.setHWDecoderEnabled(true, true);
-//        media.setHWDecoderEnabled(HWDecoderEnable, false);
+//        media.setHWDecoderEnabled(true, true);
+        media.setHWDecoderEnabled(HWDecoderEnable, false);
         media.setEventListener(mMediaListener);
         mMediaPlayer.setMedia(media);
         media.release();
@@ -442,7 +451,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
         time = 0;
         position = 0f;
     }
-
 
 
     private void onEventNative(final MediaPlayer.Event event) {
