@@ -6,12 +6,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,6 +33,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.shenma.vlcrecordplayer.MainActivity;
 import com.shenma.vlcrecordplayer.R;
 import com.shenma.vlcrecordplayer.util.CoreUtil;
 import com.shenma.vlcrecordplayer.util.EnumConfig;
@@ -72,7 +76,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     private static final float STEP_PROGRESS = 2f;// 设定进度滑动时的步长，避免每次滑动都改变，导致改变过快
 
     //自新封装的控制布局
-    private static final String TAG = "MyVlcVideoView,自定义View中:";
+    private static final String TAG = "VlcVideoPlayerView,自定义View中:";
 
     public String mTitle = "我是标题";
     public static String mPath01 = "rtsp://root:root@192.168.66.31:7788/session0.mpg";
@@ -80,8 +84,10 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     //vlc录像的Event
     private RecordEvent recordEvent = new RecordEvent();
     //vlc截图文件地址
-    private File takeSnapshotFile = new File(Environment.getExternalStorageDirectory(), "CME");
-
+    private File mTakeSnapshotFile = new File(Environment.getExternalStorageDirectory(), "CME");
+    private File mRecordFile = new File(Environment.getExternalStorageDirectory(), "CME");
+    //    private File mRecordFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "CME");
+    private String mRecordDirectory = mRecordFile.getAbsolutePath();
     //自定义方法订阅,布局控制的订阅
     private Disposable mControllerDis;
     private static final int CONTROLLER_HIDE_DELAY = 3000;
@@ -114,10 +120,14 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     private int mCurrPageType;
     //播放状态
     private int mPlayStatueType = EnumConfig.PlayState.STATE_STOP;
+    //播放状态,默认未录像:false
+    private Boolean mRecordType = false;
     //handler 控制变量
     private static final int SHOW_TIME = 100;
     private static final int SHOW_TOAST = 101;
     private static final int SHOW_HIDE_PLAYER_VIEW = 102;
+    private static final int RECORD_START = 103;
+    private static final int RECORD_STOP = 104;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @SuppressLint("NewApi")
@@ -138,11 +148,23 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                 case SHOW_HIDE_PLAYER_VIEW://播放器,加载,播放,错误view的显示与隐藏
                     showHidePlayLoadingView((int) msg.obj);
                     break;
+                case RECORD_START://开始录像
+                    setTextColor(getResources().getColor(R.color.colorAccent), getResources().getString(R.string.vlc_video));
+                    Drawable record_start = getResources().getDrawable(R.drawable.icon_record_pre);
+                    mRightRecord.setCompoundDrawablesWithIntrinsicBounds(null, record_start, null, null);
+                    break;
+                case RECORD_STOP://结束录像
+                    setTextColor(getResources().getColor(R.color.white), getResources().getString(R.string.vlc_video));
+                    Drawable record_end = getResources().getDrawable(R.drawable.icon_record_nore);
+                    mRightRecord.setCompoundDrawablesWithIntrinsicBounds(null, record_end, null, null);
+                    break;
 
 
             }
         }
     };
+    private String rootPath;
+    private String mRecordOppoDirectory;
 
     public MyControlVlcVideoView(Context context) {
         super(context);
@@ -210,11 +232,9 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         mRelativeAll.postDelayed(mHideControllerRunnable, CONTROLLER_HIDE_DELAY);
         //设置播放样式
         setPageType(EnumConfig.PageType.SHRINK);
-
         responseListener();
-
-
     }
+
 
     public RelativeLayout getRootView() {
         return mRootLayout;
@@ -463,7 +483,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
             public void eventBuffing(int event, float buffing) {
                 if (buffing < 100) {
                     mPlayStatueType = EnumConfig.PlayState.STATE_LOAD;
-                    if (mVlvLoadingView.getVisibility()==VISIBLE){
+                    if (mVlvLoadingView.getVisibility() == VISIBLE) {
                         return;
                     }
                     handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_SHOW_LOADING_VIEW);
@@ -558,14 +578,14 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                 showToast("语音");
                 break;
             case R.id.photos:       //相册
-
                 showToast("相册");
                 break;
             case R.id.recordStart:  //录像
-                showToast("录像");
+                getStoragePermission("record");
+
                 break;
             case R.id.snapShot:     //截图
-                getStoragePermission("Shot");
+                getStoragePermission("shot");
                 break;
 
 
@@ -655,56 +675,168 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
      * @param type
      */
     private void getStoragePermission(String type) {
-        XXPermissions.with(mContext)
-                // 适配 Android 11 需要这样写，这里无需再写 Permission.Group.STORAGE
-                .permission(Permission.MANAGE_EXTERNAL_STORAGE)
-                .request(new OnPermissionCallback() {
-                    @Override
-                    public void onGranted(List<String> permissions, boolean all) {
-                        if (all) {
-                            //直播状态
-                            if (mPlayStatueType == EnumConfig.PlayState.STATE_PLAY) {
 
-                                if (mVlcVideoPlayerView.isPrepare()) {
-                                    Media.VideoTrack mVideoTrack = mVlcVideoPlayerView.getVideoTrack();
-                                    if (mVideoTrack != null) {
-                                        showToast("截图成功");
-                                        //原图
-                                        LogUtils.e(TAG + "录像(截图的地址)====count：" + takeSnapshotFile.getAbsolutePath());
-                                        File localFile = new File(takeSnapshotFile.getAbsolutePath());
-                                        if (!localFile.exists()) {
-                                            localFile.mkdir();
-                                        }
-                                        recordEvent.takeSnapshot(mVlcVideoPlayerView.getMediaPlayer(), takeSnapshotFile.getAbsolutePath(), 0, 0);
-                                        //插入相册01,有些设备刷新会出问题 01,02都行
-//                                       MediaStore.Images.Media.insertImage(getContentResolver(), mVlcVideoView.getBitmap(), "", "");
-                                        String nowString = TimeUtils.getNowString().trim();
-
-                                        MediaStore.Images.Media.insertImage(mContext.getContentResolver(), mVlcVideoPlayerView.getBitmap(), nowString, null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            XXPermissions.with(mContext)
+                    // 适配 Android 11 需要这样写，这里无需再写 Permission.Group.STORAGE
+                    .permission(Permission.MANAGE_EXTERNAL_STORAGE)
+//                .permission(Permission.READ_EXTERNAL_STORAGE)
+//                .permission(Permission.WRITE_EXTERNAL_STORAGE)
+                    .request(new OnPermissionCallback() {
+                        @Override
+                        public void onGranted(List<String> permissions, boolean all) {
+                            if (all) {
+                                //直播状态
+                                if (mPlayStatueType == EnumConfig.PlayState.STATE_PLAY) {
+                                    //截图,功能
+                                    if ("shot".equals(type)) {
+                                        if (mVlcVideoPlayerView.isPrepare()) {
+                                            Media.VideoTrack mVideoTrack = mVlcVideoPlayerView.getVideoTrack();
+                                            if (mVideoTrack != null) {
+                                                showToast("截图成功");
+                                                //原图
+                                                LogUtils.e(TAG + "录像(截图的地址)====count：" + mTakeSnapshotFile.getAbsolutePath());
+                                                File localFile = new File(mTakeSnapshotFile.getAbsolutePath());
+                                                if (!localFile.exists()) {
+                                                    localFile.mkdir();
+                                                }
+                                                recordEvent.takeSnapshot(mVlcVideoPlayerView.getMediaPlayer(), mTakeSnapshotFile.getAbsolutePath(), 0, 0);
+                                                //插入相册01,有些设备刷新会出问题 01,02都行  VIVO能刷截图,华为能刷新
+//                                                MediaStore.Images.Media.insertImage(mContext.getContentResolver(), mVlcVideoPlayerView.getBitmap(), "", "");
 
 //                                        MediaStore.Images.Media.insertImage(getContentResolver(), mVlcVideoView.getBitmap(), "", "");
-                                        //刷新相册02,以下解决,(最好的效果)此问题在android 10.0 的版本上会出现。图库不刷新问题java.lang.IllegalStateException: Failed to build unique file
-                                        FileUtil.RefreshAlbum(takeSnapshotFile.getAbsolutePath(), false, mContext);
-                                        //recordEvent.takeSnapshot(vlcVideoView.getMediaPlayer(), takeSnapshotFile.getAbsolutePath(), videoTrack.width / 2, 0);
+                                                //刷新相册02,以下解决,(最好的效果)此问题在android 10.0 的版本上会出现。图库不刷新问题java.lang.IllegalStateException: Failed to build unique file
+
+                                                mRelativeAll.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        MediaStore.Images.Media.insertImage(mContext.getContentResolver(), mVlcVideoPlayerView.getBitmap(), "", "");
+//                                                        FileUtil.RefreshAlbum(mTakeSnapshotFile.getAbsolutePath(), false, mContext);
+                                                    }
+                                                }, 500);
+                                                //recordEvent.takeSnapshot(vlcVideoView.getMediaPlayer(), takeSnapshotFile.getAbsolutePath(), videoTrack.width / 2, 0);
+                                            }
+                                        }
+                                    } else {
+                                        //录像,功能
+                                        if (mRecordType) {
+                                            LogUtils.e(TAG + "录像--结束录像:==2==="); //   /storage/emulated/0/1604026573438.mp4
+                                            vlcRecordOver();
+                                        } else {
+                                            if (mVlcVideoPlayerView.isPrepare()) {
+                                                mRecordType = true;
+                                                mHandler.sendEmptyMessage(RECORD_START);
+                                                //vlcVideoView.getMediaPlayer().record(directory);
+                                                LogUtils.e(TAG + "录像--开始录像:==1==="); //   /storage/emulated/0/1604026573438.mp4
+                                                LogUtils.e(TAG + "录像--文件路径:=====" + mRecordDirectory);
+                                                recordEvent.startRecord(mVlcVideoPlayerView.getMediaPlayer(), mRecordDirectory, "");
+                                            }
+                                        }
                                     }
+                                } else {
+                                    showToast("暂未开启直播");
                                 }
 
                             }
-
                         }
-                    }
 
-                    @Override
-                    public void onDenied(List<String> permissions, boolean never) {
-                        if (never) {
-                            showToast("被永久拒绝授权，请手动授予存储权限");
-                            // 如果是被永久拒绝就跳转到应用权限系统设置页面
-                            XXPermissions.startPermissionActivity(mContext, permissions);
-                        } else {
-                            showToast("获取存储权限失败");
+                        @Override
+                        public void onDenied(List<String> permissions, boolean never) {
+                            if (never) {
+                                showToast("被永久拒绝授权，请手动授予存储权限");
+                                // 如果是被永久拒绝就跳转到应用权限系统设置页面
+                                XXPermissions.startPermissionActivity(mContext, permissions);
+                            } else {
+                                showToast("获取存储权限失败");
+                            }
                         }
-                    }
-                });
+                    });
+        } else {
+            XXPermissions.with(mContext)
+                    //  Permission.Group.STORAGE
+                    .permission(Permission.Group.STORAGE)
+                    .request(new OnPermissionCallback() {
+                        @Override
+                        public void onGranted(List<String> permissions, boolean all) {
+                            if (all) {
+                                //直播状态
+                                if (mPlayStatueType == EnumConfig.PlayState.STATE_PLAY) {
+                                    //截图,功能
+                                    if ("shot".equals(type)) {
+                                        if (mVlcVideoPlayerView.isPrepare()) {
+                                            Media.VideoTrack mVideoTrack = mVlcVideoPlayerView.getVideoTrack();
+                                            if (mVideoTrack != null) {
+                                                showToast("截图成功");
+                                                //原图
+                                                LogUtils.e(TAG + "录像(截图的地址)====count：" + mTakeSnapshotFile.getAbsolutePath());
+                                                File localFile = new File(mTakeSnapshotFile.getAbsolutePath());
+                                                if (!localFile.exists()) {
+                                                    localFile.mkdir();
+                                                }
+                                                recordEvent.takeSnapshot(mVlcVideoPlayerView.getMediaPlayer(), mTakeSnapshotFile.getAbsolutePath(), 0, 0);
+                                                //插入相册01,有些设备刷新会出问题 01,02都行  VIVO能刷截图,华为能刷新
+                                                MediaStore.Images.Media.insertImage(mContext.getContentResolver(), mVlcVideoPlayerView.getBitmap(), "", "");
+
+//                                        MediaStore.Images.Media.insertImage(getContentResolver(), mVlcVideoView.getBitmap(), "", "");
+                                                //刷新相册02,以下解决,(最好的效果)此问题在android 10.0 的版本上会出现。图库不刷新问题java.lang.IllegalStateException: Failed to build unique file
+//                                            FileUtil.RefreshAlbum(mTakeSnapshotFile.getAbsolutePath(), false, mContext);
+                                                //recordEvent.takeSnapshot(vlcVideoView.getMediaPlayer(), takeSnapshotFile.getAbsolutePath(), videoTrack.width / 2, 0);
+                                            }
+                                        }
+                                    } else {
+                                        //录像,功能
+                                        if (mRecordType) {
+                                            LogUtils.e(TAG + "录像--结束录像:==2==="); //   /storage/emulated/0/1604026573438.mp4
+                                            vlcRecordOver();
+                                        } else {
+                                            if (mVlcVideoPlayerView.isPrepare()) {
+                                                mRecordType = true;
+                                                mHandler.sendEmptyMessage(RECORD_START);
+                                                //vlcVideoView.getMediaPlayer().record(directory);
+                                                LogUtils.e(TAG + "录像--开始录像:==1==="); //   /storage/emulated/0/1604026573438.mp4
+                                                LogUtils.e(TAG + "录像--文件路径:=====" + mRecordDirectory);
+                                                recordEvent.startRecord(mVlcVideoPlayerView.getMediaPlayer(), mRecordDirectory, "");
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    showToast("暂未开启直播");
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onDenied(List<String> permissions, boolean never) {
+                            if (never) {
+                                showToast("被永久拒绝授权，请手动授予存储权限");
+                                // 如果是被永久拒绝就跳转到应用权限系统设置页面
+                                XXPermissions.startPermissionActivity(mContext, permissions);
+                            } else {
+                                showToast("获取存储权限失败");
+                            }
+                        }
+                    });
+        }
+
+
+    }
+
+
+    /**
+     * 录像结束
+     */
+    private void vlcRecordOver() {
+        mRecordType = false;
+        mHandler.sendEmptyMessage(RECORD_STOP);
+        showToast(getResources().getString(R.string.vlc_toast09));
+        mVlcVideoPlayerView.getMediaPlayer().record(null);
+        FileUtil.RefreshAlbum(mRecordDirectory, true, mContext);
+    }
+
+    public void setTextColor(int color, String message) {
+        mRightRecord.setText(message);
+        mRightRecord.setTextColor(color);
     }
 
     /**
@@ -770,6 +902,8 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
             mPlayerTimeDis.dispose();
             mPlayerTimeDis = null;
         }
+        //录像状态恢复默认值
+        mRecordType = false;
         mRelativeAll.removeCallbacks(mShowControllerRunnable);
         mRelativeAll.removeCallbacks(mHideControllerRunnable);
         mRelativeAll.removeAllViews();
