@@ -69,8 +69,8 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
 
     //切换view.parent时的2秒黑屏用seek恢复
     public boolean clearVideoTrackCache = false;
-    //硬件加速
-    public boolean HWDecoderEnable = true;
+    //硬件加速 特别注意：如果需要视频录制和截图，需要关闭硬件解码
+    public boolean HWDecoderEnable = false;
 
     private MediaPlayer mMediaPlayer;
     private Surface surfaceSlave;//字幕画布
