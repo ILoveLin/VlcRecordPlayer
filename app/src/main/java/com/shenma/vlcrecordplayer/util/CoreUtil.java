@@ -6,10 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.WindowManager;
 
-import org.checkerframework.checker.units.qual.A;
-
-import java.util.Formatter;
-import java.util.Locale;
 
 import io.reactivex.disposables.Disposable;
 
