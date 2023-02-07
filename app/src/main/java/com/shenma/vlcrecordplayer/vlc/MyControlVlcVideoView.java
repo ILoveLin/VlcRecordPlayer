@@ -46,6 +46,8 @@ import com.vlc.lib.listener.MediaListenerEvent;
 import org.videolan.libvlc.Media;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -704,16 +706,15 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                                                 //插入相册01,有些设备刷新会出问题 01,02都行  VIVO能刷截图,华为能刷新
 //                                                MediaStore.Images.Media.insertImage(mContext.getContentResolver(), mVlcVideoPlayerView.getBitmap(), "", "");
 
-//                                        MediaStore.Images.Media.insertImage(getContentResolver(), mVlcVideoView.getBitmap(), "", "");
+//                                                MediaStore.Images.Media.insertImage(getContentResolver(), mVlcVideoView.getBitmap(), "", "");
                                                 //刷新相册02,以下解决,(最好的效果)此问题在android 10.0 的版本上会出现。图库不刷新问题java.lang.IllegalStateException: Failed to build unique file
+                                                MediaStore.Images.Media.insertImage(mContext.getContentResolver(), mVlcVideoPlayerView.getBitmap(), "IMG" + Calendar.getInstance().getTime(), null);
 
-                                                mRelativeAll.postDelayed(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        MediaStore.Images.Media.insertImage(mContext.getContentResolver(), mVlcVideoPlayerView.getBitmap(), "", "");
-//                                                        FileUtil.RefreshAlbum(mTakeSnapshotFile.getAbsolutePath(), false, mContext);
-                                                    }
-                                                }, 500);
+//                                                FileUtil.RefreshAlbum(mTakeSnapshotFile.getAbsolutePath(), false, mContext);  //刷新相册
+                                                try {
+                                                } catch (Exception e) {
+                                                    throw new RuntimeException(e);
+                                                }
                                                 //recordEvent.takeSnapshot(vlcVideoView.getMediaPlayer(), takeSnapshotFile.getAbsolutePath(), videoTrack.width / 2, 0);
                                             }
                                         }
