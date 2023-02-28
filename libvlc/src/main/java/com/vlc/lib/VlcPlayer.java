@@ -404,7 +404,7 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
             media = new Media(libVLC, path);
         }
         /**
-         * 添加或删除hw加速媒体选项
+         * 添加或删除hw加速媒体选项  硬解码会出问题
          *@param1 如果为真，将使用hw解码器
          *@param2 强制hw加速，即使未知设备
          */

@@ -16,11 +16,11 @@ com/vlc/lib/listener/MediaListenerEvent.java
  com.vlc.lib.listener.MediaListenerEvent
 com/vlc/lib/listener/util/VLCOptions.java
  com.vlc.lib.listener.util.VLCOptions
-com/vlc/lib/RecordEvent.java
- com.vlc.lib.RecordEvent
+com/vlc/lib/listener/util/VLCInstance.java
+ com.vlc.lib.listener.util.VLCInstance
 com/vlc/lib/BuildConfig.java
  com.vlc.lib.BuildConfig
 com/vlc/lib/listener/util/LogUtils.java
  com.vlc.lib.listener.util.LogUtils
-com/vlc/lib/listener/util/VLCInstance.java
- com.vlc.lib.listener.util.VLCInstance
+com/vlc/lib/RecordEvent.java
+ com.vlc.lib.RecordEvent

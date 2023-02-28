@@ -110,10 +110,11 @@ Java_com_vlc_lib_RecordEvent_startRecord__Lorg_videolan_libvlc_MediaPlayer_2Ljav
     const char *fileName = (*env)->GetStringUTFChars(env, fileName_, 0);
 
     jboolean recordStart;
+
     LOGI("录像目录=%s  文件名=%s", fileDirectory, fileName);
     input_thread_t *input_thread = getInputThread(env, mediaPlayer);
     if (input_thread) {
-        //std{access=file{no-append,no-format,no-overwrite},mux='avi',dst='/tmp/vlcJJKum1905'}
+//        std{access=file{no-append,no-format,no-overwrite},mux='avi',dst='/tmp/vlcJJKum1905'}
 
         var_Create(input_thread, "input-record-path", VLC_VAR_STRING | VLC_VAR_DOINHERIT);
         var_Create(input_thread, "sout-record-dst-prefix", VLC_VAR_STRING | VLC_VAR_DOINHERIT);

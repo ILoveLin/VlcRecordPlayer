@@ -677,7 +677,6 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
      * @param type
      */
     private void getStoragePermission(String type) {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             XXPermissions.with(mContext)
                     // 适配 Android 11 需要这样写，这里无需再写 Permission.Group.STORAGE
