@@ -58,7 +58,7 @@ import io.reactivex.disposables.Disposable;
  * company：江西神州医疗设备有限公司
  * author： LoveLin
  * time：2023/1/12 15:13
- * desc：自定义包裹-播放器View-控制布局-手势
+ * desc：自定义View-播放器View-包含(控制布局-手势)
  */
 public class MyControlVlcVideoView extends RelativeLayout implements GestureDetector.OnGestureListener, View.OnClickListener {
     private Context mContext;

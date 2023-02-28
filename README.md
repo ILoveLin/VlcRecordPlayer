@@ -1,5 +1,12 @@
 # VLC播放器Demo(录像,截图等功能)，可二次开发。
 
+#### 如果帮助的到了您，请您不要吝啬你的Star，谢谢您的点赞（Star），3Q。
+
+#### 如果帮助的到了您，请您不要吝啬你的Star，谢谢您的点赞（Star），3Q。
+
+#### 如果帮助的到了您，请您不要吝啬你的Star，谢谢您的点赞（Star），3Q。
+
+
 * 基于VLC的播放器（Android 录像,截图），可做二次开发，支持在点播或者直播,播放的时候：录像，截图等等功能。支持RTSP，RTMP，HTTP，HTTPS等等。支持所有CPU架构。
 
 * 使用VLC，作为播放器实现，录像，截图功能(点播,直播都支持!) 特意花时间写了个Demo开源出来，希望能帮助到需要的人！
@@ -8,11 +15,7 @@
 
 
 
-#### 如果帮助的到了您，请您不要吝啬你的Star，谢谢您的点赞（Star），3Q。
 
-#### 如果帮助的到了您，请您不要吝啬你的Star，谢谢您的点赞（Star），3Q。
-
-#### 如果帮助的到了您，请您不要吝啬你的Star，谢谢您的点赞（Star），3Q。
 
 
 
@@ -45,7 +48,7 @@
 ## License
 
 ```text
-Copyright 2023 Tong ZhengTong
+Copyright 2023 LoveLin
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
