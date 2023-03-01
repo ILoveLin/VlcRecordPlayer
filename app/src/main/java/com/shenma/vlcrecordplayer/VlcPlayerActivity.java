@@ -21,7 +21,9 @@ public class VlcPlayerActivity extends AppCompatActivity {
 //    public static String mPath01 = "rtsp://root:root@192.168.66.31:7788/session0.mpg";
 //    public static String mPath01 = "rtmp://58.200.131.2:1935/livetv/hunantv";
 //    public static String mPath01 = "http://192.168.67.200:3333/api/stream/video?session=1234567";
-    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
+//    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
+    //湖南卫视直播
+    public static String mPath01 = "http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8";
 //    public static String mPath01 = "http://tvmvip110.club/as.php?id=cctv1hd";
 //    public static String mPath01 = "https://www.cambridgeenglish.org/images/153149-movers-sample-listening-test-vol2.mp3";
 

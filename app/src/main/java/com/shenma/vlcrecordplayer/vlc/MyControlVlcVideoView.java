@@ -578,7 +578,6 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
 
                 break;
             case R.id.iv_voice_type: //控制,是否静音
-                
                 if (mVlcVideoPlayerView.getMediaPlayer().isPlaying() && mVlcVideoPlayerView.getMediaPlayer() != null) {
                     //当前有声音,设置音量为0.
                     if (mVlcVideoPlayerView.getMediaPlayer().getVolume() != 0) {
@@ -1052,18 +1051,19 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         mControllerShow = true;
         ObjectAnimator.ofFloat(mControlTopLayout, "translationY", -mControlTopLayout.getHeight(), 0).start();
         ObjectAnimator.ofFloat(mControlBottomLayout, "translationY", mControlBottomLayout.getHeight(), 0).start();
-        ObjectAnimator.ofFloat(mControlRightLayout, "translationX", mControlRightLayout.getWidth(), 0).start();
+        ObjectAnimator.ofFloat(mControlRightLayout, "translationX", mControlRightLayout.getWidth() + getResources().getDimension(R.dimen.padding_5), 0).start();
 
         ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
         animator.setDuration(200);
         animator.addUpdateListener(animation -> {
             float alpha = (float) animation.getAnimatedValue();
-            mLockView.setAlpha(alpha);
+            mControlLeftLayout.setAlpha(alpha);
+
             if ((int) alpha != 1) {
                 return;
             }
-            if (mLockView.getVisibility() == INVISIBLE) {
-                mLockView.setVisibility(VISIBLE);
+            if (mControlLeftLayout.getVisibility() == INVISIBLE) {
+                mControlLeftLayout.setVisibility(VISIBLE);
             }
         });
         animator.start();
@@ -1080,18 +1080,18 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         mControllerShow = false;
         ObjectAnimator.ofFloat(mControlTopLayout, "translationY", 0, -mControlTopLayout.getHeight()).start();
         ObjectAnimator.ofFloat(mControlBottomLayout, "translationY", 0, mControlBottomLayout.getHeight()).start();
-        ObjectAnimator.ofFloat(mControlRightLayout, "translationX", 0, mControlRightLayout.getWidth()).start();
+        ObjectAnimator.ofFloat(mControlRightLayout, "translationX", 0, mControlRightLayout.getWidth() + getResources().getDimension(R.dimen.padding_5)).start();
         ValueAnimator animator = ValueAnimator.ofFloat(1f, 0f);
         animator.setDuration(200);
         animator.addUpdateListener(animation -> {
             float alpha = (float) animation.getAnimatedValue();
-            mLockView.setAlpha(alpha);
+            mControlLeftLayout.setAlpha(alpha);
             if (alpha != 0f) {
                 return;
             }
 
-            if (mLockView.getVisibility() == VISIBLE) {
-                mLockView.setVisibility(INVISIBLE);
+            if (mControlLeftLayout.getVisibility() == VISIBLE) {
+                mControlLeftLayout.setVisibility(INVISIBLE);
             }
         });
         animator.start();

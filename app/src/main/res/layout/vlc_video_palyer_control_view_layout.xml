@@ -102,12 +102,13 @@
     </RelativeLayout>
 
     <!--锁屏(left)控制-->
+    android:background="@drawable/video_title_bg"
+
     <LinearLayout
         android:id="@+id/layout_control_left"
         android:layout_width="@dimen/padding_50"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/video_title_bg"
         android:gravity="center"
         android:orientation="vertical">
 
