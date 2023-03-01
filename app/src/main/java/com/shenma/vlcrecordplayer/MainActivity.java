@@ -77,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         m2VLCPlayer = findViewById(R.id.tv_to_vlc);
     }
 
+    /**
+     * 跳转播放界面
+     */
     private void responseListener() {
         m2VLCPlayer.setOnClickListener(new View.OnClickListener() {
             @Override

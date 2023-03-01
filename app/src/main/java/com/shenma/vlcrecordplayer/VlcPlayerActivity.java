@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.shenma.vlcrecordplayer.util.LogUtils;
 import com.shenma.vlcrecordplayer.vlc.MyControlVlcVideoView;
 
 
@@ -26,6 +27,7 @@ public class VlcPlayerActivity extends AppCompatActivity {
     public static String mPath01 = "http://219.151.31.38/liveplay-kk.rtxapp.com/live/program/live/hnwshd/4000000/mnf.m3u8";
 //    public static String mPath01 = "http://tvmvip110.club/as.php?id=cctv1hd";
 //    public static String mPath01 = "https://www.cambridgeenglish.org/images/153149-movers-sample-listening-test-vol2.mp3";
+private static final String TAG = "Activity,播放器界面中:";
 
     private RelativeLayout rootView;
     private MyControlVlcVideoView mPlayerView;
@@ -66,35 +68,35 @@ public class VlcPlayerActivity extends AppCompatActivity {
                 mPlayerView.setStartLive(mPath01);
 
             }
-        },500);
+        }, 500);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtils.e(TAG + "==onResume");
         mPlayerView.onResume();
-
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        LogUtils.e(TAG + "==onPause");
         mPlayerView.onPause();
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        LogUtils.e(TAG + "==onStop");
         mPlayerView.onStop();
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogUtils.e(TAG + "==onDestroy");
         mPlayerView.onDestroy();
 
     }

@@ -79,7 +79,8 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     private static final float STEP_PROGRESS = 2f;// 设定进度滑动时的步长，避免每次滑动都改变，导致改变过快
 
     //自新封装的控制布局
-    private static final String TAG = "VlcVideoPlayerView,自定义View中:";
+    private static final String TAG = "VLCView,自定义View中:";
+
 
     public String mTitle = "我是标题";
     public static String mPath01 = "rtsp://root:root@192.168.66.31:7788/session0.mpg";
@@ -962,6 +963,11 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         if (null != mPlayerTimeDis) {
             mPlayerTimeDis.dispose();
             mPlayerTimeDis = null;
+        }
+
+        if (null!=getRootView()){
+            getRootView().setOnTouchListener(null);
+            getRootView().setLongClickable(false);  //手势不需要需要--不能触摸
         }
         //录像状态恢复默认值
         mRecordType = false;
