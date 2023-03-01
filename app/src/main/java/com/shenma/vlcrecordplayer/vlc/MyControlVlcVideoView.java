@@ -44,6 +44,7 @@ import com.vlc.lib.VlcVideoView;
 import com.vlc.lib.listener.MediaListenerEvent;
 
 import org.videolan.libvlc.Media;
+import org.videolan.libvlc.MediaPlayer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -167,6 +168,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     };
     private String rootPath;
     private String mRecordOppoDirectory;
+    private ImageView mBottomVoice;
 
     public MyControlVlcVideoView(Context context) {
         super(context);
@@ -211,6 +213,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
 
         mControlBottomLayout = findViewById(R.id.layout_control_bottom);
         mBottomTime = findViewById(R.id.tv_bottom_time);
+        mBottomVoice = findViewById(R.id.iv_voice_type);
         mBottomVideoFull = findViewById(R.id.iv_bottom_video_full);
 
         mControlLeftLayout = findViewById(R.id.layout_control_left);
@@ -475,6 +478,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         mTopBack.setOnClickListener(this);
         mLockView.setOnClickListener(this);
         mRightPathType.setOnClickListener(this);
+        mBottomVoice.setOnClickListener(this);
         mRightMic.setOnClickListener(this);
         mRightPhotos.setOnClickListener(this);
         mRightRecord.setOnClickListener(this);
@@ -540,7 +544,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
             }
 
             @Override
-            public void eventPlayInit(boolean openClose) {
+            public void eventPlayInit(boolean openClose) {//openClose 当前界面是否可见,推入后台,就是不可见=false
                 LogUtils.e(TAG + "mMediaListenerEvent====eventPlayInit方法==openClose:" + openClose);
                 if (openClose) {
                     createPlayerTimeSub();
@@ -572,6 +576,20 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                 startLive(mPath01);
                 LogUtils.e(TAG + "点击重新加载");
 
+                break;
+            case R.id.iv_voice_type: //控制,是否静音
+                if (mVlcVideoPlayerView.getMediaPlayer().isPlaying() && mVlcVideoPlayerView.getMediaPlayer() != null) {
+                    //当前有声音,设置音量为0.
+                    if (mVlcVideoPlayerView.getMediaPlayer().getVolume() != 0) {
+                        mVlcVideoPlayerView.getMediaPlayer().setVolume(0);
+                        showToast("设置为:静音模式");
+                        mBottomVoice.setImageDrawable(getResources().getDrawable(R.drawable.ic_player_have_no_voice));
+                    } else if (mVlcVideoPlayerView.getMediaPlayer().getVolume() == 0) {
+                        mVlcVideoPlayerView.getMediaPlayer().setVolume(50);
+                        mBottomVoice.setImageDrawable(getResources().getDrawable(R.drawable.ic_player_have_voice));
+                        showToast("设置为:播放模式");
+                    }
+                }
                 break;
             case R.id.change_live: //清晰度
                 showToast("清晰度");
@@ -884,6 +902,17 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         LogUtils.e(TAG + "==onStop");
     }
 
+    /**
+     * 获取播放器
+     * 可以控制播放器声音
+     * mMediaPlayer.getVolume();
+     * mMediaPlayer.setVolume(100);
+     *
+     * @return
+     */
+    public MediaPlayer getMediaPlayer() {
+        return mVlcVideoPlayerView.getMediaPlayer();
+    }
 
     public void onDestroy() {
         LogUtils.e(TAG + "==onDestroy");
@@ -923,6 +952,8 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     private void startLive(String path) {
         mVlcVideoPlayerView.setPath(path);
         mVlcVideoPlayerView.startPlay();
+
+
     }
 
     /**

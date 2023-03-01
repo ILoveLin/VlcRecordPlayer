@@ -79,6 +79,16 @@
             android:textSize="@dimen/padding_20" />
 
         <ImageView
+            android:id="@+id/iv_voice_type"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingBottom="@dimen/padding_10"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/tv_bottom_time"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_player_have_voice" />
+
+        <ImageView
             android:layout_alignParentRight="true"
             android:id="@+id/iv_bottom_video_full"
             android:layout_width="wrap_content"

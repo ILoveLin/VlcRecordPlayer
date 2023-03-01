@@ -62,6 +62,7 @@ public class VlcPlayerActivity extends AppCompatActivity {
             public void run() {
                 //开始播放
                 mPlayerView.setStartLive(mPath01);
+
             }
         },500);
 
@@ -71,6 +72,8 @@ public class VlcPlayerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mPlayerView.onResume();
+
+
     }
 
     @Override
