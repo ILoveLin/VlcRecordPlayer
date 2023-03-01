@@ -578,6 +578,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
 
                 break;
             case R.id.iv_voice_type: //控制,是否静音
+                
                 if (mVlcVideoPlayerView.getMediaPlayer().isPlaying() && mVlcVideoPlayerView.getMediaPlayer() != null) {
                     //当前有声音,设置音量为0.
                     if (mVlcVideoPlayerView.getMediaPlayer().getVolume() != 0) {
