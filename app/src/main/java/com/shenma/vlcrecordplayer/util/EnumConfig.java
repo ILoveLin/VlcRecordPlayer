@@ -7,7 +7,11 @@ package com.shenma.vlcrecordplayer.util;
  * desc：
  */
 public class EnumConfig {
-
+    //播放模式
+    public class VoiceType {
+        public final static int HAVE_VOICE = 0;
+        public final static int HAVE_NO_VOICE = 1;
+    }
     //播放样式 展开、缩放
     public class PageType {
         public final static int EXPAND = 0;

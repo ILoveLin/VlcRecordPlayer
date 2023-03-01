@@ -237,6 +237,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         mRelativeAll.postDelayed(mHideControllerRunnable, CONTROLLER_HIDE_DELAY);
         //设置播放样式
         setPageType(EnumConfig.PageType.SHRINK);
+
         responseListener();
     }
 
@@ -284,21 +285,20 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                 //通过down和up来判断手势是否移动，部分机型用MotionEvent.ACTION_MOVE判断会有误
                 if (Math.abs(upX - mDownX) > 20 || Math.abs(upY - mDownY) > 20) {
                 } else {  //非手势移动，才自动显示/隐藏状态栏
-                    LogUtils.e(TAG + "onClick控制不仅是否显示？：" + mControllerShow);
-                    /**
-                     * 此处做点击 是否显示或者隐藏控制布局
-                     */
-                    // 先移除之前发送的
-                    mRelativeAll.removeCallbacks(mShowControllerRunnable);
-                    mRelativeAll.removeCallbacks(mHideControllerRunnable);
-                    if (mControllerShow) {
-                        // 隐藏控制面板
-                        mRelativeAll.post(mHideControllerRunnable);
-                    } else {
-                        // 显示控制面板
-                        mRelativeAll.post(mShowControllerRunnable);
-                        mRelativeAll.postDelayed(mHideControllerRunnable, CONTROLLER_HIDE_DELAY);
-                    }
+//                    /**
+//                     * 此处做点击 是否显示或者隐藏控制布局
+//                     */
+//                    // 先移除之前发送的
+//                    mRelativeAll.removeCallbacks(mShowControllerRunnable);
+//                    mRelativeAll.removeCallbacks(mHideControllerRunnable);
+//                    if (mControllerShow) {
+//                        // 隐藏控制面板
+//                        mRelativeAll.post(mHideControllerRunnable);
+//                    } else {
+//                        // 显示控制面板
+//                        mRelativeAll.post(mShowControllerRunnable);
+//                        mRelativeAll.postDelayed(mHideControllerRunnable, CONTROLLER_HIDE_DELAY);
+//                    }
 
                 }
                 mIsProgressChange = false;
@@ -552,6 +552,29 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
 
             }
         });
+
+        /**
+         * 点击响应触摸事件,显示/隐藏控制布局
+         */
+        getRootView().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtils.e(TAG + "onClick控制不仅是否显示？：" + mControllerShow);
+
+                // 先移除之前发送的
+                mRelativeAll.removeCallbacks(mShowControllerRunnable);
+                mRelativeAll.removeCallbacks(mHideControllerRunnable);
+                if (mControllerShow) {
+                    // 隐藏控制面板
+                    mRelativeAll.post(mHideControllerRunnable);
+                } else {
+                    // 显示控制面板
+                    mRelativeAll.post(mShowControllerRunnable);
+                    mRelativeAll.postDelayed(mHideControllerRunnable, CONTROLLER_HIDE_DELAY);
+                }
+
+            }
+        });
     }
 
     @Override
@@ -582,12 +605,21 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                     //当前有声音,设置音量为0.
                     if (mVlcVideoPlayerView.getMediaPlayer().getVolume() != 0) {
                         mVlcVideoPlayerView.getMediaPlayer().setVolume(0);
-                        showToast("设置为:静音模式");
                         mBottomVoice.setImageDrawable(getResources().getDrawable(R.drawable.ic_player_have_no_voice));
+                        //静音模式,不能响应触摸手势
+                        getRootView().setOnTouchListener(null);
+                        getRootView().setLongClickable(false);  //手势不需要需要--不能触摸
+                        showToast("设置为:静音模式");
+
                     } else if (mVlcVideoPlayerView.getMediaPlayer().getVolume() == 0) {
-                        mVlcVideoPlayerView.getMediaPlayer().setVolume(50);
+                        mVlcVideoPlayerView.getMediaPlayer().setVolume(60);
                         mBottomVoice.setImageDrawable(getResources().getDrawable(R.drawable.ic_player_have_voice));
+                        //播放模式,正常响应触摸手势
+                        getRootView().setLongClickable(true);  //手势需要--能触摸
+                        getRootView().setOnTouchListener(getOnTouchVideoListener());
+
                         showToast("设置为:播放模式");
+
                     }
                 }
                 break;
