@@ -6,6 +6,15 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_50"
+        android:gravity="center"
+        android:text="VLC播放器Demo"
+        android:background="@color/common_confirm_text_color"
+        android:textColor="@color/white"
+        android:textSize="@dimen/padding_18" />
+    <TextView
         android:layout_centerInParent="true"
         android:id="@+id/tv_to_vlc"
         android:layout_width="match_parent"
@@ -13,7 +22,7 @@
         android:layout_margin="@dimen/padding_10"
         android:background="@drawable/shape_dialog_bg_case_confirm"
         android:gravity="center"
-        android:text="跳转VLC播放界面"
+        android:text="跳转，VLC播放界面"
         android:textColor="@color/white"
         android:textSize="@dimen/padding_18" />
 
