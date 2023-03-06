@@ -7,6 +7,9 @@
 ####    如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q，3Q，3Q。
 
 
+* vlc编译,源库地址是这个博主的:https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下
+* vlc编译,源库地址是这个博主的:https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下
+
 * 基于VLC的播放器（Android 录像，截图），可做二次开发，支持在点播或者直播，播放的时候：录像，截图等等功能。支持RTSP，RTMP，HTTP，HTTPS等等。支持所有CPU架构。
 
 * 基于VLC的播放器（Android 录像，截图），可做二次开发，支持在点播或者直播，播放的时候：录像，截图等等功能。支持RTSP，RTMP，HTTP，HTTPS等等。支持所有CPU架构。
