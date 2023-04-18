@@ -21,11 +21,10 @@
         android:name=".base.App"
         android:allowBackup="true"
         android:allowNativeHeapPointerTagging="false"
-        android:icon="@mipmap/vlc_logo"
+        android:icon="@mipmap/logo_player"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
