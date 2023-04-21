@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,12 +27,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
-import com.shenma.vlcrecordplayer.MainActivity;
 import com.shenma.vlcrecordplayer.R;
 import com.shenma.vlcrecordplayer.util.CoreUtil;
 import com.shenma.vlcrecordplayer.util.EnumConfig;
@@ -47,7 +44,6 @@ import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -139,7 +135,6 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-
                 case SHOW_TIME://设置播放器时间
                     mBottomTime.setText(msg.obj + "");
                     break;
@@ -530,7 +525,9 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
             @Override
             public void eventPlay(boolean isPlaying) {
                 LogUtils.e(TAG + "mMediaListenerEvent====eventPlay方法==isPlaying:" + isPlaying);
-
+                if (isPlaying) {
+                    createPlayerTimeSub();
+                }
             }
 
             @Override
@@ -546,10 +543,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
 
             @Override
             public void eventPlayInit(boolean openClose) {//openClose 当前界面是否可见,推入后台,就是不可见=false
-                LogUtils.e(TAG + "mMediaListenerEvent====eventPlayInit方法==openClose:" + openClose);
-                if (openClose) {
-                    createPlayerTimeSub();
-                }
+
 
             }
         });
@@ -675,7 +669,8 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
      */
     private void createPlayerTimeSub() {
         //currentTime为当前时间的格式化显示,为字符串类型
-        mPlayerTimeDis = Observable
+        if (null==mPlayerTimeDis){
+                  mPlayerTimeDis = Observable
                 .interval(1, TimeUnit.SECONDS)//定时器操作符，这里1秒打印一个log,刷新一次时间
                 //取消任务时取消定时唤醒
                 .doOnDispose(() -> {
@@ -687,6 +682,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
 //                    LogUtils.e("显示定时器====count：" + count);
 
                 });
+        }
     }
 
     /**
@@ -965,7 +961,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
             mPlayerTimeDis = null;
         }
 
-        if (null!=getRootView()){
+        if (null != getRootView()) {
             getRootView().setOnTouchListener(null);
             getRootView().setLongClickable(false);  //手势不需要需要--不能触摸
         }
@@ -990,8 +986,6 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
     private void startLive(String path) {
         mVlcVideoPlayerView.setPath(path);
         mVlcVideoPlayerView.startPlay();
-
-
     }
 
     /**

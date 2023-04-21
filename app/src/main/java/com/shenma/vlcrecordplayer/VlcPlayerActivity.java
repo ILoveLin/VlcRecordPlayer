@@ -26,8 +26,8 @@ public class VlcPlayerActivity extends AppCompatActivity {
 
 //    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
     //湖南卫视直播
-    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
-//    public static String mPath01 = "http://tvmvip110.club/as.php?id=cctv1hd";
+//    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
+    public static String mPath01 = "http://tvmvip110.club/as.php?id=cctv1hd";
 //    public static String mPath01 = "https://www.cambridgeenglish.org/images/153149-movers-sample-listening-test-vol2.mp3";
 private static final String TAG = "Activity,播放器界面中:";
 

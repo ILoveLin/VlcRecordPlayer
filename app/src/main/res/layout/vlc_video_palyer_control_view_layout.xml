@@ -102,7 +102,7 @@
     </RelativeLayout>
 
     <!--锁屏(left)控制-->
-    android:background="@drawable/video_title_bg"
+<!--    android:background="@drawable/video_title_bg"-->
 
     <LinearLayout
         android:id="@+id/layout_control_left"
