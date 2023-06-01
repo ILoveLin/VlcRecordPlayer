@@ -7,8 +7,8 @@
 
 #### 如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q，3Q，3Q。
 
-* vlc编译,源库地址是这个博主的:https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下
-* ffmpeg-kit编译,源库地址是这个博主的:https://github.com/arthenica/ffmpeg-kit 可以去star支持下
+* vlc编译，源库地址是这个博主的:https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下
+* ffmpeg-kit编译，源库地址是这个博主的:https://github.com/arthenica/ffmpeg-kit 可以去star支持下
 
 * 基于VLC的播放器（Android
   录像，截图），可做二次开发，支持在点播或者直播，播放的时候：录像，截图等等功能。支持RTSP，RTMP，HTTP，HLS，HTTPS等等。支持所有CPU架构。
@@ -52,7 +52,7 @@
       //录像命令
       // private String CMD = "-i http://220.161.87.62:8800/hls/0/index.m3u8 -c copy ";
             //获取uri地址
-            Uri uri = FileUtils.createVideoPathUri(MainActivity.this);
+            Uri uri = FileUtil.createVideoPathUri(MainActivity.this);
             //获取存储mp4文件地址
             String outputVideoPath = FFmpegKitConfig.getSafParameter(MainActivity.this, uri, "rw");
               FFmpegKit.executeAsync(CMD + outputVideoPath, new FFmpegSessionCompleteCallback() {
@@ -61,8 +61,8 @@
                 public void apply(FFmpegSession session) {
                     SessionState state = session.getState();
                     ReturnCode returnCode = session.getReturnCode();
-                    LogUtils.e("权限申请" + "apply====state=" + state);            
-                    LogUtils.e("权限申请" + "apply====returnCode=" + returnCode);  
+                    LogUtils.e("FFmpegKit" + "apply====state=" + state);            
+                    LogUtils.e("FFmpegKit" + "apply====returnCode=" + returnCode);  
              
   
                 }
@@ -95,7 +95,7 @@
          //截图命令
           private String CMD2 = "-i http://220.161.87.62:8800/hls/0/index.m3u8 -y -t 0.001 -ss 1 -f image2 -r 1 ";
          //获取uri地址
-         Uri uri = FileUtils.createVideoPathUri(MainActivity.this);
+         Uri uri = FileUtil.createVideoPathUri(MainActivity.this);
          //获取存储mp4文件地址
          String outputVideoPath = FFmpegKitConfig.getSafParameter(MainActivity.this, uri, "rw");
          FFmpegKit.executeAsync(CMD2 + outputVideoPath, new FFmpegSessionCompleteCallback() {
@@ -104,8 +104,8 @@
                        public void apply(FFmpegSession session) {
                            SessionState state = session.getState();
                            ReturnCode returnCode = session.getReturnCode();
-                           LogUtils.e("权限申请" + "apply====state=" + state);            
-                           LogUtils.e("权限申请" + "apply====returnCode=" + returnCode);  
+                           LogUtils.e("FFmpegKit" + "apply====state=" + state);            
+                           LogUtils.e("FFmpegKit" + "apply====returnCode=" + returnCode);  
                     
        
                        }
