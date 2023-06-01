@@ -7,12 +7,19 @@ import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.format.Formatter;
+import android.util.Log;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class FileUtil {
 
@@ -180,7 +187,7 @@ public class FileUtil {
             public void onMediaScannerConnected() {
                 if (mMediaScanner.isConnected()) {
                     LogUtils.e("相册更新问题:连接成功 ");
-                    LogUtils.e("相册更新问题:连接成功 isVideo:"+isVideo);
+                    LogUtils.e("相册更新问题:连接成功 isVideo:" + isVideo);
 
                     if (isVideo) {
                         mMediaScanner.scanFile(fileAbsolutePath, "video/mp4");
@@ -390,4 +397,205 @@ public class FileUtil {
         }
         return 0;
     }
+
+    /**
+     *******************************************已下是ffmpegactivity界面用到的方法******************************************
+     */
+
+    /**
+     * 制作图片的路径地址
+     *
+     * @param context
+     * @return
+     */
+    public static String createPath(Context context) {
+        String path = null;
+        File file = null;
+        long tag = System.currentTimeMillis();
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {//SDCard是否可用
+            //最好把images替换成你的项目名称，避免有重复文件夹
+            path = Environment.getExternalStorageDirectory() + File.separator + "images/";
+            file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            path = Environment.getExternalStorageDirectory() + File.separator + "images/" + tag + ".png";
+        } else {
+            path = context.getFilesDir() + File.separator + "images/";
+            file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+
+            path = context.getFilesDir() + File.separator + "images/" + tag + ".png";
+        }
+        return path;
+    }
+
+
+    /**
+     * 方式一:获取uri 图片路径
+     * <p>
+     * 创建一条图片地址uri,用于保存拍照后的照片
+     *
+     * @param context
+     * @return 图片的uri
+     */
+    public static Uri createImagePathUri(Context context) {
+        Uri imageFilePath = null;
+        String status = Environment.getExternalStorageState();
+        SimpleDateFormat timeFormatter = new SimpleDateFormat(
+                "yyyyMMdd_HHmmss", Locale.CHINA);
+        long time = System.currentTimeMillis();
+        String imageName = timeFormatter.format(new Date(time));
+        // ContentValues是我们希望这条记录被创建时包含的数据信息
+        ContentValues values = new ContentValues(3);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, imageName);
+        values.put(MediaStore.Images.Media.DATE_TAKEN, time);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        if (status.equals(Environment.MEDIA_MOUNTED)) {// 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
+            imageFilePath = context.getContentResolver().insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        } else {
+            imageFilePath = context.getContentResolver().insert(
+                    MediaStore.Images.Media.INTERNAL_CONTENT_URI, values);
+        }
+        Log.i("", "生成的照片输出路径：" + imageFilePath.toString());
+        return imageFilePath;
+    }
+
+    /**
+     * 方式一:获取视频uri路径
+     *
+     * @param context
+     * @return @return 视频uri路径
+     */
+    public static Uri createVideoPathUri(Context context) {
+        Uri imageFilePath = null;
+        String status = Environment.getExternalStorageState();
+        SimpleDateFormat timeFormatter = new SimpleDateFormat(
+                "yyyyMMdd_HHmmss", Locale.CHINA);
+        long time = System.currentTimeMillis();
+        String imageName = timeFormatter.format(new Date(time));
+        // ContentValues是我们希望这条记录被创建时包含的数据信息
+        ContentValues values = new ContentValues(3);
+        values.put(MediaStore.Video.Media.DISPLAY_NAME, imageName);
+        values.put(MediaStore.Video.Media.DATE_TAKEN, time);
+        values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+        if (status.equals(Environment.MEDIA_MOUNTED)) {// 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
+            imageFilePath = context.getContentResolver().insert(
+                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+        } else {
+            imageFilePath = context.getContentResolver().insert(
+                    MediaStore.Video.Media.INTERNAL_CONTENT_URI, values);
+        }
+        Log.i("", "生成的照片输出路径：" + imageFilePath.toString());
+        return imageFilePath;
+    }
+
+    /**
+     * 方式二:获取uri路径
+     *
+     * @param context
+     * @param fileName 文件名字
+     * @param dir      文件夹名字
+     * @param isVideo  是否是视频格式  true=是
+     * @return isVideo=true 返回视频uri路径,isVideo=false 返回图片uri路径
+     */
+    public static Uri publicDirURI(Context context, String fileName, String dir, boolean isVideo) {
+        ContentValues valuesVideos;
+        valuesVideos = new ContentValues();
+        valuesVideos.put(MediaStore.Video.Media.RELATIVE_PATH, dir);
+        valuesVideos.put(MediaStore.Video.Media.TITLE, fileName);
+        valuesVideos.put(MediaStore.Video.Media.DISPLAY_NAME, fileName);
+        if (isVideo) {
+            valuesVideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+        } else {
+            valuesVideos.put(MediaStore.Images.Media.MIME_TYPE, "image/png");//331.6kb     生成png质量各大
+//            valuesVideos.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");//21.86kb  生成png质量各大
+        }
+        valuesVideos.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
+        valuesVideos.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis());
+        valuesVideos.put(MediaStore.Video.Media.IS_PENDING, 1);//设置独占使用
+        // 如要要对ContentProvider中的数据进行操作，可以通过ContentResolver(数据调用者) 对象然后结合Uri进行调用 来实现
+        //https://blog.csdn.net/mr_lee1314/article/details/127918121  使用方法
+        ContentResolver resolver = context.getContentResolver();
+        Uri collection = null;
+        if (isVideo) {
+            collection = MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+        } else {
+            collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+
+        }
+
+        Uri uriSavedVideo = resolver.insert(collection, valuesVideos);
+        return saveFileToPublicMovies(context, valuesVideos, uriSavedVideo, fileName);
+    }
+
+
+    private static Uri saveFileToPublicMovies(Context context, ContentValues contentValues, Uri uriSavedVideo, String fileName) {
+        ParcelFileDescriptor pfd;
+        try {
+            //加载媒体文件使用 openFileDescriptor
+            pfd = context.getContentResolver().openFileDescriptor(uriSavedVideo, "rw");
+            FileOutputStream out = null;
+            if (pfd != null) {
+                out = new FileOutputStream(pfd.getFileDescriptor());
+                File videoFile = new File(context.getExternalFilesDir("AppName"), fileName);
+                FileInputStream in = new FileInputStream(videoFile);
+                byte[] buf = new byte[8192];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.flush();
+                out.getFD().sync();
+                out.close();
+                in.close();
+                pfd.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        contentValues.clear();
+        //如果您的应用程序执行一些可能非常耗时的操作，比如写入媒体文件，那么在文件被处理时对其进行独占访问是非常有用的。
+        //在运行Android 10或更高版本的设备上，您的应用程序可以通过将IS_PENDING标志的值设置为1来获得这种独占访问。
+        // 只有您的应用程序可以查看该文件，直到您的应用程序将IS_PENDING的值更改回0
+        contentValues.put(MediaStore.Video.Media.IS_PENDING, 0);   //回复 默认状态
+        context.getContentResolver().update(uriSavedVideo, contentValues, null, null);
+        return uriSavedVideo;
+    }
+//
+//    private static Uri saveFileToPublicMovies(Context context, ContentValues contentValues, Uri uriSavedVideo, String fileName) {
+//        ParcelFileDescriptor pfd;
+//        try {
+//            pfd = context.getContentResolver().openFileDescriptor(uriSavedVideo, "w");
+//            FileOutputStream out = null;
+//            if (pfd != null) {
+//                out = new FileOutputStream(pfd.getFileDescriptor());
+//                File videoFile = new File(context.getExternalFilesDir("FOLDER"), fileName);
+//                FileInputStream in = new FileInputStream(videoFile);
+//                byte[] buf = new byte[8192];
+//                int len;
+//                while ((len = in.read(buf)) > 0) {
+//                    out.write(buf, 0, len);
+//                }
+//                out.close();
+//                in.close();
+//                pfd.close();
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        contentValues.clear();
+//        contentValues.put(MediaStore.Video.Media.IS_PENDING, 0);
+//        context.getContentResolver().update(uriSavedVideo, contentValues, null, null);
+//        return uriSavedVideo;
+//    }
+
+    /**
+     *******************************************ffmpegactivity界面用到的方法**到处结束****************************************
+     */
 }
