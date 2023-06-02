@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -169,15 +168,22 @@
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
-            <ImageView
-                android:id="@+id/tv_bg_shop"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginLeft="10dp"
-                android:paddingTop="@dimen/padding_5"
-                android:paddingBottom="@dimen/padding_5"
-                android:scaleType="centerInside"
-                android:src="@drawable/aaaa" />
+                android:layout_height="match_parent">
+
+                <com.github.chrisbanes.photoview.PhotoView
+                    android:id="@+id/tv_bg_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:paddingTop="@dimen/padding_5"
+                    android:paddingBottom="@dimen/padding_5"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/aaaa" />
+
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"

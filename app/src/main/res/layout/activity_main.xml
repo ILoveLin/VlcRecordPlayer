@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/padding_50"
         android:gravity="center"
-        android:text="VLC播放器Demo"
+        android:text="音视频演示Demo"
         android:background="@color/common_confirm_text_color"
         android:textColor="@color/white"
         android:textSize="@dimen/padding_18" />

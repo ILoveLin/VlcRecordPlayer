@@ -7,7 +7,7 @@ buildscript {
         // 阿里云云效仓库（Gradle 插件）：https://maven.aliyun.com/mvn/guide
         maven {url 'https://maven.aliyun.com/repository/gradle-plugin/'}
         maven { url 'https://jitpack.io' }
-
+        maven { url "https://www.jitpack.io" }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
@@ -25,6 +25,7 @@ allprojects {
         // 阿里云云效仓库（Gradle 插件）：https://maven.aliyun.com/mvn/guide
         maven {url 'https://maven.aliyun.com/repository/gradle-plugin/'}
         maven { url 'https://jitpack.io' }
+        maven { url "https://www.jitpack.io" }
 
     }
 }

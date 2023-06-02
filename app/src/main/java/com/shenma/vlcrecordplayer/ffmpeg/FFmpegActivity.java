@@ -22,6 +22,7 @@ import com.arthenica.ffmpegkit.ReturnCode;
 import com.arthenica.ffmpegkit.SessionState;
 import com.arthenica.ffmpegkit.Statistics;
 import com.arthenica.ffmpegkit.StatisticsCallback;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
@@ -53,7 +54,7 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
     private Button tv_shot;
     private Button tv_16_9;
     private Button tv_no_voice;
-    private ImageView imageView;
+    private PhotoView imageView;
     private Button tv_open_voice;
     private Button scale_default;
     private Button scale_original;

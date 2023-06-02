@@ -22,15 +22,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
     packagingOptions {
         pickFirst 'lib/x86/libc++_shared.so'
         pickFirst 'lib/x86_64/libc++_shared.so'
         pickFirst 'lib/armeabi-v7a/libc++_shared.so'
         pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
@@ -52,6 +56,7 @@ dependencies {
     releaseImplementation 'io.github.didi.dokit:dokitx-no-op:3.5.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.6'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.github.Baseflow:PhotoView:2.3.0'
     //工具类
     implementation 'com.blankj:utilcode:1.30.7'
     implementation 'com.arthenica:ffmpeg-kit-full:5.1'
@@ -59,5 +64,6 @@ dependencies {
     implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.7'
     // 可选，使用ijkplayer进行解码
     implementation 'xyz.doikki.android.dkplayer:player-ijk:3.3.7'
+
 
 }
