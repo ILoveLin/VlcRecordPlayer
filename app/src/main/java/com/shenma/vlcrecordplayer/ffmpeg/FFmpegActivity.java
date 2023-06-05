@@ -23,13 +23,13 @@ import com.arthenica.ffmpegkit.ReturnCode;
 import com.arthenica.ffmpegkit.SessionState;
 import com.arthenica.ffmpegkit.Statistics;
 import com.arthenica.ffmpegkit.StatisticsCallback;
+import com.company.shenzhou.R;
+import com.company.shenzhou.util.FileUtil;
+import com.company.shenzhou.util.LogUtils;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
-import com.shenma.vlcrecordplayer.R;
-import com.shenma.vlcrecordplayer.util.FileUtil;
-import com.shenma.vlcrecordplayer.util.LogUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

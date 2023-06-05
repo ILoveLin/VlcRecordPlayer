@@ -8,8 +8,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.company.shenzhou.R;
+import com.company.shenzhou.vlc.VlcPlayerActivity;
 import com.shenma.vlcrecordplayer.ffmpeg.FFmpegActivity;
-import com.shenma.vlcrecordplayer.vlc.VlcPlayerActivity;
 
 /**
  * author : LoveLin
