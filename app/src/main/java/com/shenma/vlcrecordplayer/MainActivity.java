@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         this.mContext = MainActivity.this;
         initView();
         responseListener();
+        
     }
 
     private void initView() {
