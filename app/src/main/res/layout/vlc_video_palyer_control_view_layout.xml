@@ -221,7 +221,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/padding_160">
             <!--加载view-->
-            <com.shenma.vlcrecordplayer.vlc.ENDownloadView
+            <com.company.shenzhou.vlc.ENDownloadView
                 android:id="@+id/vlc_loading"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
@@ -229,7 +229,7 @@
                 android:layout_centerVertical="true"
                 android:visibility="invisible" />
             <!--播放view-->
-            <com.shenma.vlcrecordplayer.vlc.ENPlayView
+            <com.company.shenzhou.vlc.ENPlayView
                 android:id="@+id/vlc_play"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

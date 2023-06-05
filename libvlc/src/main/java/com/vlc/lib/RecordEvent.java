@@ -47,7 +47,7 @@ public class RecordEvent {
 
     /**
      * @param mediaPlayer
-     * @param fileDirectory 录像目录   这是文件夹 不是文件   /storage/emulated/0/CME
+     * @param fileDirectory 录像目录   这是文件夹 不是文件
      * @return 是否录制成功
      */
     @Deprecated//这是临时的方法 文件名是宏定义的 还没有改文件名的方法  后期必改
@@ -55,16 +55,15 @@ public class RecordEvent {
         if (mediaPlayer != null) {
             new File(fileDirectory).mkdirs();
 
-            Calendar now = Calendar.getInstance();
-            int year = now.get(Calendar.YEAR);
-            String mouth = (now.get(Calendar.MONTH) + 1) + "";
-            int day = now.get(Calendar.DAY_OF_MONTH);
-            int hour = now.get(Calendar.HOUR_OF_DAY);
-            int min = now.get(Calendar.MINUTE);
-            int second = now.get(Calendar.SECOND);
+//            Calendar now = Calendar.getInstance();
+//            int year = now.get(Calendar.YEAR);
+//            String mouth = (now.get(Calendar.MONTH) + 1) + "";
+//            int day = now.get(Calendar.DAY_OF_MONTH);
+//            int hour = now.get(Calendar.HOUR_OF_DAY);
+//            int min = now.get(Calendar.MINUTE);
+//            int second = now.get(Calendar.SECOND);
 //
-            Log.e("录制:文件名(01)","vlc-record-"+year+"-"+mouth+"-"+day+"-"+hour+"h"+min+"m"+second+"s"+"rtsp___"+"ip_port_seccion0.mpg-");
-            Log.e("录制:文件名(02)","fileDirectory:"+fileDirectory);
+//            Log.i("文件名","vlc-record-"+year+"-"+mouth+"-"+day+"-"+hour+"h"+min+"m"+second+"s"+"rtsp___"+"ip_port_seccion0.mpg-");
             return startRecord(mediaPlayer, fileDirectory, "cme");
         }
         return false;

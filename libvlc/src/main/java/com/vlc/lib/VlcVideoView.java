@@ -27,6 +27,8 @@ import java.util.ArrayList;
  * 只是提供参考的实例代码
  * <p>
  * 如果有bug请在github留言
+ *
+ * @author https://github.com/mengzhidaren
  */
 public class VlcVideoView extends TextureView implements MediaPlayerControl, VideoSizeChange {
     private VlcPlayer videoMediaLogic;
@@ -63,27 +65,26 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
         ArrayList<String> options = new ArrayList<String>();
         //正式参数配置
         //值越大，缓存越大，延迟越大。这三项是延迟设置
-        options.add("--network-caching=300");//网络缓存
         options.add(":clock-jitter=0");
         options.add(":clock-synchro=0");
-
-        options.add("--rtsp-caching=300");//
-        options.add("--tcp-caching=300");//TCP输入缓存值 (毫秒)
-        options.add("--realrtsp-caching=300");//RTSP缓存值 (毫秒)
-        options.add(":file-caching=300");//文件缓存
-        options.add(":live-cacheing=300");//直播缓存
+//        涉及延迟的参数有：network-caching（网络缓存）、live-caching（直播缓存）、file-caching（文件缓存）、sout-mux-caching（输出缓存）。
+        options.add("--rtsp-caching=500");//
+        options.add("--tcp-caching=500");//TCP输入缓存值 (毫秒)
+        options.add("--realrtsp-caching=500");//RTSP缓存值 (毫秒)
+        options.add("--network-caching=500");//网络缓存
+        options.add(":live-caching=500");//直播缓存
+        options.add(":file-caching=500");//文件缓存
         options.add("--file-caching");//文件缓存
-        options.add("--sout-mux-caching=300");//输出缓存
+        options.add("--sout-mux-caching=500");//输出缓存
         options.add("--no-drop-late-frames");//关闭丢弃晚的帧 (默认打开)
         options.add("--no-skip-frames");//关闭跳过帧 (默认打开)
-        options.add(":rtsp-frame-buffer-size=1000"); //RTSP帧缓冲大小，默认大小为100000
+        options.add(":rtsp-frame-buffer-size=500"); //RTSP帧缓冲大小，默认大小为100000
         options.add("--rtsp-tcp");
         options.add("--http-reconnect");    //: 重连
         options.add("--deinterlace");    //: 交错
         options.add("" + getDeblocking(-1));//这里太大了消耗性能   太小了会花屏
         options.add("--deinterlace-mode={discard,blend,mean,bob,linear,x}");// 视频译码器 解除交错模式
         options.add("--network-synchronisation");// 网络同步化 (默认关闭)
-
 
 //        options.add(":sout-record-dst-prefix=yylpre.mp4");
 
@@ -120,7 +121,6 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
 //        options.add(":fullscreen");
 
         LibVLC libVLC = new LibVLC(context, options);
-
         videoMediaLogic = new VlcPlayer(libVLC);
         videoMediaLogic.setVideoSizeChange(this);
 //        ===================================================
@@ -240,11 +240,24 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
     public void onStop() {
         videoMediaLogic.onStop();
     }
+
     /**
      * 暂停播放器时用
      */
     public void onPause() {
         videoMediaLogic.onPause();
+    }
+
+    /**
+     * 获取播放器
+     * 可以控制播放器声音
+     * mMediaPlayer.getVolume();
+     * mMediaPlayer.setVolume(100);
+     *
+     * @return
+     */
+    public MediaPlayer getMediaPlayer() {
+        return videoMediaLogic.getMediaPlayer();
     }
 
     /**
@@ -484,9 +497,6 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
         videoMediaLogic.setMedia(iMedia);
     }
 
-    public MediaPlayer getMediaPlayer() {
-        return videoMediaLogic.getMediaPlayer();
-    }
 
     public VlcPlayer getVlcPlayer() {
         return videoMediaLogic;

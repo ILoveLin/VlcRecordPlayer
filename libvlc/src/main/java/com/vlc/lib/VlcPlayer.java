@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Surface;
 
 import org.videolan.libvlc.LibVLC;
@@ -149,14 +148,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
     }
 
     private void attachSurface() {
-        if (mMediaPlayer == null) {
-            Log.e("VlcPlayer界面", "attachSurface方法(153行),MediaPlayer==null,直接return");
-            return;
-        }
-        if (null == mMediaPlayer.getVLCVout()) {
-            Log.e("VlcPlayer界面", "attachSurface方法(155行),libvlc.MediaPlayer.getVLCVout()==null,直接return");
-            return;
-        }
         if (!mMediaPlayer.getVLCVout().areViewsAttached() && isSurfaceAvailable && !isAttachedSurface) {
             LogUtils.i(tag, "attachSurface");
 
@@ -404,7 +395,7 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
             media = new Media(libVLC, path);
         }
         /**
-         * 添加或删除hw加速媒体选项  硬解码会出问题
+         * 添加或删除hw加速媒体选项
          *@param1 如果为真，将使用hw解码器
          *@param2 强制hw加速，即使未知设备
          */
@@ -461,7 +452,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
                 break;
             case MediaPlayer.Event.EndReached:   //断开链接
                 LogUtils.i(tag + "event=======", "EndReached---断开链接");
-
                 mediaListenerEvent.eventSystemEnd("EndReached");
                 break;
             case MediaPlayer.Event.EncounteredError:
@@ -773,6 +763,7 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
     }
 
     public MediaPlayer getMediaPlayer() {
+
         return mMediaPlayer;
     }
 
