@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# 该项目是基于VLC实现的一个有直播，录像，截图，连麦，切换清晰度，跳转相册，等等功能的一个App
-=======
 # VLC播放器Demo（录像，截图等功能），可二次开发。
 # ffmpeg-Kit （录像，截图,合流播放,合流推送,等一些列视频操作功能），可二次开发。
 
@@ -9,46 +6,19 @@
 #### 如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q，3Q。
 
 #### 如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q，3Q，3Q。
->>>>>>> 6d03b15f78d60f214d88baa4fae38b3ed600d0dc
 
 * vlc编译，源库地址是这个博主的:https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下
 * ffmpeg-kit编译，源库地址是这个博主的:https://github.com/arthenica/ffmpeg-kit 可以去star支持下
 
-<<<<<<< HEAD
-*
-*
-*
-#### 简单说明  CME Player(GodPlayer)    原来版本是莱夫凯尔版本，现在是神州版本
-正式版本2021.03.08.V1.0.3
-=======
 * 基于VLC的播放器（Android
   录像，截图），可做二次开发，支持在点播或者直播，播放的时候：录像，截图等等功能。支持RTSP，RTMP，HTTP，HLS，HTTPS等等。支持所有CPU架构。
 
 * 使用VLC，作为播放器：实现，录像，截图功能（点播,直播都支持!） 特意花时间写了个Demo开源出来，希望能帮助到需要的人！
 * 使用VLC，作为播放器：实现，录像，截图功能（点播,直播都支持!） 特意花时间写了个Demo开源出来，希望能帮助到需要的人！！
->>>>>>> 6d03b15f78d60f214d88baa4fae38b3ed600d0dc
 
 
 * ffmpeg-Kit 可以执行任何ffmpeg命令行操作,Demo中对直播流(也可以本地文件)进行了：录像，截图等等功能，也可以做任何你想要的操作，比如将直播音频流和视频流合流播放，合流推流等等操作。
 
-<<<<<<< HEAD
-
-#### 神州医疗Socket通讯端口配置信息
-#### CMEPlayer项目
-#### 广播服务端口7006
-#### 本地监听端口8005
-#### Socket通讯服务器端口授权设备返回的socket端口值-->Stp:socke udp接收端口;
-#### 不管是广播还是socket通讯,本地都是监听默认值端口
-#### 
-#### 
-#### iEndo项目
-#### 广播服务端口7006
-#### 本地监听端口7005
-#### Socket通讯服务器端口授权设备返回的socket端口值-->Stp:socke udp接收端口;
-#### 不管是广播还是socket通讯,本地都是监听默认值端口
-
-
-=======
 * ffmpeg-Kit，可以实现任何ffmpeg命令行操作, 特意花时间写了个Demo开源出来，希望能帮助到需要的人！
 * ffmpeg-Kit，可以实现任何ffmpeg命令行操作, 特意花时间写了个Demo开源出来，希望能帮助到需要的人！！
 
@@ -186,4 +156,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
->>>>>>> 6d03b15f78d60f214d88baa4fae38b3ed600d0dc
