@@ -1,13 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
+        mavenCentral()
         maven {url 'https://maven.aliyun.com/repository/google/'}
         maven {url 'https://maven.aliyun.com/repository/public/'}
         // 阿里云云效仓库（Gradle 插件）：https://maven.aliyun.com/mvn/guide
         maven {url 'https://maven.aliyun.com/repository/gradle-plugin/'}
         maven { url 'https://jitpack.io' }
-        mavenCentral()
-
+        maven { url "https://www.jitpack.io" }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
@@ -19,12 +19,13 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         maven {url 'https://maven.aliyun.com/repository/google/'}
         maven {url 'https://maven.aliyun.com/repository/public/'}
         // 阿里云云效仓库（Gradle 插件）：https://maven.aliyun.com/mvn/guide
         maven {url 'https://maven.aliyun.com/repository/gradle-plugin/'}
         maven { url 'https://jitpack.io' }
-        mavenCentral()
+        maven { url "https://www.jitpack.io" }
 
     }
 }

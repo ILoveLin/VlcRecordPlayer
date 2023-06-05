@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/tv_click"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="开始录像"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/tv_shot"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+
+                    android:gravity="center"
+                    android:text="截图"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/tv_shot_ffmpeg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="ffmpeg截图"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/tv_cancle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="取消录像"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <Button
+                    android:id="@+id/tv_16_9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="16:9"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/scale_default"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="默认"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/scale_original"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+
+                    android:text="原始"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/tv_mute"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="静音"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/tt_live"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="请输入直播地址"
+                    android:text="http://220.161.87.62:8800/hls/0/index.m3u8" />
+
+                <Button
+                    android:id="@+id/tv_save_live"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="确认"
+
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/common_confirm_text_color"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_5"
+                android:paddingBottom="@dimen/padding_5"
+                android:text="↓↓↓↓↓↓↓↓↓↓截图↓↓↓↓↓↓↓↓↓↓"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.github.chrisbanes.photoview.PhotoView
+                    android:id="@+id/tv_bg_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:paddingTop="@dimen/padding_5"
+                    android:paddingBottom="@dimen/padding_5"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/aaaa" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/common_confirm_text_color"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_5"
+                android:paddingBottom="@dimen/padding_5"
+                android:text="↓↓播放,纯视频流(或者音视频)的播放器↓↓"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <xyz.doikki.videoplayer.player.VideoView
+                android:id="@+id/player_video"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/common_confirm_text_color"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_5"
+                android:paddingBottom="@dimen/padding_5"
+                android:text="↓↓播放,纯音频的播放器↓↓"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <xyz.doikki.videoplayer.player.VideoView
+                android:id="@+id/player_audio"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_5"
+                android:paddingBottom="@dimen/padding_5"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

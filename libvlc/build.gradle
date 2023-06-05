@@ -4,7 +4,7 @@ android {
 //    compileSdkVersion Integer.valueOf(project.properties.get("compileSdkVersion"))
 //    buildToolsVersion project.properties.get("buildToolsVersion")
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -54,12 +54,16 @@ android {
 //        pickFirst '**/libvlcjni.so'
         exclude '**/libvlc.so'
         exclude '**/libvlcjni.so'
+
+        pickFirst '**/c++_shared.so'
     }
 
 }
 
 dependencies {
+//    api 'org.videolan.android:libvlc-all:3.2.6'
     api 'org.videolan.android:libvlc-all:3.3.1'
+
 
 }
 

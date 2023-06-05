@@ -10,19 +10,38 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/padding_50"
         android:gravity="center"
-        android:text="VLC播放器Demo"
+        android:text="音视频演示Demo"
         android:background="@color/common_confirm_text_color"
         android:textColor="@color/white"
         android:textSize="@dimen/padding_18" />
+
     <TextView
-        android:layout_centerInParent="true"
         android:id="@+id/tv_to_vlc"
         android:layout_width="match_parent"
         android:layout_height="@dimen/padding_50"
-        android:layout_margin="@dimen/padding_10"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/padding_10"
+        android:layout_marginTop="@dimen/padding_10"
+        android:layout_marginEnd="@dimen/padding_10"
+        android:layout_marginBottom="@dimen/padding_10"
         android:background="@drawable/shape_dialog_bg_case_confirm"
         android:gravity="center"
         android:text="跳转，VLC播放界面"
+        android:textColor="@color/white"
+        android:textSize="@dimen/padding_18" />
+    <TextView
+        android:layout_below="@+id/tv_to_vlc"
+        android:id="@+id/tv_to_ffmpeg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_50"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/padding_10"
+        android:layout_marginTop="@dimen/padding_10"
+        android:layout_marginEnd="@dimen/padding_10"
+        android:layout_marginBottom="@dimen/padding_10"
+        android:background="@drawable/shape_dialog_bg_case_confirm"
+        android:gravity="center"
+        android:text="跳转，ffmpeg播放界面"
         android:textColor="@color/white"
         android:textSize="@dimen/padding_18" />
 
