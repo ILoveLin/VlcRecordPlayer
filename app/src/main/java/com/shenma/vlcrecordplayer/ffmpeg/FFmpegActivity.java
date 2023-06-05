@@ -209,12 +209,12 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
                 ReturnCode returnCode = session.getReturnCode();
                 /**
                  * 录像
-                 * returnCode=1         说明:失败
-                 * returnCode=255       说明:成
-                 * returnCode=0         说明:截图成功
+                 * returnCode=1         说明:录像,失败
+                 * returnCode=255       说明:录像,成功
+                 * returnCode=0         说明:截图,成功
                  */
-                LogUtils.e("FFmpegActivity--截图" + "apply====state=" + state);            //COMPLETED  完成 并且255=成功
-                LogUtils.e("FFmpegActivity--截图" + "apply====returnCode=" + returnCode);  //COMPLETED  完成 并且1=失败
+                LogUtils.e("FFmpegActivity--截图" + "apply====state=" + state);
+                LogUtils.e("FFmpegActivity--截图" + "apply====returnCode=" + returnCode);
                 if ("1".equals(returnCode + "")) {
                     runOnUiThread(new Runnable() {
                         @Override
