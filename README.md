@@ -59,9 +59,15 @@
   
                 @Override
                 public void apply(FFmpegSession session) {
+                    /**
+                     * returnCode
+                     * returnCode=1         说明:录像,失败
+                     * returnCode=255       说明:录像,成功
+                     * returnCode=0         说明:截图成功
+                     */
                     SessionState state = session.getState();
-                    ReturnCode returnCode = session.getReturnCode();
-                    LogUtils.e("FFmpegKit" + "apply====state=" + state);            
+                    ReturnCode returnCode = session.getReturnCode();        
+                    LogUtils.e("FFmpegKit" + "apply====state=" + state);         
                     LogUtils.e("FFmpegKit" + "apply====returnCode=" + returnCode);  
              
   
