@@ -24,9 +24,15 @@
 
 ## 动图欣赏
 
-* 如果看不到gif动图，请科学上网查看gif效果图，或者下载项目之后本地打开。在picture文件夹/gif文件夹/1.gif
+* 如果看不到gif动图，请科学上网查看gif效果图，或者下载项目之后本地打开。在picture文件夹/gif文件夹/vlc.gif和ffmpeg.gif
 
-![](picture/gif/1.gif)
+* VLCDemo测试动图欣赏vlc.gif
+![](picture/gif/vlc.gif)
+
+
+* FfmpegDemo测试动图欣赏ffmpeg.gif
+![](picture/gif/ffmpeg.gif)
+
 
 #### VLC播放器，使用指南
 
