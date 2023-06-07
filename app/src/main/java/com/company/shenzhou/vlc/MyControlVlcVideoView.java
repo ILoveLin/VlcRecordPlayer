@@ -629,7 +629,6 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                 break;
             case R.id.recordStart:  //录像
                 getStoragePermission("record");
-
                 break;
             case R.id.snapShot:     //截图
                 getStoragePermission("shot");
