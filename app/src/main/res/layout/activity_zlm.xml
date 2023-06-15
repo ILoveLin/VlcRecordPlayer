@@ -134,7 +134,17 @@
                 android:orientation="horizontal"
                 android:weightSum="4">
 
-
+                <Button
+                    android:id="@+id/tv_start_server"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="开启手机服务器"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
                 <Button
                     android:id="@+id/tv_start_push"
                     android:layout_width="0dp"
@@ -196,6 +206,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/padding_50"
                     android:paddingTop="@dimen/padding_10"
+                    android:hint="手机服务器流地址"
                     android:paddingBottom="@dimen/padding_10"
                     android:text="" />
 

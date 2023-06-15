@@ -36,7 +36,7 @@
 ![](picture/gif/ffmpeg.gif)
 
 
-* ZLMediaKit测试，动图欣赏zmlkit.gif
+* ZLMediaKitDemo测试，动图欣赏zmlkit.gif
 ![](picture/gifzmlkit.gif)
 
 #### VLC播放器，使用指南
@@ -151,9 +151,12 @@
 
 #### ZLMediaKit，作为手机端本地服务器的使用指南
 
-* 两种方式：1：直接依赖libs的so(太大了 我直接打包放在这里要使用请下载后自己解压把so放入libs)。
-*          2：使用lib是里面的aar(分debug版本和release版本按需索取)，然后在app.gradle中引用此aar即可。
+* 两种引用方式：1：直接依赖libs的so(太大了 我直接打包放在这里要使用请下载后自己解压把so放入libs)。
+*             2：使用lib是里面的aar(分debug版本和release版本按需索取)，然后在app.gradle中引用此aar即可。
 
+* Demo演示说明：进入ZlmMediaKitTestActivity界面，替换mVideoPath直播源地址,然后运行项目。
+*              点击：开启手机服务器会提示是否开启成功；然后点击：推流到手机服务器，如果成功手机服务器流地址的EditText，会显示直播流地址，
+*              复制之后，替换直播源地址 点击确定即可播放手机服务器的流
 * 1，开启服务器：
     ```java
           //使用之前请自己申请读写权限 谢谢(PackageManager.PERMISSION_GRANTED)

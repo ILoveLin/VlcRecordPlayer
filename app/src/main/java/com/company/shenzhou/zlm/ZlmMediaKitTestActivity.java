@@ -32,11 +32,8 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.zlmediakit.jni.ZLMediaKit;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import xyz.doikki.videoplayer.ijk.IjkPlayerFactory;
 import xyz.doikki.videoplayer.player.BaseVideoView;
@@ -82,6 +79,7 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
     private TextView mCurrentUrl;
     private Button tv_start_push;
     private EditText et_current_server_url;
+    private TextView tv_start_server;
 
 
     @Override
@@ -105,6 +103,7 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
         tv_save_live.setOnClickListener(this);
         tv_shot_ffmpeg.setOnClickListener(this);
         tv_start_push.setOnClickListener(this);
+        tv_start_server.setOnClickListener(this);
 
         mVideoPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,10 +176,6 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
 //        videoView.setVideoController(controller); //设置控制器
         mAudioPlayer.start(); //开始播放，不调用则不自动播放
 
-        /**
-         * 开启ZmlMediaKit服务器
-         */
-        openPhoneZlmServer();
 
     }
 
@@ -201,6 +196,7 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
         tt_live = findViewById(R.id.tt_live);
         tv_shot_ffmpeg = findViewById(R.id.tv_shot_ffmpeg);
         tv_start_push = findViewById(R.id.tv_start_push);
+        tv_start_server = findViewById(R.id.tv_start_server);
         et_current_server_url = findViewById(R.id.et_current_server_url);
 
 
@@ -429,17 +425,6 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
         }
     }
 
-    public static String getVideoNameByTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String newDate = sdf.format(new Date());
-        String result = "";
-        Random random = new Random();
-        for (int i = 0; i < 5; i++) {
-            result += random.nextInt(10);
-        }
-        return newDate + result;
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -457,6 +442,9 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
                 Bitmap bitmap = mVideoPlayer.doScreenShot();
                 imageView.setImageBitmap(bitmap);
                 MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), bitmap, "IMG" + Calendar.getInstance().getTime(), null);
+                break;
+            case R.id.tv_start_server:          //开启手机服务器--开启ZmlMediaKit服务器
+                openPhoneZlmServer();
                 break;
             case R.id.tv_start_push:          //推流到手机服务器
                 startFFmpeg2PushSteam2PhoneServer();
@@ -517,8 +505,8 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
                             //开启推流服务器
                             ZLMediaKit.startDemo(sd_dir);
                             LogUtils.e("ZlmActivity" + "服务器开启成功====all=");
-                            Toast.makeText(ZlmMediaKitTestActivity.this, "可以推流", Toast.LENGTH_SHORT).show();
-                            LogUtils.e("ZlmActivity" + "服务器开启成功====可以推流");
+                            Toast.makeText(ZlmMediaKitTestActivity.this, "服务器开启成功", Toast.LENGTH_SHORT).show();
+                            LogUtils.e("ZlmActivity" + "服务器开启成功====服务器开启成功");
 
                         }
 
@@ -548,8 +536,8 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
                             String sd_dir = Environment.getExternalStoragePublicDirectory("").toString();
                             //开启推流服务器
                             ZLMediaKit.startDemo(sd_dir);
-                            LogUtils.e("ZlmActivity" + "服务器开启成功====可以推流");
-                            Toast.makeText(ZlmMediaKitTestActivity.this, "可以推流", Toast.LENGTH_SHORT).show();
+                            LogUtils.e("ZlmActivity" + "服务器开启成功====服务器开启成功");
+                            Toast.makeText(ZlmMediaKitTestActivity.this, "服务器开启成功", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
