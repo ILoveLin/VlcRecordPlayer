@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.company.shenzhou.ffmpeg.FFmpegActivity;
-import com.company.shenzhou.ffmpeg.FFmpegHttpActivity;
 import com.company.shenzhou.vlc.VlcPlayerActivity;
+import com.company.shenzhou.zlm.ZlmMediaKitTestActivity;
 
 /**
  * author : LoveLin
@@ -21,7 +21,7 @@ import com.company.shenzhou.vlc.VlcPlayerActivity;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Context mContext;
-    private TextView m2VLCPlayer, m2FFmpegKit;
+    private TextView m2VLCPlayer, m2FFmpegKit,m2ZLMKit;
     private Intent intent = null;
 
 
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initView() {
         m2VLCPlayer = findViewById(R.id.tv_to_vlc);
         m2FFmpegKit = findViewById(R.id.tv_to_ffmpeg);
+        m2ZLMKit = findViewById(R.id.tv_to_zlmkit);
 
     }
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void responseListener() {
         m2VLCPlayer.setOnClickListener(this);
         m2FFmpegKit.setOnClickListener(this);
+        m2ZLMKit.setOnClickListener(this);
     }
 
     @Override
@@ -58,6 +60,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.tv_to_ffmpeg:     //ffmpeg测试界面
 //                intent = new Intent(MainActivity.this, FFmpegHttpActivity.class);
                 intent = new Intent(MainActivity.this, FFmpegActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv_to_zlmkit:     //ZlmMediaKit手机服务器界面
+                intent = new Intent(MainActivity.this, ZlmMediaKitTestActivity.class);
                 startActivity(intent);
                 break;
         }

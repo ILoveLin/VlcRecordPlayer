@@ -1,5 +1,6 @@
 # VLC播放器Demo（录像，截图等功能），可二次开发。
-# ffmpeg-Kit （录像，截图,合流播放,合流推送,等一些列视频操作功能），可二次开发。
+# ffmpeg-Kit （录像，截图,合流播放,合流推送(到本地手机服务器或者公司三方服务器),等一些列视频操作功能），可二次开发。
+# ZLMediaKit 作为本地推流服务器的使用，可以直接提取so或者aar文件给自己二次开发。
 
 #### 如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q。
 
@@ -7,8 +8,9 @@
 
 #### 如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q，3Q，3Q。
 
-* vlc编译，源库地址是这个博主的:https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下
-* ffmpeg-kit编译，源库地址是这个博主的:https://github.com/arthenica/ffmpeg-kit 可以去star支持下
+* vlc编译，源库地址是这个博主的：https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下。
+* ffmpeg-kit编译，源库地址是这个博主的：https://github.com/arthenica/ffmpeg-kit 可以去star支持下。
+* ZLMediaKit编译，源库地址是这个博主的：https://github.com/ZLMediaKit/ZLMediaKit 可以去star支持下。
 
 * 基于VLC的播放器（Android
   录像，截图），可做二次开发，支持在点播或者直播，播放的时候：录像，截图等等功能。支持RTSP，RTMP，HTTP，HLS，HTTPS等等。支持所有CPU架构。
@@ -26,13 +28,16 @@
 
 * 如果看不到gif动图，请科学上网查看gif效果图，或者下载项目之后本地打开。在picture文件夹/gif文件夹/vlc.gif和ffmpeg.gif
 
-* VLCDemo测试动图欣赏vlc.gif
+* VLCDemo测试，动图欣赏vlc.gif
 ![](picture/gif/vlc.gif)
 
 
-* FfmpegDemo测试动图欣赏ffmpeg.gif
+* ffmpegDemo测试，动图欣赏ffmpeg.gif
 ![](picture/gif/ffmpeg.gif)
 
+
+* ZLMediaKit测试，动图欣赏zmlkit.gif
+![](picture/gifzmlkit.gif)
 
 #### VLC播放器，使用指南
 
@@ -143,6 +148,68 @@
      ```
   
 * 其他ffmpeg命令行功能：可以使用任何ffmpeg命令行功能实现你想要的功能。
+
+#### ZLMediaKit，作为手机端本地服务器的使用指南
+
+* 两种方式：1：直接依赖libs的so(太大了 我直接打包放在这里要使用请下载后自己解压把so放入libs)。
+*          2：使用lib是里面的aar(分debug版本和release版本按需索取)，然后在app.gradle中引用此aar即可。
+
+* 1，开启服务器：
+    ```java
+          //使用之前请自己申请读写权限 谢谢(PackageManager.PERMISSION_GRANTED)
+           String sd_dir = Environment.getExternalStoragePublicDirectory("").toString();
+  
+          ZLMediaKit.startDemo(sd_dir);
+
+    ```
+  
+  
+* 2，使用ffmpeg-kit 对纯音频和纯视频流进行合流(或者可以播放的直播流)，推流到本地ZLMediaKit服务器上
+    ```java
+      private void startFFmpegPushSteam() {
+            //http://192.168.67.105:3333/api/stream/video?session=123456          //纯视频流地址(我公司的,请替换可以播放的流地址即可)。
+            String steam = "-i http://192.168.67.105:3333/api/stream/video?session=123456 -i http://192.168.67.105:3333/api/stream/audio?session=123456";
+            String CMD = steam + " -c copy -rtsp_transport tcp -f rtsp rtsp://127.0.0.1:8554/stream/live";
+            //rtsp://127.0.0.1:8554/stream/live   //此地址是，推送到本地服务器的地址，必须两级目录不然推送失败(/steam/live)，目录名字可以随便改动。
+            LogUtils.e("ffmpeg-kit--推流CMD" + "apply====CMD=" + CMD);
+            FFmpegKit.executeAsync(CMD, new FFmpegSessionCompleteCallback() {
+    
+                @Override
+                public void apply(FFmpegSession session) {
+                    SessionState state = session.getState();
+                    ReturnCode returnCode = session.getReturnCode();
+                    /**
+                     * 录像
+                     * returnCode=1         说明：推流，失败
+                     * returnCode=255       说明：推流，成功
+                     */
+                    LogUtils.e("ffmpeg-kit--推流" + "apply====state=" + state);
+                    LogUtils.e("ffmpeg-kit--推流" + "apply====returnCode=" + returnCode);
+    
+                }
+            }, new LogCallback() {
+    
+                @Override
+                public void apply(com.arthenica.ffmpegkit.Log log) {
+    
+                }
+            }, new StatisticsCallback() {
+    
+                @Override
+                public void apply(Statistics statistics) {
+                    LogUtils.e("ffmpeg-kit" + "推流=====" + statistics.toString());
+    
+    
+                }
+            });
+    
+    
+        }
+   ```
+    
+* 3，使用VLC播放即可：传入url：rtsp://127.0.0.1:8554/stream/live  即可播放。
+
+* 4，PS：ZLMediaKit自带播放器有录像功能，等我后续更新吧。
 
 
 ## License
