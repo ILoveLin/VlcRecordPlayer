@@ -62,9 +62,10 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
     private EditText tt_live;
     private EditText tt_cmd;
     //电视台直播流
-    private String mVideoPath = "rtsp://root:root@192.168.1.200:7788/session0.mpg";                 //公司直播地址(采集卡采集的视频然后推送过来的直播地址)
-    //    private String mVideoPath = "http://220.161.87.62:8800/hls/0/index.m3u8";                 //电台直播源地址,这个直播地址推流到本地服务器一直失败不知道为何  请用你们公司自己的直播地址推送
-//    private String mVideoPath = "http://192.168.67.105:3333/api/stream/video?session=123456";     //默认 纯视频流地址
+//    private String mVideoPath = "http://sf1-hscdn-tos.pstatp.com/obj/media-fe/xgplayer_doc_video/flv/xgplayer-demo-360p.flv";        //西瓜视频点播地址
+    //    private String mVideoPath = "rtsp://root:root@192.168.1.200:7788/session0.mpg";                 //公司直播地址(采集卡采集的视频然后推送过来的直播地址)
+    private String mVideoPath = "http://220.161.87.62:8800/hls/0/index.m3u8";                 //电台直播源地址,这个直播地址推流到本地服务器一直失败不知道为何  请用你们公司自己的直播地址推送
+    //    private String mVideoPath = "http://192.168.67.105:3333/api/stream/video?session=123456";     //默认 纯视频流地址
     private String mAudioPath = "http://192.168.67.105:3333/api/stream/audio?session=123456";       //默认 纯音频流地址
     //private String CMD = "-i http://192.168.67.105:3333/api/stream/video?session=123456 -i http://192.168.67.105:3333/api/stream/audio?session=123456 -c copy ";
     //公司视频流和音频流
@@ -176,6 +177,7 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
 //        videoView.setVideoController(controller); //设置控制器
         mAudioPlayer.start(); //开始播放，不调用则不自动播放
 
+        Toast.makeText(ZlmMediaKitTestActivity.this, "测试手机服务器功能，必须替换成你们公司自己推送的直播流才可以!!!!!", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -567,6 +569,10 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
 //        -i http://192.168.67.105:3333/api/stream/video?session=123456 -i http://192.168.67.105:3333/api/stream/audio?session=123456 -c copy -rtsp_transport tcp -f rtsp rtsp://127.0.0.1:8554/stream/live
         String strUrl = mCurrentUrl.getText().toString().trim();
         //rtsp://127.0.0.1:8554/stream/live--->本地地址,可以自行修改,但是必须是二级目录(/stream/live)不然推不倒服务器上去
+        //UDP推流
+        //ffmpeg -re -i input.mp4 -c copy -f rtsp rtsp://127.0.0.1:8554/stream
+        //TCP推流
+//        String mCurrentCMD = "-i " + strUrl + " -c copy -f rtsp rtsp://127.0.0.1:8554/stream/live";
         String mCurrentCMD = "-i " + strUrl + " -c copy -rtsp_transport tcp -f rtsp rtsp://127.0.0.1:8554/stream/live";
         LogUtils.e("ZlmActivity--推流到手机服务器" + "mCurrentCMD==" + mCurrentCMD);
         LogUtils.e("ZlmActivity--推流到手机服务器" + "outputVideoPath==" + outputVideoPath);
