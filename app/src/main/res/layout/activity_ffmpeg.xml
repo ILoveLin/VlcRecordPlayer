@@ -39,7 +39,6 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_bg_case_confirm"
-
                     android:gravity="center"
                     android:text="截图"
                     android:textColor="@color/white"
@@ -51,8 +50,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_dialog_bg_case_confirm"
                     android:gravity="center"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
                     android:text="ffmpeg截图"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -128,6 +127,62 @@
 
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <Button
+                    android:id="@+id/tv_merge_live"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="合流播放"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/start_server"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="开启服务"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/stop_server"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text="关闭服务"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:visibility="invisible"
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,14 +211,72 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_marginRight="@dimen/padding_10"
+                        android:layout_marginLeft="@dimen/padding_10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/common_confirm_text_color"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/padding_10"
+                        android:paddingBottom="@dimen/padding_10"
+                        android:text="↓↓音视频的播放器↓↓"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <xyz.doikki.videoplayer.player.VideoView
+                        android:id="@+id/player_video"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/padding_200"
+                        android:layout_margin="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_marginRight="@dimen/padding_10"
+                        android:layout_marginLeft="@dimen/padding_10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/common_confirm_text_color"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/padding_10"
+                        android:paddingBottom="@dimen/padding_10"
+                        android:text="↓↓纯音频的播放器↓↓"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <xyz.doikki.videoplayer.player.VideoView
+                        android:id="@+id/player_audio"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/padding_200"
+                        android:layout_margin="10dp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/common_confirm_text_color"
                 android:gravity="center"
-                android:paddingTop="@dimen/padding_5"
-                android:paddingBottom="@dimen/padding_5"
+                android:paddingTop="@dimen/padding_10"
+                android:paddingBottom="@dimen/padding_10"
                 android:text="↓↓↓↓↓↓↓↓↓↓截图↓↓↓↓↓↓↓↓↓↓"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
@@ -177,57 +290,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
-                    android:paddingTop="@dimen/padding_5"
+                    android:paddingTop="@dimen/padding_10"
                     android:paddingBottom="@dimen/padding_5"
                     android:scaleType="centerInside"
                     android:src="@drawable/aaaa" />
 
 
             </RelativeLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/common_confirm_text_color"
-                android:gravity="center"
-                android:paddingTop="@dimen/padding_5"
-                android:paddingBottom="@dimen/padding_5"
-                android:text="↓↓播放,纯视频流(或者音视频)的播放器↓↓"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-            <xyz.doikki.videoplayer.player.VideoView
-                android:id="@+id/player_video"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_margin="10dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/common_confirm_text_color"
-                android:gravity="center"
-                android:paddingTop="@dimen/padding_5"
-                android:paddingBottom="@dimen/padding_5"
-                android:text="↓↓播放,纯音频的播放器↓↓"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-            <xyz.doikki.videoplayer.player.VideoView
-                android:id="@+id/player_audio"
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:paddingTop="@dimen/padding_5"
-                android:paddingBottom="@dimen/padding_5"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
 
 
         </LinearLayout>

@@ -49,12 +49,12 @@ android {
 
         }
 
+        compileOptions {
+            sourceCompatibility 1.8
+            targetCompatibility 1.8F
+        }
+    }
 
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     greendao {
         schemaVersion 7 //数据库版本号
         daoPackage 'com.company.shenzhou.player.db'
@@ -93,6 +93,21 @@ dependencies {
     implementation "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
     implementation "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintLayoutVersion"
+
+
+    //网络请求
+    implementation 'com.zhy:okhttputils:2.6.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.3.0' //okttp依赖
+    //https://www.jianshu.com/p/721381cf974f     okhttputils使用链接
+    // Json 解析框架：https://github.com/google/gson
+    implementation 'com.google.code.gson:gson:2.8.4'
+//    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-7'
+//    api 'com.github.bumptech.glide:glide:3.7.0'
+    // Gson 解析容错：https://github.com/getActivity/GsonFactory
+    implementation 'com.github.getActivity:GsonFactory:5.2'
+    implementation 'com.tencent:mmkv-static:1.2.10'
+
+
 
     //ffmpeg
     implementation 'com.arthenica:ffmpeg-kit-full:5.1'

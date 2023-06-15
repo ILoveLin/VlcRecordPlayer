@@ -75,6 +75,9 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
     private String CMD3 = "-i http://220.161.87.62:8800/hls/0/index.m3u8 -y -t 0.001 -ss 1 -f image2 -r 1 ";
     //    private String CMD3 = "-i http://192.168.67.105:3333/api/stream/video?session=123456 -y -t 0.001 -ss 1 -f image2 -r 1 ";
     private Button tv_shot_ffmpeg;
+    private Button tv_merge_live;
+    private Button start_server;
+    private Button stop_server;
 
 
     @Override
@@ -97,6 +100,9 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
         tv_no_voice.setOnClickListener(this);
         tv_save_live.setOnClickListener(this);
         tv_shot_ffmpeg.setOnClickListener(this);
+        tv_merge_live.setOnClickListener(this);
+        start_server.setOnClickListener(this);
+        stop_server.setOnClickListener(this);
 
         mVideoPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,10 +189,12 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
         tv_save_live = findViewById(R.id.tv_save_live);
         tt_live = findViewById(R.id.tt_live);
         tv_shot_ffmpeg = findViewById(R.id.tv_shot_ffmpeg);
+        tv_merge_live = findViewById(R.id.tv_merge_live);
+        start_server = findViewById(R.id.start_server);
+        stop_server = findViewById(R.id.stop_server);
 
 
     }
-
 
 
     private void startFFmpegShot() {
@@ -325,7 +333,7 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
 
     private void getXXPermissions() {
 
-        if (Build.VERSION.SDK_INT> Build.VERSION_CODES.R){
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
 //        java.lang.UnsupportedOperationException: Unknown URI: content://media/external_primary/video/media
             XXPermissions.with(this)
 //                .permission(Permission.READ_EXTERNAL_STORAGE)  //正式版本    android 10已下申请  READ_EXTERNAL_STORAGE   WRITE_EXTERNAL_STORAGE
@@ -348,12 +356,12 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     });
 
-        }else {
+        } else {
 
 //        java.lang.UnsupportedOperationException: Unknown URI: content://media/external_primary/video/media
             XXPermissions.with(this)
-                .permission(Permission.READ_EXTERNAL_STORAGE)  //正式版本    android 10已下申请  READ_EXTERNAL_STORAGE   WRITE_EXTERNAL_STORAGE
-                .permission(Permission.WRITE_EXTERNAL_STORAGE)  //正式版本
+                    .permission(Permission.READ_EXTERNAL_STORAGE)  //正式版本    android 10已下申请  READ_EXTERNAL_STORAGE   WRITE_EXTERNAL_STORAGE
+                    .permission(Permission.WRITE_EXTERNAL_STORAGE)  //正式版本
 //                    .permission(Permission.MANAGE_EXTERNAL_STORAGE)  //正式版本    android 10以上申请  MANAGE_EXTERNAL_STORAGE
                     .request(new OnPermissionCallback() {
 
@@ -425,10 +433,19 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_merge_live:          //合流播放
+                break;
+            case R.id.start_server:           //开启服务
+                break;
+            case R.id.stop_server:            //关闭服务
+                break;
             case R.id.tv_click:          //执行ffmpeg命令
+                Toast.makeText(FFmpegActivity.this, "开始录像", Toast.LENGTH_SHORT).show();
                 startFFmpegRecord();
                 break;
             case R.id.tv_cancle:         //取消ffmpeg命令
+                Toast.makeText(FFmpegActivity.this, "取消录像", Toast.LENGTH_SHORT).show();
+
                 FFmpegKit.cancel();
                 break;
             case R.id.tv_shot:          //截图

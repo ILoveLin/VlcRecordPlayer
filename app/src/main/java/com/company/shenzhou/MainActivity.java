@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.company.shenzhou.ffmpeg.FFmpegActivity;
+import com.company.shenzhou.ffmpeg.FFmpegHttpActivity;
 import com.company.shenzhou.vlc.VlcPlayerActivity;
 
 /**
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.tv_to_ffmpeg:     //ffmpeg测试界面
+//                intent = new Intent(MainActivity.this, FFmpegHttpActivity.class);
                 intent = new Intent(MainActivity.this, FFmpegActivity.class);
                 startActivity(intent);
                 break;
