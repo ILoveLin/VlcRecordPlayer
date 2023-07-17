@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_get_path"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="请输入直播地址"
+                    android:paddingLeft="5dp"
+                    android:text="http://220.161.87.62:8800/hls/0/index.m3u8" />
+
+                <Button
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+
+                    android:id="@+id/start_live"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:onClick="handleTextureView"
+                    android:text="播放" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <Button
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+
+                    android:id="@+id/btn_start_record"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="开始-录像" />
+
+                <Button
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+                    android:id="@+id/btn_end_record"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="结束-录像" />
+
+                <Button
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+
+                    android:id="@+id/btn_frame"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="截-图" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <Button
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+
+                    android:id="@+id/btn_16_9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="16:9" />
+
+                <Button
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+
+                    android:id="@+id/btn_default"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="默认" />
+                <Button
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+
+                    android:id="@+id/btn_yuanshi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="原始" />
+                <Button
+                    android:background="@drawable/shape_dialog_bg_case_confirm"
+
+                    android:id="@+id/btn_no_voice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="静音" />
+
+            </LinearLayout>
+
+            <xyz.doikki.videoplayer.player.VideoView
+                android:id="@+id/player"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/teal_200"
+                android:gravity="center"
+                android:text="↓↓↓↓↓↓↓截图↓↓↓↓↓↓↓"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/imageview"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerInside" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

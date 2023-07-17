@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.company.shenzhou.ffmpeg.FFmpegActivity;
+import com.company.shenzhou.ffmpeg.FFmpegHttpActivity;
+import com.company.shenzhou.tencent.TencentLiveActivity;
 import com.company.shenzhou.vlc.VlcPlayerActivity;
 import com.company.shenzhou.zlm.ZlmMediaKitTestActivity;
 
@@ -21,7 +23,7 @@ import com.company.shenzhou.zlm.ZlmMediaKitTestActivity;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Context mContext;
-    private TextView m2VLCPlayer, m2FFmpegKit,m2ZLMKit;
+    private TextView m2VLCPlayer, m2FFmpegKit, m2ZLMKit, m2Tencent;
     private Intent intent = null;
 
 
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         m2VLCPlayer = findViewById(R.id.tv_to_vlc);
         m2FFmpegKit = findViewById(R.id.tv_to_ffmpeg);
         m2ZLMKit = findViewById(R.id.tv_to_zlmkit);
+        m2Tencent = findViewById(R.id.tv_to_tencent);
 
     }
 
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         m2VLCPlayer.setOnClickListener(this);
         m2FFmpegKit.setOnClickListener(this);
         m2ZLMKit.setOnClickListener(this);
+        m2Tencent.setOnClickListener(this);
     }
 
     @Override
@@ -58,12 +62,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.tv_to_ffmpeg:     //ffmpeg测试界面
-//                intent = new Intent(MainActivity.this, FFmpegHttpActivity.class);
-                intent = new Intent(MainActivity.this, FFmpegActivity.class);
+                intent = new Intent(MainActivity.this, FFmpegHttpActivity.class);
+//                intent = new Intent(MainActivity.this, FFmpegActivity.class);
                 startActivity(intent);
                 break;
             case R.id.tv_to_zlmkit:     //ZlmMediaKit手机服务器界面
                 intent = new Intent(MainActivity.this, ZlmMediaKitTestActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv_to_tencent:     //测试腾讯云直播
+                intent = new Intent(MainActivity.this, TencentLiveActivity.class);
                 startActivity(intent);
                 break;
         }

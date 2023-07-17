@@ -64,7 +64,8 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
     private EditText tt_cmd;
     //电视台直播流
     //private String mVideoPath = "http://220.161.87.62:8800/hls/0/index.m3u8";
-    private String mVideoPath = "http://192.168.67.105:3333/api/stream/video?session=123456";       //默认 纯视频流地址
+    private String mVideoPath = "http://192.168.64.66:7001/299/2023-06-30-10-31-31.mp4";       //默认 纯视频流地址
+//    private String mVideoPath = "http://192.168.67.105:3333/api/stream/video?session=123456";       //默认 纯视频流地址
     private String mAudioPath = "http://192.168.67.105:3333/api/stream/audio?session=123456";       //默认 纯音频流地址
     //private String CMD = "-i http://192.168.67.105:3333/api/stream/video?session=123456 -i http://192.168.67.105:3333/api/stream/audio?session=123456 -c copy ";
     //公司视频流和音频流

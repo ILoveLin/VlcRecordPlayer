@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!--    // 监听熄屏和亮屏需要添加权限-->
     <uses-permission android:name="android.permission.DEVICE_POWER" />
     <!--    <uses-permission android:name="android.permission.DEVICE_POWER"/>-->
@@ -63,13 +64,20 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <!--        <activity-->
-        <!--            android:name=".ffmpeg.FFmpegHttpActivity"-->
-        <!--            android:configChanges="orientation|keyboardHidden|screenSize"-->
-        <!--            android:hardwareAccelerated="true"-->
-        <!--            android:launchMode="singleTop"-->
-        <!--            android:screenOrientation="portrait"-->
-        <!--            android:windowSoftInputMode="adjustResize" />-->
+        <activity
+            android:name=".ffmpeg.FFmpegHttpActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".tencent.TencentLiveActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

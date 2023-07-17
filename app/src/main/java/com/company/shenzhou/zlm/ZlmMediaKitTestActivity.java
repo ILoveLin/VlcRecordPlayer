@@ -173,7 +173,7 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
 
         mAudioPlayer.setUrl(mAudioPath); //设置视频地址
 //        StandardVideoController controller = new StandardVideoController(this);
-//        controller.addDefaultControlComponent("标题", false);
+//        controller.addDefaultControlComponent("标题", false);   
 //        videoView.setVideoController(controller); //设置控制器
         mAudioPlayer.start(); //开始播放，不调用则不自动播放
 
