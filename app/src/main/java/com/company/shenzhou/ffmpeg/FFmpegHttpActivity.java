@@ -54,7 +54,7 @@ import xyz.doikki.videoplayer.player.VideoView;
  * company：江西神州医疗设备有限公司
  * author： LoveLin
  * time：2023/6/1 11:18
- * desc：测试http相关
+ * desc：自己项目测试,通过http测试相关api
  */
 public class FFmpegHttpActivity extends AppCompatActivity implements View.OnClickListener {
     private Button tv_click, tv_cancle;

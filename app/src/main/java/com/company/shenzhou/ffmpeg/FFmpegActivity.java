@@ -45,7 +45,7 @@ import xyz.doikki.videoplayer.player.VideoView;
  * author： LoveLin
  * time：2023/6/1 11:18
  * desc：ffmpeg 实现对直播流录像 截图功能
- * ffmpeg  可以使用任何ffmpeg命令行操作
+ *      ffmpeg  可以使用任何ffmpeg命令行操作
  */
 public class FFmpegActivity extends AppCompatActivity implements View.OnClickListener {
     private Button tv_click, tv_cancle;

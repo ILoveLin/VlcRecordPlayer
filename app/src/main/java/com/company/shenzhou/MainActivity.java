@@ -21,7 +21,6 @@ import com.company.shenzhou.zlm.ZlmMediaKitTestActivity;
  * desc   : 主界面
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
     private Context mContext;
     private TextView m2VLCPlayer, m2FFmpegKit, m2ZLMKit, m2Tencent;
     private Intent intent = null;
@@ -62,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.tv_to_ffmpeg:     //ffmpeg测试界面
-                intent = new Intent(MainActivity.this, FFmpegHttpActivity.class);
-//                intent = new Intent(MainActivity.this, FFmpegActivity.class);
+//                intent = new Intent(MainActivity.this, FFmpegHttpActivity.class);
+                intent = new Intent(MainActivity.this, FFmpegActivity.class);
                 startActivity(intent);
                 break;
             case R.id.tv_to_zlmkit:     //ZlmMediaKit手机服务器界面
