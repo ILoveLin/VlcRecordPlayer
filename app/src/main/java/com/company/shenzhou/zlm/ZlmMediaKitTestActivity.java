@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,18 +25,21 @@ import com.arthenica.ffmpegkit.SessionState;
 import com.arthenica.ffmpegkit.Statistics;
 import com.arthenica.ffmpegkit.StatisticsCallback;
 import com.company.shenzhou.R;
+import com.company.shenzhou.util.EnumConfig;
 import com.company.shenzhou.util.FileUtil;
 import com.company.shenzhou.util.LogUtils;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 import com.zlmediakit.jni.ZLMediaKit;
 
 import java.util.Calendar;
 import java.util.List;
 
-import xyz.doikki.videoplayer.ijk.IjkPlayerFactory;
+import okhttp3.Call;
 import xyz.doikki.videoplayer.player.BaseVideoView;
 import xyz.doikki.videoplayer.player.VideoView;
 
@@ -66,6 +70,7 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
     //    private String mVideoPath = "rtsp://root:root@192.168.1.200:7788/session0.mpg";                 //公司直播地址(采集卡采集的视频然后推送过来的直播地址)
     private String mVideoPath = "http://220.161.87.62:8800/hls/0/index.m3u8";                 //电台直播源地址,这个直播地址推流到本地服务器一直失败不知道为何  请用你们公司自己的直播地址推送
     //    private String mVideoPath = "http://192.168.67.105:3333/api/stream/video?session=123456";     //默认 纯视频流地址
+    //    private String mAudioPath = "http://220.161.87.62:8800/hls/0/index.m3u8";       //默认 纯音频流地址
     private String mAudioPath = "http://192.168.67.105:3333/api/stream/audio?session=123456";       //默认 纯音频流地址
     //private String CMD = "-i http://192.168.67.105:3333/api/stream/video?session=123456 -i http://192.168.67.105:3333/api/stream/audio?session=123456 -c copy ";
     //公司视频流和音频流
@@ -89,6 +94,7 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_zlm);
         getXXPermissions();
         initView();
+        openPhoneZlmServer();
         initData();
         responseListener();
     }
@@ -162,8 +168,8 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
 
     private void initData() {
         //使用IjkPlayer解码
-        mVideoPlayer.setPlayerFactory(IjkPlayerFactory.create());
-        mAudioPlayer.setPlayerFactory(IjkPlayerFactory.create());
+//        mVideoPlayer.setPlayerFactory(IjkPlayerFactory.create());
+//        mAudioPlayer.setPlayerFactory(IjkPlayerFactory.create());
         mVideoPlayer.setUrl(mVideoPath); //设置视频地址
         mCurrentUrl.setText(mVideoPath);
 //        StandardVideoController controller = new StandardVideoController(this);
@@ -204,6 +210,24 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
 
     }
 
+    private void startRequest() {
+        String url = "https://zlmediakit.com/index/api/whip?app=live&stream=test&type=push";
+//        String url = "https://zlmediakit.com/index/api/whip?app=live&stream=test";
+        OkHttpUtils.post()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e("ZlmActivity" + "==OkHttpUtils====Exception=" + e);
+                    }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        LogUtils.e("ZlmActivity" + "==OkHttpUtils====response=" + response);
+                    }
+                });
+
+    }
 
     private void startFFmpegShot() {
         String path = "/FFMPEG_CME";
@@ -446,7 +470,7 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
                 MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), bitmap, "IMG" + Calendar.getInstance().getTime(), null);
                 break;
             case R.id.tv_start_server:          //开启手机服务器--开启ZmlMediaKit服务器
-                openPhoneZlmServer();
+                startRequest();
                 break;
             case R.id.tv_start_push:          //推流到手机服务器
                 startFFmpeg2PushSteam2PhoneServer();

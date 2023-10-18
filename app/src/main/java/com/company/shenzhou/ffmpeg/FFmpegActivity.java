@@ -431,7 +431,6 @@ public class FFmpegActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.tv_cancle:         //取消ffmpeg命令
                 Toast.makeText(FFmpegActivity.this, "取消录像", Toast.LENGTH_SHORT).show();
-
                 FFmpegKit.cancel();
                 break;
             case R.id.tv_shot:          //截图

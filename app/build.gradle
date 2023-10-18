@@ -51,7 +51,7 @@ android {
 
         compileOptions {
             sourceCompatibility 1.8
-            targetCompatibility 1.8F
+            targetCompatibility 1.8
         }
     }
 
@@ -84,10 +84,10 @@ android {
 }
 
 dependencies {
-    implementation project(':libvlc')
+    implementation project(':libvlc')//vlc
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation files('libs/zml_debug.aar')
-    implementation files('libs/LiteAVSDK_Professional_11.2.0.13154.aar')
+    implementation files('libs/zml_debug.aar')//zml把手机作为服务器的苦
+    implementation files('libs/LiteAVSDK_Professional_11.2.0.13154.aar')//腾讯云快直播
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
@@ -131,4 +131,7 @@ dependencies {
     implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.7'
     // 可选，使用ijkplayer进行解码
     implementation 'xyz.doikki.android.dkplayer:player-ijk:3.3.7'
+
+
+    
 }

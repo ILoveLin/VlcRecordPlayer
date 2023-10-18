@@ -3,7 +3,6 @@ apply from: 'versions.gradle'
 buildscript {
     repositories {
         mavenCentral()
-
         maven {url 'https://maven.aliyun.com/repository/google/'}
         maven {url 'https://maven.aliyun.com/repository/public/'}
         // 阿里云云效仓库（Gradle 插件）：https://maven.aliyun.com/mvn/guide

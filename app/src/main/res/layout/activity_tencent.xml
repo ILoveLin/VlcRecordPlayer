@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="请输入直播地址"
-                    android:text="webrtc://www.cme8848.com/live/apptest" />
+                    android:text="webrtc://www.cme8848.com/live/test1" />
 
                 <Button
                     android:id="@+id/bt_save_live"
