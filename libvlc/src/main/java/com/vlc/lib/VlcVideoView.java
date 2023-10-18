@@ -33,7 +33,6 @@ import java.util.ArrayList;
 public class VlcVideoView extends TextureView implements MediaPlayerControl, VideoSizeChange {
     private VlcPlayer videoMediaLogic;
     private final String tag = "VlcVideoView";
-
     public VlcVideoView(Context context) {
         this(context, null);
     }
