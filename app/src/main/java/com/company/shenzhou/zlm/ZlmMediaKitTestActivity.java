@@ -2,11 +2,9 @@ package com.company.shenzhou.zlm;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +23,6 @@ import com.arthenica.ffmpegkit.SessionState;
 import com.arthenica.ffmpegkit.Statistics;
 import com.arthenica.ffmpegkit.StatisticsCallback;
 import com.company.shenzhou.R;
-import com.company.shenzhou.util.EnumConfig;
 import com.company.shenzhou.util.FileUtil;
 import com.company.shenzhou.util.LogUtils;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -221,6 +218,7 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
                     public void onError(Call call, Exception e, int id) {
                         LogUtils.e("ZlmActivity" + "==OkHttpUtils====Exception=" + e);
                     }
+
                     @Override
                     public void onResponse(String response, int id) {
                         LogUtils.e("ZlmActivity" + "==OkHttpUtils====response=" + response);
@@ -365,55 +363,26 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
 
 
     private void getXXPermissions() {
-
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
-//        java.lang.UnsupportedOperationException: Unknown URI: content://media/external_primary/video/media
-            XXPermissions.with(this)
+        XXPermissions.with(this)
 //                .permission(Permission.READ_EXTERNAL_STORAGE)  //正式版本    android 10已下申请  READ_EXTERNAL_STORAGE   WRITE_EXTERNAL_STORAGE
 //                .permission(Permission.WRITE_EXTERNAL_STORAGE)  //正式版本
-                    .permission(Permission.MANAGE_EXTERNAL_STORAGE)  //正式版本    android 10以上申请  MANAGE_EXTERNAL_STORAGE
-                    .request(new OnPermissionCallback() {
+                .permission(Permission.MANAGE_EXTERNAL_STORAGE)  //正式版本    android 10以上申请  MANAGE_EXTERNAL_STORAGE
+                .request(new OnPermissionCallback() {
 
-                        @Override
-                        public void onGranted(List<String> permissions, boolean all) {
-                            LogUtils.e("ZlmActivity" + "成功====all=" + all);
-
-
-                        }
-
-                        @Override
-                        public void onDenied(List<String> permissions, boolean never) {
-                            LogUtils.e("ZlmActivity" + "失败=====" + never);
+                    @Override
+                    public void onGranted(List<String> permissions, boolean all) {
+                        LogUtils.e("ZlmActivity" + "权限申请成功====all=" + all);
 
 
-                        }
-                    });
+                    }
 
-        } else {
-
-//        java.lang.UnsupportedOperationException: Unknown URI: content://media/external_primary/video/media
-            XXPermissions.with(this)
-                    .permission(Permission.READ_EXTERNAL_STORAGE)  //正式版本    android 10已下申请  READ_EXTERNAL_STORAGE   WRITE_EXTERNAL_STORAGE
-                    .permission(Permission.WRITE_EXTERNAL_STORAGE)  //正式版本
-//                    .permission(Permission.MANAGE_EXTERNAL_STORAGE)  //正式版本    android 10以上申请  MANAGE_EXTERNAL_STORAGE
-                    .request(new OnPermissionCallback() {
-
-                        @Override
-                        public void onGranted(List<String> permissions, boolean all) {
-                            LogUtils.e("ZlmActivity" + "成功====all=" + all);
+                    @Override
+                    public void onDenied(List<String> permissions, boolean never) {
+                        LogUtils.e("ZlmActivity" + "权限申请失败=====" + never);
 
 
-                        }
-
-                        @Override
-                        public void onDenied(List<String> permissions, boolean never) {
-                            LogUtils.e("ZlmActivity" + "失败=====" + never);
-
-
-                        }
-                    });
-
-        }
+                    }
+                });
 
 
     }
@@ -513,68 +482,33 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
     }
 
     private void openPhoneZlmServer() {
-
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
-//        java.lang.UnsupportedOperationException: Unknown URI: content://media/external_primary/video/media
-            XXPermissions.with(this)
+        XXPermissions.with(this)
 //                .permission(Permission.READ_EXTERNAL_STORAGE)  //正式版本    android 10已下申请  READ_EXTERNAL_STORAGE   WRITE_EXTERNAL_STORAGE
 //                .permission(Permission.WRITE_EXTERNAL_STORAGE)  //正式版本
-                    .permission(Permission.MANAGE_EXTERNAL_STORAGE)  //正式版本    android 10以上申请  MANAGE_EXTERNAL_STORAGE
-                    .request(new OnPermissionCallback() {
-                        @Override
-                        public void onGranted(List<String> permissions, boolean all) {
-                            LogUtils.e("ZlmActivity" + "权限申请成功====all=" + all);
-                            /**
-                             * 开启本地手机推流服务器
-                             */
-                            String sd_dir = Environment.getExternalStoragePublicDirectory("").toString();
-                            //开启推流服务器
-                            ZLMediaKit.startDemo(sd_dir);
-                            LogUtils.e("ZlmActivity" + "服务器开启成功====all=");
-                            Toast.makeText(ZlmMediaKitTestActivity.this, "服务器开启成功", Toast.LENGTH_SHORT).show();
-                            LogUtils.e("ZlmActivity" + "服务器开启成功====服务器开启成功");
+                .permission(Permission.MANAGE_EXTERNAL_STORAGE)  //正式版本    android 10以上申请  MANAGE_EXTERNAL_STORAGE
+                .request(new OnPermissionCallback() {
+                    @Override
+                    public void onGranted(List<String> permissions, boolean all) {
+                        LogUtils.e("ZlmActivity" + "权限申请成功====all=" + all);
+                        /**
+                         * 开启本地手机推流服务器
+                         */
+                        String sd_dir = Environment.getExternalStoragePublicDirectory("").toString();
+                        //开启推流服务器
+                        ZLMediaKit.startDemo(sd_dir);
+                        LogUtils.e("ZlmActivity" + "服务器开启成功====all=");
+                        Toast.makeText(ZlmMediaKitTestActivity.this, "服务器开启成功", Toast.LENGTH_SHORT).show();
+                        LogUtils.e("ZlmActivity" + "服务器开启成功====服务器开启成功");
 
-                        }
+                    }
 
-                        @Override
-                        public void onDenied(List<String> permissions, boolean never) {
-                            LogUtils.e("ZlmActivity" + "服务器开启失败=====" + never);
-                            Toast.makeText(ZlmMediaKitTestActivity.this, "服务器开启失败,请先申请读写权限", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onDenied(List<String> permissions, boolean never) {
+                        LogUtils.e("ZlmActivity" + "服务器开启失败=====" + never);
+                        Toast.makeText(ZlmMediaKitTestActivity.this, "服务器开启失败,请先申请读写权限", Toast.LENGTH_SHORT).show();
 
-                        }
-                    });
-
-        } else {
-
-//        java.lang.UnsupportedOperationException: Unknown URI: content://media/external_primary/video/media
-            XXPermissions.with(this)
-                    .permission(Permission.READ_EXTERNAL_STORAGE)  //正式版本    android 10已下申请  READ_EXTERNAL_STORAGE   WRITE_EXTERNAL_STORAGE
-                    .permission(Permission.WRITE_EXTERNAL_STORAGE)  //正式版本
-//                    .permission(Permission.MANAGE_EXTERNAL_STORAGE)  //正式版本    android 10以上申请  MANAGE_EXTERNAL_STORAGE
-                    .request(new OnPermissionCallback() {
-
-                        @Override
-                        public void onGranted(List<String> permissions, boolean all) {
-                            LogUtils.e("ZlmActivity" + "成功====all=" + all);
-                            /**
-                             * 开启本地手机推流服务器
-                             */
-                            String sd_dir = Environment.getExternalStoragePublicDirectory("").toString();
-                            //开启推流服务器
-                            ZLMediaKit.startDemo(sd_dir);
-                            LogUtils.e("ZlmActivity" + "服务器开启成功====服务器开启成功");
-                            Toast.makeText(ZlmMediaKitTestActivity.this, "服务器开启成功", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onDenied(List<String> permissions, boolean never) {
-                            LogUtils.e("ZlmActivity" + "服务器开启失败=====" + never);
-                            Toast.makeText(ZlmMediaKitTestActivity.this, "服务器开启失败,请先申请读写权限", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-
-        }
+                    }
+                });
 
 
     }
@@ -600,6 +534,8 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
         String mCurrentCMD = "-i " + strUrl + " -c copy -rtsp_transport tcp -f rtsp rtsp://127.0.0.1:8554/stream/live";
         LogUtils.e("ZlmActivity--推流到手机服务器" + "mCurrentCMD==" + mCurrentCMD);
         LogUtils.e("ZlmActivity--推流到手机服务器" + "outputVideoPath==" + outputVideoPath);
+        LogUtils.e("ZlmActivity" + "apply====推流到手机服务器==推流命令mCurrentCMD=" + mCurrentCMD);
+
         FFmpegKit.executeAsync(mCurrentCMD, new FFmpegSessionCompleteCallback() {
 
             @Override
@@ -612,6 +548,10 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            LogUtils.e("ZlmActivity" + "apply====推流到手机服务器--失败==ffmpeg对这个直播流地址http://220.161.87.62:8800/hls/0/index.m3u8===进行二次转推流到本地服务器会失败");
+                            LogUtils.e("ZlmActivity" + "apply====推流到手机服务器--失败==请替换可用的直播源地址===");
+                            LogUtils.e("ZlmActivity" + "apply====推流到手机服务器--失败==请替换可用的直播源地址===" );
+
                             Toast.makeText(ZlmMediaKitTestActivity.this, "推流到手机服务器--失败", Toast.LENGTH_SHORT).show();
                         }
                     });
