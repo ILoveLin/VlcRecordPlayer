@@ -12,5 +12,7 @@
 /captures
 .externalNativeBuild
 .cxx
-local.properties
-app/release/app-release.apk
+/gradle/
+/.idea/
+/gradle.properties
+*.apk

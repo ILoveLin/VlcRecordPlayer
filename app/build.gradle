@@ -12,7 +12,7 @@ android {
 //        applicationId "com.company.shenzhou"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 9      //bugly 升级需要这个字段迭代  应用市场的code是7  在审核
+        versionCode 9
         versionName "1.1.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true    //避免64K打包bug

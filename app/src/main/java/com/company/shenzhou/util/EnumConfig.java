@@ -36,11 +36,23 @@ public class EnumConfig {
     //播放状态显示加载,播放,错误view
     //播放状态
     public class PlayerState {
-        public static final int PLAYER_SHOW_LOADING_VIEW = 1;        //显示加载view
-        public static final int PLAYER_SHOW_PLAY_VIEW = 2;           //显示播放view
-        public static final int PLAYER_SHOW_ERROR_VIEW = 3;          //显示错误view
-
-        public static final int PLAYER_HIDE_LOADING_PLAY_VIEW = 4;   //隐藏加载view
+        public static final int PLAYER_STATUE_SHOW_LOADING = 1;        //显示加载view
+        public static final int PLAYER_STATUE_SHOW_PLAYING = 2;           //显示播放view
+        public static final int PLAYER_STATUE_SHOW_ERROR = 3;          //显示错误view
+        public static final int PLAYER_STATUE_HIDE_LOADING = 4;   //隐藏加载view
 
     }
+//    //播放View状态显示加载,播放,错误view
+//    //播放状态
+//    public class PlayerViewState {
+//        public static final int PLAYER_STATUE_SHOW_LOADING = 1;        //显示加载view
+//        public static final int PLAYER_STATUE_SHOW_PLAYING = 2;          //显示播放view
+//        public static final int PLAYER_STATUE_SHOW_ERROR = 3;          //显示错误view
+//        public static final int PLAYER_STATUE_HIDE_LOADING = 4;         //隐藏加载view
+//
+//    }
+
+
+
+
 }

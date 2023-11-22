@@ -488,7 +488,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                     if (mVlvLoadingView.getVisibility() == VISIBLE) {
                         return;
                     }
-                    handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_SHOW_LOADING_VIEW);
+                    handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_STATUE_SHOW_LOADING);
                     LogUtils.e(TAG + "mMediaListenerEvent====eventBuffing方法==buffing < 100==:" + buffing);
                     //缓冲时不允许手势操作
 //                    mPlayerView.setGestureEnable(false);
@@ -497,7 +497,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
 
 //                    mPlayerView.setGestureEnable(true);
                     mPlayStatueType = EnumConfig.PlayState.STATE_PLAY;
-                    handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_HIDE_LOADING_PLAY_VIEW);
+                    handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_STATUE_HIDE_LOADING);
 
                 }
             }
@@ -510,14 +510,14 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
                 }
                 mPlayStatueType = EnumConfig.PlayState.STATE_STOP;
                 LogUtils.e(TAG + "mMediaListenerEvent====eventStop方法==isPlayError:" + isPlayError);
-                handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_SHOW_ERROR_VIEW);
+                handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_STATUE_SHOW_ERROR);
 
             }
 
             @Override
             public void eventError(int event, boolean show) {
                 mPlayStatueType = EnumConfig.PlayState.STATE_STOP;
-                handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_SHOW_ERROR_VIEW);
+                handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_STATUE_SHOW_ERROR);
                 LogUtils.e(TAG + "mMediaListenerEvent====eventError方法==show:" + show);
 
             }
@@ -691,23 +691,23 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
      */
     public void showHidePlayLoadingView(int type) {
         //显示loadingView,隐藏playView
-        if (EnumConfig.PlayerState.PLAYER_SHOW_LOADING_VIEW == type) {
+        if (EnumConfig.PlayerState.PLAYER_STATUE_SHOW_LOADING == type) {
             mVlvLoadingView.setVisibility(View.VISIBLE);
             mVlvPlayView.setVisibility(INVISIBLE);
             mVlvErrorTextView.setVisibility(INVISIBLE);
             mVlvLoadingView.start();
-        } else if (EnumConfig.PlayerState.PLAYER_SHOW_PLAY_VIEW == type) {
+        } else if (EnumConfig.PlayerState.PLAYER_STATUE_SHOW_PLAYING == type) {
             mVlvPlayView.setVisibility(VISIBLE);
             mVlvLoadingView.setVisibility(INVISIBLE);
             mVlvErrorTextView.setVisibility(INVISIBLE);
             mVlvLoadingView.release();
-        } else if (EnumConfig.PlayerState.PLAYER_HIDE_LOADING_PLAY_VIEW == type) {
+        } else if (EnumConfig.PlayerState.PLAYER_STATUE_HIDE_LOADING == type) {
             //全部隐藏
             mVlvLoadingView.release();
             mVlvPlayView.setVisibility(INVISIBLE);
             mVlvLoadingView.setVisibility(INVISIBLE);
             mVlvErrorTextView.setVisibility(INVISIBLE);
-        } else if (EnumConfig.PlayerState.PLAYER_SHOW_ERROR_VIEW == type) {
+        } else if (EnumConfig.PlayerState.PLAYER_STATUE_SHOW_ERROR == type) {
             //显示错误文字和加载view
             mVlvLoadingView.release();
             mVlvLoadingView.setVisibility(INVISIBLE);
@@ -977,7 +977,7 @@ public class MyControlVlcVideoView extends RelativeLayout implements GestureDete
      * @param path
      */
     public void setStartLive(String path) {
-        handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_SHOW_LOADING_VIEW);
+        handlerMsgShowHidePlayLoadingView(EnumConfig.PlayerState.PLAYER_STATUE_SHOW_LOADING);
         startLive(path);
 
     }
