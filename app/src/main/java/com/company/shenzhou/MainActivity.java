@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.company.shenzhou.ffmpeg.FFmpegActivity;
 import com.company.shenzhou.ffmpeg.FFmpegHttpActivity;
+import com.company.shenzhou.signalr.SignalRActivity;
 import com.company.shenzhou.tencent.TencentLiveActivity;
 import com.company.shenzhou.vlc.VlcPlayerActivity;
 import com.company.shenzhou.zlm.ZlmMediaKitTestActivity;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Context mContext;
     private TextView m2VLCPlayer, m2FFmpegKit, m2ZLMKit, m2Tencent;
     private Intent intent = null;
+    private TextView m2Signalr;
 
 
     @Override
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         m2FFmpegKit = findViewById(R.id.tv_to_ffmpeg);
         m2ZLMKit = findViewById(R.id.tv_to_zlmkit);
         m2Tencent = findViewById(R.id.tv_to_tencent);
+        m2Signalr = findViewById(R.id.tv_to_signalr);
 
     }
 
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         m2FFmpegKit.setOnClickListener(this);
         m2ZLMKit.setOnClickListener(this);
         m2Tencent.setOnClickListener(this);
+        m2Signalr.setOnClickListener(this);
     }
 
     @Override
@@ -71,6 +75,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.tv_to_tencent:     //测试腾讯云直播
                 intent = new Intent(MainActivity.this, TencentLiveActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv_to_signalr:     //服务器和App双向通讯Demo
+                intent = new Intent(MainActivity.this, SignalRActivity.class);
                 startActivity(intent);
                 break;
         }

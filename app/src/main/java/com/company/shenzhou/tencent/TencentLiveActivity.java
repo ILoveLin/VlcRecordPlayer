@@ -34,7 +34,8 @@ public class TencentLiveActivity extends AppCompatActivity implements View.OnCli
     private String TAG = "腾讯直播:";
     //电视台直播流
     //private String mVideoPath = "http://220.161.87.62:8800/hls/0/index.m3u8";
-    private String mVideoPath = "http://192.168.67.105:3333/api/stream/video?session=123456";       //默认 纯视频流地址
+    //默认 纯视频流地址---腾讯WebRTC测试流地址
+    private String mVideoPath = "webrtc://www.cme8848.com/live/0fd7899cd217a995?txSecret=17d438b3ab8f3562d4bc0484406c57ac&txTime=66061733";
     private EditText mEditLivePath, mEditMicPath;
     private Button mBtnSavePaht2Play, mMicStartPush, mMicStopPush;
     private V2TXLivePlayer mLivePlayer;
@@ -72,7 +73,8 @@ public class TencentLiveActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_save_live:     //拉流播放
-                mPath = mEditLivePath.getText().toString().trim();
+                mPath ="webrtc://www.cme8848.com/live/0fd7899cd217a995?txSecret=17d438b3ab8f3562d4bc0484406c57ac&txTime=66061733";
+//                mPath = mEditLivePath.getText().toString().trim();
                 if (null == mLivePlayer) {
                     mLivePlayer = new V2TXLivePlayerImpl(TencentLiveActivity.this);
                 } else {
@@ -105,7 +107,8 @@ public class TencentLiveActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initData() {
-        mPath = mEditLivePath.getText().toString().trim();
+        mPath = mVideoPath;
+//        mPath = mEditLivePath.getText().toString().trim();
         // 创建⼀个 V2TXLivePlayer 对象；
         mLivePlayer = new V2TXLivePlayerImpl(TencentLiveActivity.this);
         mLivePlayer.setObserver(mV2TXLivePlayerObserver);
@@ -124,7 +127,7 @@ public class TencentLiveActivity extends AppCompatActivity implements View.OnCli
         //mPlayRenderView
 
 
-        LogUtils.e(TAG + "初始化播放地址:" + mPath);
+        LogUtils.e(TAG + "初始化播放地址:" + mVideoPath);
         mMicPushStatue.setText("未-开启");
         mEditMicPath.setText("rtmp://105950.livepush.myqcloud.com/live/apptest?txSecret=73fb3a653cc0559d372d2a270ccfda18&txTime=649E9ED4");
         mV2TXLivePlayerObserver = new V2TXLivePlayerObserver() {
@@ -132,36 +135,36 @@ public class TencentLiveActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onError(V2TXLivePlayer player, int code, String msg, Bundle extraInfo) {
                 LogUtils.e(TAG +
-                        "[Player] onError: player-" + player + " code-" + code + " msg-" + msg + " info-" + extraInfo);
+                        "[Player] 1onError: player-" + player + " code-" + code + " msg-" + msg + " info-" + extraInfo);
             }
 
             @Override
             public void onVideoLoading(V2TXLivePlayer player, Bundle extraInfo) {
-                LogUtils.e(TAG + "[Player] onVideoLoading: player-" + player + ", extraInfo-" + extraInfo);
+                LogUtils.e(TAG + "2[Player] onVideoLoading: player-" + player + ", extraInfo-" + extraInfo);
             }
 
             @Override
             public void onVideoPlaying(V2TXLivePlayer player, boolean firstPlay, Bundle extraInfo) {
                 LogUtils.e(TAG +
-                        "[Player] onVideoPlaying: player-" + player + " firstPlay-" + firstPlay + " info-" + extraInfo);
+                        "[Player] 3onVideoPlaying: player-" + player + " firstPlay-" + firstPlay + " info-" + extraInfo);
             }
 
             @Override
             public void onVideoResolutionChanged(V2TXLivePlayer player, int width, int height) {
-                LogUtils.e(TAG + "[Player] onVideoResolutionChanged: player-" + player + " width-" + width + " height-"
+                LogUtils.e(TAG + "4[Player] onVideoResolutionChanged: player-" + player + " width-" + width + " height-"
                         + height);
             }
 
             @Override
             public void onWarning(V2TXLivePlayer v2TXLivePlayer, int i, String s, Bundle bundle) {
-                LogUtils.e(TAG + "[Player] Override: player-" + v2TXLivePlayer + ", i-" + i + ", s-" + s);
+                LogUtils.e(TAG + "5[Player] Override: player-" + v2TXLivePlayer + ", i-" + i + ", s-" + s);
             }
 
             @Override
             public void onRenderVideoFrame(V2TXLivePlayer player, V2TXLiveDef.V2TXLiveVideoFrame v2TXLiveVideoFrame) {
                 super.onRenderVideoFrame(player, v2TXLiveVideoFrame);
                 LogUtils.e(TAG +
-                        "[Player] onRenderVideoFrame: player-" + player + ", v2TXLiveVideoFrame-" + v2TXLiveVideoFrame);
+                        "[Player] 6onRenderVideoFrame: player-" + player + ", v2TXLiveVideoFrame-" + v2TXLiveVideoFrame);
             }
         };
 

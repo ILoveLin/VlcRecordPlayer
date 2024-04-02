@@ -26,13 +26,13 @@ public class VlcPlayerActivity extends AppCompatActivity {
 
 //    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
     //湖南卫视直播
-//    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
-    public static String mPath01 = "http://220.161.87.62:8800/hls/0/index.m3u8";
+    public static String mPath01 = "http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
+//    public static String mPath01 = "http://220.161.87.62:8800/hls/0/index.m3u8";
 //    public static String mPath01 = "https://www.cambridgeenglish.org/images/153149-movers-sample-listening-test-vol2.mp3";
 private static final String TAG = "Activity,播放器界面中:";
 
-    private RelativeLayout rootView;
-    private MyControlVlcVideoView mPlayerView;
+    private RelativeLayout rootView,rootView2;
+    private MyControlVlcVideoView mPlayerView,mPlayerView2;
     private View.OnTouchListener onTouchVideoListener;
 
     @Override
@@ -54,7 +54,7 @@ private static final String TAG = "Activity,播放器界面中:";
         rootView.setLongClickable(true);  //手势需要--能触摸
         rootView.setOnTouchListener(onTouchVideoListener);
 
-        mPlayerView.setPlayerTitle("你好，我是手动设置传入的标题");
+        mPlayerView.setPlayerTitle("你好，我是播放器--1");
 
         mPlayerView.setVlcControllerLayoutListener(new MyControlVlcVideoView.onVlcControllerLayoutListener() {
             @Override
@@ -72,6 +72,33 @@ private static final String TAG = "Activity,播放器界面中:";
             }
         }, 500);
 
+
+
+
+        mPlayerView2 = findViewById(R.id.player2);
+        //触摸控制亮度和声音,是否可触摸开关
+        rootView2 = mPlayerView2.getRootView();
+        View.OnTouchListener onTouchVideoListener = mPlayerView2.getOnTouchVideoListener();
+        rootView2.setLongClickable(true);  //手势需要--能触摸
+        rootView2.setOnTouchListener(onTouchVideoListener);
+
+        mPlayerView2.setPlayerTitle("你好，我是播放器--2");
+        mPlayerView2.setVlcControllerLayoutListener(new MyControlVlcVideoView.onVlcControllerLayoutListener() {
+            @Override
+            public void finishActivity() {
+                finish();
+            }
+        });
+
+        mPlayerView2.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //开始播放
+                mPlayerView2.setStartLive(mPath01);
+
+            }
+        }, 500);
+
     }
 
     @Override
@@ -79,6 +106,7 @@ private static final String TAG = "Activity,播放器界面中:";
         super.onResume();
         LogUtils.e(TAG + "==onResume");
         mPlayerView.onResume();
+        mPlayerView2.onResume();
     }
 
     @Override
@@ -86,6 +114,7 @@ private static final String TAG = "Activity,播放器界面中:";
         super.onPause();
         LogUtils.e(TAG + "==onPause");
         mPlayerView.onPause();
+        mPlayerView2.onPause();
     }
 
     @Override
@@ -93,6 +122,7 @@ private static final String TAG = "Activity,播放器界面中:";
         super.onStop();
         LogUtils.e(TAG + "==onStop");
         mPlayerView.onStop();
+        mPlayerView2.onStop();
     }
 
     @Override
@@ -100,6 +130,7 @@ private static final String TAG = "Activity,播放器界面中:";
         super.onDestroy();
         LogUtils.e(TAG + "==onDestroy");
         mPlayerView.onDestroy();
+        mPlayerView2.onDestroy();
 
     }
 }

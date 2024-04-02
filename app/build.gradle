@@ -8,8 +8,8 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
     defaultConfig {
-        applicationId "com.company.shenzhou1"
-//        applicationId "com.company.shenzhou"
+//        applicationId "com.company.shenzhou1"
+        applicationId "com.company.shenzhou"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 9
@@ -131,6 +131,8 @@ dependencies {
     implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.7'
     // 可选，使用ijkplayer进行解码
     implementation 'xyz.doikki.android.dkplayer:player-ijk:3.3.7'
+    //signalR  服务器和移动端 双向通讯
+    implementation 'com.microsoft.signalr:signalr:3.1.2'
 
 
     

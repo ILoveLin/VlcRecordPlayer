@@ -551,7 +551,6 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
                             LogUtils.e("ZlmActivity" + "apply====推流到手机服务器--失败==ffmpeg对这个直播流地址http://220.161.87.62:8800/hls/0/index.m3u8===进行二次转推流到本地服务器会失败");
                             LogUtils.e("ZlmActivity" + "apply====推流到手机服务器--失败==请替换可用的直播源地址===");
                             LogUtils.e("ZlmActivity" + "apply====推流到手机服务器--失败==请替换可用的直播源地址===" );
-
                             Toast.makeText(ZlmMediaKitTestActivity.this, "推流到手机服务器--失败", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -582,7 +581,6 @@ public class ZlmMediaKitTestActivity extends AppCompatActivity implements View.O
                 }
                 isPushOK = true;
                 // CALLED WHEN SESSION GENERATES STATISTICS
-
             }
         });
 

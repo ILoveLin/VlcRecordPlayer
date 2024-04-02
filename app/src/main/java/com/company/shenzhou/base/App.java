@@ -76,6 +76,7 @@ public class App extends Application {
     }
 
     private void initTencentLive() {
+
         String licenceURL = "https://license.vod2.myqcloud.com/license/v2/1255750344_1/v_cube.license"; // 获取到的 licence url
         String licenceKey = "05fcb2597e0e53dfa98cd026c388455e"; // 获取到的 licence key
         V2TXLivePremier.setLicence(this, licenceURL, licenceKey);
