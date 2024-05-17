@@ -1,0 +1,26 @@
+com/vlc/lib/listener/VideoSizeChange.java
+ com.vlc.lib.listener.VideoSizeChange
+com/vlc/lib/listener/MediaPlayerControl.java
+ com.vlc.lib.listener.MediaPlayerControl
+com/vlc/lib/VlcVideoView.java
+ com.vlc.lib.VlcVideoView
+ com.vlc.lib.VlcVideoView$1
+ com.vlc.lib.VlcVideoView$2
+ com.vlc.lib.VlcVideoView$3
+com/vlc/lib/VlcPlayer.java
+ com.vlc.lib.VlcPlayer
+ com.vlc.lib.VlcPlayer$1
+ com.vlc.lib.VlcPlayer$2
+ com.vlc.lib.VlcPlayer$3
+com/vlc/lib/listener/MediaListenerEvent.java
+ com.vlc.lib.listener.MediaListenerEvent
+com/vlc/lib/listener/util/VLCOptions.java
+ com.vlc.lib.listener.util.VLCOptions
+com/vlc/lib/RecordEvent.java
+ com.vlc.lib.RecordEvent
+com/vlc/lib/BuildConfig.java
+ com.vlc.lib.BuildConfig
+com/vlc/lib/listener/util/LogUtils.java
+ com.vlc.lib.listener.util.LogUtils
+com/vlc/lib/listener/util/VLCInstance.java
+ com.vlc.lib.listener.util.VLCInstance
