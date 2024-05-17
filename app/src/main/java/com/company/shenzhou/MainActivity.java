@@ -9,10 +9,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.company.shenzhou.ffmpeg.FFmpegActivity;
-import com.company.shenzhou.ffmpeg.FFmpegHttpActivity;
 import com.company.shenzhou.signalr.SignalRActivity;
 import com.company.shenzhou.tencent.TencentLiveActivity;
 import com.company.shenzhou.vlc.VlcPlayerActivity;
+import com.company.shenzhou.websocket.WebSocketActivity;
 import com.company.shenzhou.zlm.ZlmMediaKitTestActivity;
 
 /**
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView m2VLCPlayer, m2FFmpegKit, m2ZLMKit, m2Tencent;
     private Intent intent = null;
     private TextView m2Signalr;
+    private TextView m2websocket;
 
 
     @Override
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         m2ZLMKit = findViewById(R.id.tv_to_zlmkit);
         m2Tencent = findViewById(R.id.tv_to_tencent);
         m2Signalr = findViewById(R.id.tv_to_signalr);
+        m2websocket = findViewById(R.id.tv_to_websocket);
 
     }
 
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         m2ZLMKit.setOnClickListener(this);
         m2Tencent.setOnClickListener(this);
         m2Signalr.setOnClickListener(this);
+        m2websocket.setOnClickListener(this);
     }
 
     @Override
@@ -77,8 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent = new Intent(MainActivity.this, TencentLiveActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.tv_to_signalr:     //服务器和App双向通讯Demo
+            case R.id.tv_to_signalr:     //服务器和App双向通讯Demo-signalr
                 intent = new Intent(MainActivity.this, SignalRActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv_to_websocket:     //服务器和App双向通讯Demo-websocket
+                intent = new Intent(MainActivity.this, WebSocketActivity.class);
                 startActivity(intent);
                 break;
         }

@@ -133,7 +133,10 @@ dependencies {
     implementation 'xyz.doikki.android.dkplayer:player-ijk:3.3.7'
     //signalR  服务器和移动端 双向通讯
     implementation 'com.microsoft.signalr:signalr:3.1.2'
+    //WebSocket  服务器和移动端 双向通讯
+    implementation 'org.java-websocket:Java-WebSocket:1.5.1'
 
 
-    
+
+
 }

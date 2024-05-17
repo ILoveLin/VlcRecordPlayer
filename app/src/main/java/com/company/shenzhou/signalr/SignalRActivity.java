@@ -16,7 +16,7 @@ import com.microsoft.signalr.HubConnectionBuilder;
  * company：江西神州医疗设备有限公司
  * author： LoveLin
  * time：2023/6/1 11:18
- * desc：服务器和移动端（Android ios）双向通讯Demo
+ * desc：Signal服务器和移动端（Android ios）双向通讯Demo
  *
  */
 public class SignalRActivity extends AppCompatActivity implements View.OnClickListener {
@@ -27,6 +27,7 @@ public class SignalRActivity extends AppCompatActivity implements View.OnClickLi
     private EditText et_receive;
     private HubConnection hubConnection;
     private TextView tv_back;
+    private boolean connected = false;
 
 
     @Override
@@ -40,7 +41,6 @@ public class SignalRActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initSignalR() {
-
         new Thread() {
             @Override
             public void run() {

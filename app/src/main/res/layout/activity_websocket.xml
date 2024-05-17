@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginTop="@dimen/padding_2"
+                android:id="@+id/tv_back2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_50"
+                android:background="@color/base_btn_deep_color"
+                android:gravity="center_vertical"
+                android:text="返回"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_font_22" />
+
+            <EditText
+                android:layout_marginTop="@dimen/padding_2"
+                android:layout_below="@+id/tv_back2"
+                android:id="@+id/et_websocket_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="WebSocket服务器adress"
+                android:text="ws://192.168.71.46:50000/ws"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_font_18">
+
+            </EditText>
+
+            <TextView
+                android:layout_marginTop="@dimen/padding_2"
+                android:id="@+id/tv_connect"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_50"
+                android:layout_below="@+id/et_websocket_address"
+                android:background="@color/base_btn_light_color"
+                android:gravity="center_vertical"
+                android:text="连接WebSocket"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_font_22" />
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/padding_2"
+                android:id="@+id/lineat_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_connect"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_receive"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_50"
+                    android:gravity="center"
+                    android:text="接受消息"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_font_22" />
+
+                <EditText
+                    android:id="@+id/et_receive"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="接受消息"
+                    android:text=""
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_font_22">
+
+                </EditText>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/lineat_top"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_50"
+                    android:gravity="center"
+                    android:text="发送消息"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_font_22" />
+
+                <EditText
+                    android:id="@+id/et_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="接受消息"
+                    android:text=""
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_font_22">
+
+                </EditText>
+
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
