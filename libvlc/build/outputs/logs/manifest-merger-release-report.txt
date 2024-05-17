@@ -1,0 +1,43 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:1-5:12
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:1-5:12
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:1-5:12
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:1-5:12
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:1-5:12
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:1-5:12
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:1-5:12
+	package
+		ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:3:7-28
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:1-5:12
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:1-5:12
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:2:11-69
+uses-feature#0x00020000
+ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:5-78
+	android:glEsVersion
+		ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:19-51
+	android:required
+		ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:52-75
+uses-sdk
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Administrator\Desktop\CurrentProject\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml

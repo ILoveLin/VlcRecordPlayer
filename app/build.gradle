@@ -82,7 +82,7 @@ android {
 //                32 ：lib/x86
 //                64 ：lib/x86_64
 //                abiFilters 'armeabi-v7a' //32位
-                abiFilters 'x86','armeabi', 'arm64-v8a', 'armeabi-v7a'  //arm64位
+                abiFilters 'x86','armeabi',  'armeabi-v7a'  //arm64位
 //                abiFilters 'armeabi-v7a' //32位
 
             }
@@ -125,7 +125,6 @@ dependencies {
     implementation project(':libvlc')//vlc
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation files('libs/zml_debug.aar')//zml把手机作为服务器的苦
-    implementation files('libs/LiteAVSDK_Professional_11.2.0.13154.aar')//腾讯云快直播
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
@@ -173,7 +172,8 @@ dependencies {
     implementation 'com.microsoft.signalr:signalr:3.1.2'
     //WebSocket  服务器和移动端 双向通讯
     implementation 'org.java-websocket:Java-WebSocket:1.5.1'
-
+    //https://cloud.tencent.com/document/product/881/81205   11.8.0.14176  这个版本不会出现直播画面语音，左右声道不一致的问题
+    implementation 'com.tencent.liteav:LiteAVSDK_Professional:11.8.0.14176'
 
 
 
