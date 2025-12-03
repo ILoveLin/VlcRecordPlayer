@@ -164,7 +164,7 @@ player/
 <com.company.shenzhou.player.ui.UniversalVideoView
     android:id="@+id/video_view"
     android:layout_width="match_parent"
-    android:layout_height="200dp" />
+    android:layout_height="match_parent" />
 ```
 
 #### 2. 代码使用
@@ -218,7 +218,7 @@ PlayerActivity.start(context, url, "标题", PlayerType.VLC, 1.5f);
 // 播放
 videoView.play("http://example.com/video.mp4");
 
-// 带请求头播放
+// 带请求头播放，没有直接传null
 Map<String, String> headers = new HashMap<>();
 headers.put("Authorization", "Bearer xxx");
 videoView.play(url, headers);
