@@ -1,8 +1,6 @@
 # 统一播放器框架
 
-# VLC播放器Demo（录像，截图等功能），可二次开发。
-# ffmpeg-Kit （录像，截图,合流播放,合流推送(到本地手机服务器或者公司三方服务器),等一些列视频操作功能），可二次开发。
-# ZLMediaKit 作为本地推流服务器的使用，可以直接提取so或者aar文件给自己二次开发。
+# VLC播放器Demo（录像，截图等功能），可二次开发。支持内核切换ijk或者系统自带播放器
 
 #### 如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q。
 
@@ -10,8 +8,7 @@
 
 #### 如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q，3Q，3Q。
 
-* vlc编译，源库地址是这个博主的：https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下。
-* ZLMediaKit编译，源库地址是这个博主的：https://github.com/ZLMediaKit/ZLMediaKit 可以去star支持下。
+* vlc编译，源库地址是这个博主的：https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下。16kb内存页过些天有空再去集成
 
 * 基于VLC的播放器（Android
   录像，截图），可做二次开发，支持在点播或者直播，播放的时候：录像，截图等等功能。支持RTSP，RTMP，HTTP，HLS，HTTPS等等。支持所有CPU架构。
@@ -20,11 +17,6 @@
 * 使用VLC，作为播放器：实现，录像，截图功能（点播,直播都支持!） 特意花时间写了个Demo开源出来，希望能帮助到需要的人！！
 
 
-* ffmpeg-Kit 可以执行任何ffmpeg命令行操作,Demo中对直播流(也可以本地文件)进行了：录像，截图等等功能，也可以做任何你想要的操作，比如将直播音频流和视频流合流播放，合流推流等等操作。
-
-* ffmpeg-Kit，可以实现任何ffmpeg命令行操作, 特意花时间写了个Demo开源出来，希望能帮助到需要的人！
-* ffmpeg-Kit，可以实现任何ffmpeg命令行操作, 特意花时间写了个Demo开源出来，希望能帮助到需要的人！！
-
 ## 动图欣赏
 
 * 如果看不到gif动图，请科学上网查看gif效果图，或者下载项目之后本地打开。在picture文件夹/gif文件夹/vlc.gif和ffmpeg.gif，zmlkit.gif。
@@ -32,13 +24,6 @@
 * VLCDemo测试，动图欣赏vlc.gif
   ![](picture/gif/vlc.gif)
 
-
-* ffmpegDemo测试，动图欣赏ffmpeg.gif
-  ![](picture/gif/ffmpeg.gif)
-
-
-* ZLMediaKitDemo测试，动图欣赏zmlkit.gif
-  ![](picture/gifzmlkit.gif)
 
 
 ## 架构说明
