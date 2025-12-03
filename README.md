@@ -30,7 +30,7 @@
 
 > ⚠️ GIF 文件较大（约18MB），如无法加载请直接查看：[picture/gif/player.gif](picture/gif/player.gif)
 
-![player演示](picture/gif/player.gif)
+<img src="picture/gif/player.gif" width="350" alt="player演示">
 
 
 
