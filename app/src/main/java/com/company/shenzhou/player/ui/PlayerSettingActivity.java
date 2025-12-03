@@ -47,6 +47,9 @@ public class PlayerSettingActivity extends AppCompatActivity {
         mBtnPlay = findViewById(R.id.btn_play);
         mTvTip = findViewById(R.id.tv_tip);
 
+        // 返回按钮
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
+
         mEtUrl.setText(DEFAULT_URL);
         updateTip();
     }

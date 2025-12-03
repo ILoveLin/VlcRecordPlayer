@@ -1,50 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/title"
+    <!-- 顶部标题栏 -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/padding_50"
-        android:background="@color/common_confirm_text_color"
-        android:gravity="center"
-        android:text="音视频演示Demo"
-        android:textColor="@color/white"
-        android:textSize="@dimen/padding_18" />
+        android:layout_height="56dp"
+        android:background="#2196F3"
+        android:elevation="4dp">
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="音视频演示Demo"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_to_tencent"
+    <!-- 内容区域 -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/padding_50"
-        android:layout_below="@id/title"
-        android:layout_marginStart="@dimen/padding_10"
-        android:layout_marginTop="@dimen/padding_10"
-        android:layout_marginEnd="@dimen/padding_10"
-        android:layout_marginBottom="@dimen/padding_10"
-        android:background="@drawable/shape_dialog_bg_case_confirm"
-        android:gravity="center"
-        android:text="跳转，腾讯直播界面"
-        android:textColor="@color/white"
-        android:textSize="@dimen/padding_18" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/tv_to_universal_player"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/padding_50"
-        android:layout_below="@id/tv_to_tencent"
-        android:layout_marginStart="@dimen/padding_10"
-        android:layout_marginTop="@dimen/padding_10"
-        android:layout_marginEnd="@dimen/padding_10"
-        android:layout_marginBottom="@dimen/padding_10"
-        android:background="@drawable/shape_dialog_bg_case_confirm"
-        android:gravity="center"
-        android:text="跳转，统一播放器Demo(录像/截图)"
-        android:textColor="@color/white"
-        android:textSize="@dimen/padding_18" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-</RelativeLayout>
+            <!-- 分类标题 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="功能演示"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+            <!-- 腾讯直播卡片 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:id="@+id/tv_to_tencent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="#E3F2FD"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_player_play" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="腾讯直播"
+                            android:textColor="#212121"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="腾讯云直播SDK演示"
+                            android:textColor="#757575"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_player_back"
+                        android:rotation="180" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- 统一播放器卡片 -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:id="@+id/tv_to_universal_player"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="#FFF3E0"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_player_record" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="统一播放器"
+                            android:textColor="#212121"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="支持VLC/IJK内核，录像/截图功能"
+                            android:textColor="#757575"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_player_back"
+                        android:rotation="180" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- 底部说明 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:text="author: LoveLin\ngithub: ILoveLin/VlcRecordPlayer"
+                android:textAlignment="center"
+                android:textColor="#9E9E9E"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

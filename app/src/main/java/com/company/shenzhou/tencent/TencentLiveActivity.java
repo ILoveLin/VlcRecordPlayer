@@ -66,7 +66,9 @@ public class TencentLiveActivity extends AppCompatActivity implements View.OnCli
         mMicStopPush = findViewById(R.id.btn_mic_stop);
         mMicPushStatue = findViewById(R.id.tv_mic_statue);
         mPlayRenderView = findViewById(R.id.play_tx_cloud_view);
-
+        
+        // 返回按钮
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
     }
 
     @Override
@@ -283,6 +285,6 @@ public class TencentLiveActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onBackPressed() {
-
+        super.onBackPressed();
     }
 }
