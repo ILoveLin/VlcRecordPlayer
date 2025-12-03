@@ -202,13 +202,7 @@ videoView.setSnapshotDirectory("/sdcard/MyApp/snapshots");
 ## 宽高比类型
 
 ```java
-videoView.setAspectRatioType(AspectRatioType.FIT_PARENT);   // 适应父容器
-videoView.setAspectRatioType(AspectRatioType.FILL_PARENT);  // 填充父容器
-videoView.setAspectRatioType(AspectRatioType.WRAP_CONTENT); // 原始尺寸
-videoView.setAspectRatioType(AspectRatioType.FIT_WIDTH);    // 适应宽度
-videoView.setAspectRatioType(AspectRatioType.FIT_HEIGHT);   // 适应高度
 videoView.setAspectRatioType(AspectRatioType.RATIO_16_9);   // 16:9
-videoView.setAspectRatioType(AspectRatioType.RATIO_4_3);    // 4:3
 ```
 
 ## 注意事项
