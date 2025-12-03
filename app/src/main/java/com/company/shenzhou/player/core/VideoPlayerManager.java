@@ -380,6 +380,15 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
         return takeSnapshot(filePath, 0, 0);
     }
 
+    /**
+     * 判断当前流是否支持进度拖动（seek）
+     * 点播流返回 true，直播流返回 false
+     * @return true 支持进度拖动
+     */
+    public boolean isSeekable() {
+        return mEngine != null && mEngine.isSeekable();
+    }
+
     // ==================== IRenderView.SurfaceListener ====================
 
     @Override
@@ -437,6 +446,18 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
         if (mEngine != null && mPlayerType == PlayerType.VLC) {
             if (mEngine instanceof com.company.shenzhou.player.engine.VlcPlayerEngine) {
                 ((com.company.shenzhou.player.engine.VlcPlayerEngine) mEngine).onSurfaceDestroyed();
+            }
+        }
+    }
+
+    /**
+     * 横竖屏切换时调用，优化 VLC 切换体验
+     * 在 Activity 的 onConfigurationChanged 中调用
+     */
+    public void onOrientationChanged() {
+        if (mEngine != null && mPlayerType == PlayerType.VLC) {
+            if (mEngine instanceof com.company.shenzhou.player.engine.VlcPlayerEngine) {
+                ((com.company.shenzhou.player.engine.VlcPlayerEngine) mEngine).onOrientationChanged();
             }
         }
     }

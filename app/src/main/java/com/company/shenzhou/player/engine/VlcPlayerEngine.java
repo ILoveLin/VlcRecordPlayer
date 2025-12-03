@@ -108,16 +108,16 @@ public class VlcPlayerEngine extends BasePlayerEngine {
 
     /**
      * VLC 配置选项
-     * 优化配置减少黑屏时间
+     * 优化配置减少首屏加载时间
      */
     private ArrayList<String> getVlcOptions() {
         ArrayList<String> options = new ArrayList<>();
         
-        // 延迟设置 - 值越小，延迟越小，但可能不稳定
+        // 时钟同步
         options.add(":clock-jitter=0");
         options.add(":clock-synchro=0");
         
-        // 缓存配置 - 减小缓存值以加快首帧显示
+        // 缓存配置 - 150ms 平衡配置
         options.add("--rtsp-caching=150");
         options.add("--tcp-caching=150");
         options.add("--realrtsp-caching=150");
@@ -137,7 +137,7 @@ public class VlcPlayerEngine extends BasePlayerEngine {
         // 网络配置
         options.add("--http-reconnect");
         
-        // 视频处理
+        // 解码器优化
         options.add("--avcodec-fast");
         options.add("--avcodec-skiploopfilter=4");
         
@@ -259,8 +259,25 @@ public class VlcPlayerEngine extends BasePlayerEngine {
     @Override
     public void seekTo(long position) {
         if (mVlcPlayer != null && mIsPrepared) {
+            // 对于点播流，即使 VLC 的 canSeek 未设置也尝试 seek
+            // 因为某些 HLS 流可能延迟触发 SeekableChanged 事件
             mVlcPlayer.seekTo(position);
+            android.util.Log.d("VlcPlayerEngine", "seekTo: position=" + position + 
+                    ", duration=" + getDuration() + ", isSeekable=" + isSeekable());
         }
+    }
+
+    /**
+     * 判断当前流是否支持进度拖动
+     * 点播流（有时长）返回 true，直播流返回 false
+     * @return true 支持进度拖动
+     */
+    public boolean isSeekable() {
+        if (mVlcPlayer != null) {
+            return mVlcPlayer.isSeekable();
+        }
+        // 如果有时长，认为是点播流
+        return getDuration() > 0;
     }
 
     @Override
@@ -507,6 +524,28 @@ public class VlcPlayerEngine extends BasePlayerEngine {
         mIsSurfaceReady = false;
         if (mVlcPlayer != null) {
             mVlcPlayer.onSurfaceTextureDestroyedUI();
+        }
+    }
+
+    /**
+     * 设置是否启用视频轨道缓存清理
+     * 开启后可以减少横竖屏切换时的黑屏时间
+     * @param enable true 启用（推荐），false 禁用
+     */
+    public void setClearVideoTrackCache(boolean enable) {
+        if (mVlcPlayer != null) {
+            mVlcPlayer.clearVideoTrackCache = enable;
+        }
+    }
+
+    /**
+     * 横竖屏切换时调用，用于优化切换体验
+     * 在 Activity 的 onConfigurationChanged 中调用此方法
+     */
+    public void onOrientationChanged() {
+        if (mVlcPlayer != null && mVlcPlayer.isPrepare()) {
+            // 启用缓存清理，减少黑屏
+            mVlcPlayer.clearVideoTrackCache = true;
         }
     }
 }

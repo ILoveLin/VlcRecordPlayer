@@ -17,7 +17,9 @@ public class TextureRenderView extends TextureView implements IRenderView, Textu
 
     private SurfaceListener mSurfaceListener;
     private Surface mSurface;
+    private SurfaceTexture mSavedSurfaceTexture;
     private MeasureHelper mMeasureHelper;
+    private boolean mIsSurfaceAvailable = false;
 
     public TextureRenderView(Context context) {
         this(context, null);
@@ -67,14 +69,6 @@ public class TextureRenderView extends TextureView implements IRenderView, Textu
     }
 
     @Override
-    public void release() {
-        if (mSurface != null) {
-            mSurface.release();
-            mSurface = null;
-        }
-    }
-
-    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int[] measuredSize = mMeasureHelper.measure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(measuredSize[0], measuredSize[1]);
@@ -84,24 +78,30 @@ public class TextureRenderView extends TextureView implements IRenderView, Textu
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-        // 参考 VlcVideoView 的实现：每次都创建新的 Surface
-        // 因为 SurfaceTexture 可能被重新创建，旧的 Surface 可能无效
-        if (mSurface != null) {
-            mSurface.release();
-        }
-        mSurface = new Surface(surfaceTexture);
-        
-        if (mSurfaceListener != null) {
-            // 参考 VlcVideoView 的实现：在 onSurfaceTextureAvailable 中
-            // 先通知尺寸变化，再通知 Surface 创建
-            // 这样 VLC 可以在 setSurface 之前先设置 WindowSize
-            mSurfaceListener.onSurfaceAvailable(mSurface, width, height);
+        // 如果有保存的 SurfaceTexture，复用它以避免切换屏幕时的黑屏
+        if (mSavedSurfaceTexture != null) {
+            setSurfaceTexture(mSavedSurfaceTexture);
+            // 尺寸可能变化，通知监听器
+            if (mSurfaceListener != null && mSurface != null) {
+                mSurfaceListener.onSurfaceChanged(mSurface, width, height);
+            }
+        } else {
+            mSavedSurfaceTexture = surfaceTexture;
+            if (mSurface != null) {
+                mSurface.release();
+            }
+            mSurface = new Surface(surfaceTexture);
+            mIsSurfaceAvailable = true;
+            
+            if (mSurfaceListener != null) {
+                mSurfaceListener.onSurfaceAvailable(mSurface, width, height);
+            }
         }
     }
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int width, int height) {
-        if (mSurfaceListener != null) {
+        if (mSurfaceListener != null && mSurface != null) {
             mSurfaceListener.onSurfaceChanged(mSurface, width, height);
         }
     }
@@ -109,14 +109,30 @@ public class TextureRenderView extends TextureView implements IRenderView, Textu
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
         android.util.Log.d("TextureRenderView", "onSurfaceTextureDestroyed called");
-        if (mSurfaceListener != null) {
-            mSurfaceListener.onSurfaceDestroyed(mSurface);
-        }
-        return true;
+        // 返回 false 表示我们自己管理 SurfaceTexture 的生命周期
+        // 这样切换屏幕时不会销毁 SurfaceTexture，避免黑屏
+        // 只有在 release() 时才真正销毁
+        return false;
     }
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
         // 每帧更新时调用，通常不需要处理
+    }
+
+    @Override
+    public void release() {
+        mIsSurfaceAvailable = false;
+        if (mSurface != null) {
+            mSurface.release();
+            mSurface = null;
+        }
+        if (mSavedSurfaceTexture != null) {
+            mSavedSurfaceTexture.release();
+            mSavedSurfaceTexture = null;
+        }
+        if (mSurfaceListener != null) {
+            mSurfaceListener.onSurfaceDestroyed(null);
+        }
     }
 }

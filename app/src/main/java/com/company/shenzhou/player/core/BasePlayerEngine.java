@@ -196,6 +196,12 @@ public abstract class BasePlayerEngine implements IPlayerEngine {
         return false;
     }
 
+    @Override
+    public boolean isSeekable() {
+        // 默认实现：如果有时长则认为可以 seek
+        return getDuration() > 0;
+    }
+
     // ==================== 回调通知（主线程） ====================
 
     protected void notifyOnPrepared() {

@@ -24,6 +24,9 @@ buildscript {
 
 allprojects {
     repositories {
+        // 腾讯云镜像（国内访问更快，同步更及时）
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
+        maven { url 'https://mirrors.cloud.tencent.com/gradle/' }
         mavenCentral()
         maven {url 'https://maven.aliyun.com/repository/google/'}
         maven {url 'https://maven.aliyun.com/repository/public/'}

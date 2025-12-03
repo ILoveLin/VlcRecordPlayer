@@ -185,8 +185,13 @@ public class UniversalVideoView extends FrameLayout {
 
     /**
      * 设置播放速度
+     * 注意：直播流不支持倍速播放，会被忽略
      */
     public void setSpeed(float speed) {
+        // 直播流不支持倍速播放
+        if (isLiveStream()) {
+            return;
+        }
         mPlayerManager.setSpeed(speed);
     }
 
@@ -195,6 +200,27 @@ public class UniversalVideoView extends FrameLayout {
      */
     public float getSpeed() {
         return mPlayerManager.getSpeed();
+    }
+
+    /**
+     * 是否是直播流
+     * 直播流特征：无法获取总时长（duration <= 0）
+     */
+    public boolean isLiveStream() {
+        if (mController != null) {
+            return mController.isLiveStream();
+        }
+        // 备用判断：duration <= 0 表示直播流
+        return mPlayerManager.getDuration() <= 0;
+    }
+
+    /**
+     * 判断当前流是否支持进度拖动（seek）
+     * 点播流返回 true，直播流返回 false
+     * @return true 支持进度拖动
+     */
+    public boolean isSeekable() {
+        return mPlayerManager != null && mPlayerManager.isSeekable();
     }
 
     /**
@@ -371,6 +397,16 @@ public class UniversalVideoView extends FrameLayout {
      */
     public boolean isFullscreen() {
         return mIsFullscreen;
+    }
+
+    /**
+     * 横竖屏切换时调用，优化 VLC 切换体验
+     * 在 Activity 的 onConfigurationChanged 中调用
+     */
+    public void onOrientationChanged() {
+        if (mPlayerManager != null) {
+            mPlayerManager.onOrientationChanged();
+        }
     }
 
     // ==================== 控制器设置 ====================

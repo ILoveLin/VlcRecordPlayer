@@ -162,6 +162,13 @@ public interface IPlayerEngine {
     @PlayerType
     int getPlayerType();
 
+    /**
+     * 判断当前流是否支持进度拖动（seek）
+     * 点播流返回 true，直播流返回 false
+     * @return true 支持进度拖动
+     */
+    boolean isSeekable();
+
     // ==================== 监听器设置 ====================
 
     void setOnPreparedListener(OnPreparedListener listener);

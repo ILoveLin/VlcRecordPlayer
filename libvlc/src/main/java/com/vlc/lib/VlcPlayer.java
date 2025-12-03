@@ -635,20 +635,41 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
 
     @Override
     public void seekTo(int pos) {
-        if (isPrepare() && canSeek && !isSeeking) {
-            isSeeking = true;
-            mMediaPlayer.setTime(pos);
-            isSeeking = false;
+        if (isPrepare() && !isSeeking) {
+            // 对于点播流（有时长），即使 canSeek 未设置也尝试 seek
+            // 因为某些 HLS 流可能延迟触发 SeekableChanged 事件
+            if (canSeek || getDuration() > 0) {
+                isSeeking = true;
+                mMediaPlayer.setTime(pos);
+                isSeeking = false;
+            }
         }
     }
 
     @Override
     public void seekTo(long pos) {
-        if (isPrepare() && canSeek && !isSeeking) {
-            isSeeking = true;
-            mMediaPlayer.setTime(pos);
-            isSeeking = false;
+        if (isPrepare() && !isSeeking) {
+            // 对于点播流（有时长），即使 canSeek 未设置也尝试 seek
+            // 因为某些 HLS 流可能延迟触发 SeekableChanged 事件
+            if (canSeek || getDuration() > 0) {
+                isSeeking = true;
+                mMediaPlayer.setTime(pos);
+                isSeeking = false;
+            }
         }
+    }
+
+    /**
+     * 判断当前流是否可以 seek
+     * 对于点播流（有时长）返回 true，直播流返回 false
+     * @return true 可以 seek
+     */
+    public boolean isSeekable() {
+        // 优先使用 VLC 的 canSeek 标志
+        if (canSeek) return true;
+        // 如果有时长，认为是点播流，可以 seek
+        if (isPrepare() && getDuration() > 0) return true;
+        return false;
     }
 
     @Override

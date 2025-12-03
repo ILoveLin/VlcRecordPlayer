@@ -98,6 +98,11 @@ public class VideoController extends FrameLayout implements IController, PlayerS
     private boolean mIsLockBarShowing = false;  // 锁定状态下左侧栏是否显示
     private boolean mIsFullscreen = false;      // 是否全屏
     private boolean mIsMuted = false;           // 是否静音
+    private boolean mIsLiveStream = false;      // 是否是直播流（无法获取时长）
+    private boolean mIsSeeking = false;         // 是否正在 seek 中
+    private long mSeekTargetPosition = -1;      // seek 目标位置
+    private long mSeekStartTime = 0;            // seek 开始时间
+    private static final long SEEK_TIMEOUT = 2000; // seek 超时时间（毫秒）
 
     // 可自定义的图标资源ID
     private int mPlayIconResId = R.drawable.ic_player_play;
@@ -230,11 +235,36 @@ public class VideoController extends FrameLayout implements IController, PlayerS
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    mIsDragging = false;
                     if (mPlayerManager != null) {
                         long duration = mPlayerManager.getDuration();
-                        long position = duration * seekBar.getProgress() / 100;
-                        mPlayerManager.seekTo(position);
+                        // 使用 isSeekable() 判断是否支持进度拖动
+                        // 对于点播流（有时长且可 seek），执行 seek 操作
+                        if (duration > 0 && mPlayerManager.isSeekable()) {
+                            long position = duration * seekBar.getProgress() / 100;
+                            android.util.Log.d("VideoController", "onStopTrackingTouch: seeking to " + position +
+                                    ", duration=" + duration + ", progress=" + seekBar.getProgress());
+                            
+                            // 记录 seek 目标位置和时间，防止进度条回弹
+                            mSeekTargetPosition = position;
+                            mSeekStartTime = System.currentTimeMillis();
+                            mIsSeeking = true;
+                            
+                            mPlayerManager.seekTo(position);
+                            
+                            // 延迟恢复进度更新，给 VLC 时间完成 seek
+                            // HLS 流可能需要更长时间，使用 1500ms
+                            mHandler.postDelayed(() -> {
+                                mIsDragging = false;
+                                // 检查 seek 是否已经完成（位置接近目标位置）
+                                checkSeekComplete();
+                            }, 1500);
+                        } else {
+                            android.util.Log.d("VideoController", "onStopTrackingTouch: seek not supported, duration=" +
+                                    duration + ", isSeekable=" + (mPlayerManager != null ? mPlayerManager.isSeekable() : false));
+                            mIsDragging = false;
+                        }
+                    } else {
+                        mIsDragging = false;
                     }
                     postHideRunnable();
                 }
@@ -1085,14 +1115,95 @@ public class VideoController extends FrameLayout implements IController, PlayerS
         long position = mPlayerManager.getCurrentPosition();
         long duration = mPlayerManager.getDuration();
         int bufferPercent = mPlayerManager.getBufferPercentage();
+        boolean isSeekable = mPlayerManager.isSeekable();
 
-        if (mSeekBar != null && duration > 0) {
+        // 检测是否是直播流（duration <= 0 或不可 seek 表示直播）
+        boolean isLive = duration <= 0 || !isSeekable;
+        if (isLive != mIsLiveStream) {
+            mIsLiveStream = isLive;
+            updateLiveStreamUI();
+        }
+
+        // 如果正在 seek 中，使用目标位置而不是实际位置，防止进度条回弹
+        if (mIsSeeking && mSeekTargetPosition >= 0) {
+            // 检查是否超时
+            if (System.currentTimeMillis() - mSeekStartTime > SEEK_TIMEOUT) {
+                // 超时，重置 seek 状态
+                mIsSeeking = false;
+                mSeekTargetPosition = -1;
+                android.util.Log.d("VideoController", "updateProgress: seek timeout, reset seek state");
+            } else {
+                // 检查实际位置是否已经接近目标位置（误差在 2 秒内）
+                if (Math.abs(position - mSeekTargetPosition) < 2000) {
+                    // seek 完成
+                    mIsSeeking = false;
+                    mSeekTargetPosition = -1;
+                    android.util.Log.d("VideoController", "updateProgress: seek complete, position=" + position);
+                } else {
+                    // 仍在 seek 中，使用目标位置
+                    position = mSeekTargetPosition;
+                    android.util.Log.d("VideoController", "updateProgress: still seeking, use target position=" + position);
+                }
+            }
+        }
+
+        if (!mIsLiveStream && mSeekBar != null && duration > 0) {
             int progress = (int) (position * 100 / duration);
             mSeekBar.setProgress(progress);
             mSeekBar.setSecondaryProgress(bufferPercent);
         }
-        if (mCurrentTime != null) mCurrentTime.setText(formatTime(position));
-        if (mTotalTime != null) mTotalTime.setText(formatTime(duration));
+        if (mCurrentTime != null) {
+            mCurrentTime.setText(mIsLiveStream ? "直播中" : formatTime(position));
+        }
+        if (mTotalTime != null) {
+            mTotalTime.setVisibility(mIsLiveStream ? GONE : VISIBLE);
+            if (!mIsLiveStream) {
+                mTotalTime.setText(formatTime(duration));
+            }
+        }
+    }
+
+    /**
+     * 检查 seek 是否完成
+     */
+    private void checkSeekComplete() {
+        if (!mIsSeeking || mPlayerManager == null) return;
+        
+        long currentPosition = mPlayerManager.getCurrentPosition();
+        // 如果当前位置接近目标位置（误差在 3 秒内），认为 seek 完成
+        if (mSeekTargetPosition >= 0 && Math.abs(currentPosition - mSeekTargetPosition) < 3000) {
+            mIsSeeking = false;
+            mSeekTargetPosition = -1;
+            android.util.Log.d("VideoController", "checkSeekComplete: seek complete, position=" + currentPosition);
+        } else {
+            // 如果还没完成，继续等待
+            android.util.Log.d("VideoController", "checkSeekComplete: still seeking, current=" + currentPosition + 
+                    ", target=" + mSeekTargetPosition);
+            // 再等待 500ms 后再次检查
+            mHandler.postDelayed(this::checkSeekComplete, 500);
+        }
+    }
+
+    /**
+     * 更新直播流/点播流的 UI 显示
+     * 直播流：隐藏进度条和时间
+     * 点播流：显示进度条和时间
+     */
+    private void updateLiveStreamUI() {
+        if (mSeekBar != null) {
+            mSeekBar.setVisibility(mIsLiveStream ? GONE : VISIBLE);
+            mSeekBar.setEnabled(!mIsLiveStream);
+        }
+        if (mTotalTime != null) {
+            mTotalTime.setVisibility(mIsLiveStream ? GONE : VISIBLE);
+        }
+    }
+
+    /**
+     * 是否是直播流
+     */
+    public boolean isLiveStream() {
+        return mIsLiveStream;
     }
 
     @Override
