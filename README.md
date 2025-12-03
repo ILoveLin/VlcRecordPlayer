@@ -1,3 +1,5 @@
+# 统一播放器框架
+
 # VLC播放器Demo（录像，截图等功能），可二次开发。
 # ffmpeg-Kit （录像，截图,合流播放,合流推送(到本地手机服务器或者公司三方服务器),等一些列视频操作功能），可二次开发。
 # ZLMediaKit 作为本地推流服务器的使用，可以直接提取so或者aar文件给自己二次开发。
@@ -9,7 +11,6 @@
 #### 如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q，3Q，3Q。
 
 * vlc编译，源库地址是这个博主的：https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下。
-* ffmpeg-kit编译，源库地址是这个博主的：https://github.com/arthenica/ffmpeg-kit 可以去star支持下。
 * ZLMediaKit编译，源库地址是这个博主的：https://github.com/ZLMediaKit/ZLMediaKit 可以去star支持下。
 
 * 基于VLC的播放器（Android
@@ -29,190 +30,192 @@
 * 如果看不到gif动图，请科学上网查看gif效果图，或者下载项目之后本地打开。在picture文件夹/gif文件夹/vlc.gif和ffmpeg.gif，zmlkit.gif。
 
 * VLCDemo测试，动图欣赏vlc.gif
-![](picture/gif/vlc.gif)
+  ![](picture/gif/vlc.gif)
 
 
 * ffmpegDemo测试，动图欣赏ffmpeg.gif
-![](picture/gif/ffmpeg.gif)
+  ![](picture/gif/ffmpeg.gif)
 
 
 * ZLMediaKitDemo测试，动图欣赏zmlkit.gif
-![](picture/gifzmlkit.gif)
+  ![](picture/gifzmlkit.gif)
 
-#### VLC播放器，使用指南
 
-* 请直接，下载Demo查看，通俗易懂，谢谢。
+## 架构说明
 
-* 主要功能（录像，截图），我封装在MyControlVlcVideoView，这个自定义View里面去了，可以直接下载Demo搜索“截图”，“录像”，功能查看代码即可。
+```
+player/
+├── core/                          # 核心层
+│   ├── IPlayerEngine.java         # 播放器接口
+│   ├── BasePlayerEngine.java      # 播放器基类
+│   ├── PlayerType.java            # 类型定义
+│   ├── PlayerState.java           # 状态枚举
+│   ├── PlayerFactory.java         # 工厂类
+│   └── VideoPlayerManager.java    # 播放器管理器
+│
+├── engine/                        # 内核实现
+│   ├── VlcPlayerEngine.java       # VLC 内核
+│   └── MediaPlayerEngine.java     # 原生 MediaPlayer 内核
+│
+├── render/                        # 渲染层
+│   ├── IRenderView.java           # 渲染接口
+│   ├── AspectRatioType.java       # 宽高比类型
+│   ├── MeasureHelper.java         # 测量辅助类
+│   ├── TextureRenderView.java     # TextureView 渲染
+│   └── SurfaceRenderView.java     # SurfaceView 渲染
+│
+├── controller/                    # 控制器
+│   ├── IController.java           # 控制器接口
+│   ├── VideoController.java       # 播放控制UI
+│   └── GestureController.java     # 手势控制
+│
+├── ui/                            # 视图层
+│   ├── UniversalVideoView.java    # 统一视频视图
+│   └── PlayerActivity.java        # 播放器 Activity
+│
+└── listener/                      # 监听器
+    ├── OnPreparedListener.java
+    ├── OnCompletionListener.java
+    ├── OnErrorListener.java
+    ├── OnBufferingUpdateListener.java
+    ├── OnVideoSizeChangedListener.java
+    ├── OnInfoListener.java
+    └── PlayerStateListener.java
+```
 
-* 主要功能（录像，截图），我封装在MyControlVlcVideoView，这个自定义View里面去了，可以直接下载Demo搜索“截图”，“录像”，功能查看代码即可。
+## 使用方法
 
-* VlcPlayerActivity：此界面是播放界面：只做视频的播放 mPlayerView.setStartLive(mPath01)；
+### 1. 在布局中使用
 
-* MyControlVlcVideoView：自己封装的播放控制View：我把所有功能都封装在这个View里面。如：截图，录像，设置静音播放，手势触摸调节亮度和声音，切换高清播放，打开相册，全屏显示，锁屏功能，设置播放标题，退出界面等等(
-可以自行添加自己需要的功能)。
+```xml
+<com.company.shenzhou.player.ui.UniversalVideoView
+    android:id="@+id/video_view"
+    android:layout_width="match_parent"
+    android:layout_height="200dp" />
+```
 
-#### ffmpeg-kit，使用指南
+### 2. 在代码中使用
 
-* 请直接，下载Demo查看，通俗易懂，谢谢。
+```java
+UniversalVideoView videoView = findViewById(R.id.video_view);
 
-* 主要功能（录像）：
-  ```java
-       //电视台直播流
-      //private String mVideoPath = "http://220.161.87.62:8800/hls/0/index.m3u8";
-      //录像命令
-      // private String CMD = "-i http://220.161.87.62:8800/hls/0/index.m3u8 -c copy ";
-            //获取uri地址
-            Uri uri = FileUtil.createVideoPathUri(MainActivity.this);
-            //获取存储mp4文件地址
-            String outputVideoPath = FFmpegKitConfig.getSafParameter(MainActivity.this, uri, "rw");
-              FFmpegKit.executeAsync(CMD + outputVideoPath, new FFmpegSessionCompleteCallback() {
-  
-                @Override
-                public void apply(FFmpegSession session) {
-                    /**
-                     * returnCode
-                     * returnCode=1         说明:录像,失败
-                     * returnCode=255       说明:录像,成功
-                     * returnCode=0         说明:截图,成功
-                     */
-                    SessionState state = session.getState();
-                    ReturnCode returnCode = session.getReturnCode();        
-                    LogUtils.e("FFmpegKit" + "apply====state=" + state);         
-                    LogUtils.e("FFmpegKit" + "apply====returnCode=" + returnCode);  
-             
-  
-                }
-            }, new LogCallback() {
-  
-                @Override
-                public void apply(com.arthenica.ffmpegkit.Log log) {
-  
-  
-                }
-            }, new StatisticsCallback() {
-  
-                @Override
-                public void apply(Statistics statistics) {
-            
-  
-                    // CALLED WHEN SESSION GENERATES STATISTICS
-  
-                }
-            });
+// 设置播放器内核（可选，默认 VLC）
+videoView.setPlayerType(PlayerType.VLC);
+// videoView.setPlayerType(PlayerType.MEDIA_PLAYER);
+
+// 设置监听器
+videoView.setOnPreparedListener(() -> {
+    Log.d("Player", "准备完成");
+});
+
+videoView.setOnCompletionListener(() -> {
+    Log.d("Player", "播放完成");
+});
+
+videoView.setOnErrorListener((errorCode, errorMsg) -> {
+    Log.e("Player", "播放错误: " + errorMsg);
+    return false;
+});
+
+// 播放视频
+videoView.play("rtsp://xxx.xxx.xxx/live");
+// 或
+videoView.play("http://xxx.xxx.xxx/video.mp4");
+
+// 控制播放
+videoView.pause();
+videoView.start();
+videoView.seekTo(5000);
+videoView.setSpeed(1.5f);
+videoView.setVolume(0.5f, 0.5f);
+
+// 全屏
+videoView.enterFullscreen();
+videoView.exitFullscreen();
+
+// 释放资源（在 Activity onDestroy 中调用）
+videoView.release();
+```
+
+### 3. 使用 PlayerActivity
+
+```java
+// 简单启动
+PlayerActivity.start(context, "rtsp://xxx.xxx.xxx/live");
+
+// 带标题
+PlayerActivity.start(context, "rtsp://xxx.xxx.xxx/live", "直播标题");
+
+// 指定播放器内核
+PlayerActivity.start(context, "rtsp://xxx.xxx.xxx/live", "直播标题", PlayerType.VLC);
+```
+
+## 支持的播放器内核
+
+| 内核 | 类型常量 | 状态 | 录像/截图 | 说明 |
+|------|---------|------|----------|------|
+| VLC | PlayerType.VLC | ✅ 已实现 | ✅ 支持 | 支持 RTSP/RTMP/HTTP 等 |
+| MediaPlayer | PlayerType.MEDIA_PLAYER | ✅ 已实现 | ❌ 不支持 | Android 原生播放器 |
+| ExoPlayer | PlayerType.EXO | ⏳ 待实现 | ❌ 不支持 | Google 推荐播放器 |
+| IjkPlayer | PlayerType.IJK | ⏳ 待实现 | ❌ 不支持 | B站开源播放器 |
+| Tencent | PlayerType.TENCENT | ⏳ 待实现 | ❌ 不支持 | 腾讯云播放器 |
+
+## 录像和截图功能
+
+录像和截图功能仅 VLC 内核支持，其他内核会自动隐藏相关按钮。
+
+### 使用方法
+
+```java
+// 检查是否支持
+if (videoView.isSupportRecord()) {
+    // 开始录像
+    videoView.startRecord("/sdcard/records", "video_001");
     
+    // 停止录像
+    videoView.stopRecord();
     
-     ```
-     
+    // 检查是否正在录像
+    boolean isRecording = videoView.isRecording();
+}
 
-* 主要功能（截图）：
-  ```java
-       //电视台直播流
-         //private String mVideoPath = "http://220.161.87.62:8800/hls/0/index.m3u8";
-         //截图命令
-          private String CMD2 = "-i http://220.161.87.62:8800/hls/0/index.m3u8 -y -t 0.001 -ss 1 -f image2 -r 1 ";
-         //获取uri地址
-         Uri uri = FileUtil.createVideoPathUri(MainActivity.this);
-         //获取存储mp4文件地址
-         String outputVideoPath = FFmpegKitConfig.getSafParameter(MainActivity.this, uri, "rw");
-         FFmpegKit.executeAsync(CMD2 + outputVideoPath, new FFmpegSessionCompleteCallback() {
-       
-                       @Override
-                       public void apply(FFmpegSession session) {
-                           SessionState state = session.getState();
-                           ReturnCode returnCode = session.getReturnCode();
-                           LogUtils.e("FFmpegKit" + "apply====state=" + state);            
-                           LogUtils.e("FFmpegKit" + "apply====returnCode=" + returnCode);  
-                    
-       
-                       }
-                   }, new LogCallback() {
-       
-                       @Override
-                       public void apply(com.arthenica.ffmpegkit.Log log) {
-       
-       
-                       }
-                   }, new StatisticsCallback() {
-       
-                       @Override
-                       public void apply(Statistics statistics) {
-                   
-       
-                           // CALLED WHEN SESSION GENERATES STATISTICS
-       
-                       }
-                   });
+if (videoView.isSupportSnapshot()) {
+    // 截图
+    videoView.takeSnapshot("/sdcard/snapshots/img_001.jpg");
     
-    
-     ```
-  
-* 其他ffmpeg命令行功能：可以使用任何ffmpeg命令行功能实现你想要的功能。
+    // 指定尺寸截图
+    videoView.takeSnapshot("/sdcard/snapshots/img_002.jpg", 1280, 720);
+}
 
-#### ZLMediaKit，作为手机端本地服务器的使用指南
+// 设置保存目录（可选，有默认值）
+videoView.setRecordDirectory("/sdcard/MyApp/records");
+videoView.setSnapshotDirectory("/sdcard/MyApp/snapshots");
+```
 
-* 两种引用方式：1：直接依赖libs的so(太大了 我直接打包放在这里要使用请下载后自己解压把so放入libs)。
-*             2：使用lib是里面的aar(分debug版本和release版本按需索取)，然后在app.gradle中引用此aar即可。
+### 注意事项
 
-* Demo演示说明：进入ZlmMediaKitTestActivity界面，替换mVideoPath直播源地址,然后运行项目。
-*              点击：开启手机服务器会提示是否开启成功；然后点击：推流到手机服务器，如果成功手机服务器流地址的EditText，会显示直播流地址，
-*              复制之后，替换直播源地址 点击确定即可播放手机服务器的流
-* 1，开启服务器：
-    ```java
-          //使用之前请自己申请读写权限 谢谢(PackageManager.PERMISSION_GRANTED)
-           String sd_dir = Environment.getExternalStoragePublicDirectory("").toString();
-  
-          ZLMediaKit.startDemo(sd_dir);
+1. VLC 录像需要关闭硬件解码才能正常工作
+2. 录像文件格式为 .ts
+3. 截图文件格式为 .jpg
+4. 需要存储权限
 
-    ```
-  
-  
-* 2，使用ffmpeg-kit 对纯音频和纯视频流进行合流(或者可以播放的直播流)，推流到本地ZLMediaKit服务器上
-    ```java
-      private void startFFmpegPushSteam() {
-            //http://192.168.67.105:3333/api/stream/video?session=123456          //纯视频流地址(我公司的,请替换可以播放的流地址即可)。
-            String steam = "-i http://192.168.67.105:3333/api/stream/video?session=123456 -i http://192.168.67.105:3333/api/stream/audio?session=123456";
-            String CMD = steam + " -c copy -rtsp_transport tcp -f rtsp rtsp://127.0.0.1:8554/stream/live";
-            //rtsp://127.0.0.1:8554/stream/live   //此地址是，推送到本地服务器的地址，必须两级目录不然推送失败(/steam/live)，目录名字可以随便改动。
-            LogUtils.e("ffmpeg-kit--推流CMD" + "apply====CMD=" + CMD);
-            FFmpegKit.executeAsync(CMD, new FFmpegSessionCompleteCallback() {
-    
-                @Override
-                public void apply(FFmpegSession session) {
-                    SessionState state = session.getState();
-                    ReturnCode returnCode = session.getReturnCode();
-                    /**
-                     * 录像
-                     * returnCode=1         说明：推流，失败
-                     * returnCode=255       说明：推流，成功
-                     */
-                    LogUtils.e("ffmpeg-kit--推流" + "apply====state=" + state);
-                    LogUtils.e("ffmpeg-kit--推流" + "apply====returnCode=" + returnCode);
-    
-                }
-            }, new LogCallback() {
-    
-                @Override
-                public void apply(com.arthenica.ffmpegkit.Log log) {
-    
-                }
-            }, new StatisticsCallback() {
-    
-                @Override
-                public void apply(Statistics statistics) {
-                    LogUtils.e("ffmpeg-kit" + "推流=====" + statistics.toString());
-    
-    
-                }
-            });
-    
-    
-        }
-   ```
-    
-* 3，使用VLC播放即可：传入url：rtsp://127.0.0.1:8554/stream/live  即可播放。
+## 宽高比类型
 
-* 4，PS：ZLMediaKit自带播放器有录像功能，等我后续更新吧。
+```java
+videoView.setAspectRatioType(AspectRatioType.FIT_PARENT);   // 适应父容器
+videoView.setAspectRatioType(AspectRatioType.FILL_PARENT);  // 填充父容器
+videoView.setAspectRatioType(AspectRatioType.WRAP_CONTENT); // 原始尺寸
+videoView.setAspectRatioType(AspectRatioType.FIT_WIDTH);    // 适应宽度
+videoView.setAspectRatioType(AspectRatioType.FIT_HEIGHT);   // 适应高度
+videoView.setAspectRatioType(AspectRatioType.RATIO_16_9);   // 16:9
+videoView.setAspectRatioType(AspectRatioType.RATIO_4_3);    // 4:3
+```
+
+## 注意事项
+
+1. 在 Activity 的 `onDestroy()` 中调用 `videoView.release()` 释放资源
+2. VLC 内核需要项目中的 libvlc 模块支持
+3. 如需录制或截图功能，VLC 需要关闭硬件解码
 
 
 ## License

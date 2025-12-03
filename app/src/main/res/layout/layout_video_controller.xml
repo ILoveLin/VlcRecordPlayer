@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- 加载中 -->
+    <com.company.shenzhou.player.widget.ENDownloadView
+        android:id="@+id/loading_view"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
+    <!-- 错误重试播放按钮 -->
+    <com.company.shenzhou.player.widget.ENPlayView
+        android:id="@+id/error_play_view"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
+    <!-- 顶部栏：返回按钮 + 标题 -->
+    <LinearLayout
+        android:id="@+id/controller_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="top"
+        android:background="@drawable/bg_controller_gradient_top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_player_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="视频标题"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- 底部栏：进度条 + 全屏按钮 -->
+    <LinearLayout
+        android:id="@+id/controller_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_controller_gradient_bottom"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <!-- 播放/暂停按钮 -->
+        <ImageView
+            android:id="@+id/btn_play_pause"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_player_play" />
+
+        <!-- 当前时间 -->
+        <TextView
+            android:id="@+id/tv_current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="00:00"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <!-- 进度条 -->
+        <SeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:max="100"
+            android:maxHeight="3dp"
+            android:minHeight="3dp"
+            android:progress="0"
+            android:progressDrawable="@drawable/seekbar_progress"
+            android:secondaryProgress="0"
+            android:thumb="@drawable/seekbar_thumb" />
+
+        <!-- 总时间 -->
+        <TextView
+            android:id="@+id/tv_total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <!-- 静音按钮 -->
+        <ImageView
+            android:id="@+id/btn_mute"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_player_volume_on" />
+
+        <!-- 全屏按钮 -->
+        <ImageView
+            android:id="@+id/btn_fullscreen"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="4dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_player_fullscreen" />
+
+    </LinearLayout>
+
+    <!-- 左侧栏：锁屏按钮 -->
+    <LinearLayout
+        android:id="@+id/controller_left_bar"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="48dp"
+        android:paddingBottom="48dp">
+
+        <ImageView
+            android:id="@+id/btn_lock"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_controller_button"
+            android:padding="8dp"
+            android:src="@drawable/ic_player_unlock" />
+
+    </LinearLayout>
+
+    <!-- 右侧栏：录像、截图按钮 + 自定义按钮容器 -->
+    <LinearLayout
+        android:id="@+id/controller_right_bar"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="48dp"
+        android:paddingBottom="48dp">
+
+        <ImageView
+            android:id="@+id/btn_record"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_controller_button"
+            android:padding="8dp"
+            android:src="@drawable/ic_player_record"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/btn_snapshot"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_controller_button"
+            android:padding="8dp"
+            android:src="@drawable/ic_player_snapshot"
+            android:visibility="gone" />
+
+        <!-- 自定义按钮容器 -->
+        <LinearLayout
+            android:id="@+id/custom_buttons_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
+    <!-- 中间播放按钮（大） -->
+    <ImageView
+        android:id="@+id/btn_center_play"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_player_play_large"
+        android:visibility="gone" />
+
+    <!-- 亮度/音量调节指示器 -->
+    <FrameLayout
+        android:id="@+id/gesture_indicator"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_gesture_indicator"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <!-- 弧形进度 -->
+        <com.company.shenzhou.player.widget.ArcProgressView
+            android:id="@+id/arc_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 中间图标和文字 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_gesture_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_player_volume_on" />
+
+            <TextView
+                android:id="@+id/tv_gesture_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="50%"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>
