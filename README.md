@@ -3,7 +3,7 @@
 
 > author : LoveLin  
 > github : https://github.com/ILoveLin/VlcRecordPlayer.git  
-> time   : 2025/12/3
+> time   : 2025/12/3    Android15系统 要求so库16kb内存页，已适配。
 
 ##
 
@@ -13,7 +13,7 @@
 
 #### 如果帮助的到了您，请您不要吝啬你的Star，先谢谢您的点赞（Star），3Q，3Q，3Q。
 
-* vlc编译，源库地址是这个博主的：https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下。16kb内存页过些天有空再去集成
+* vlc编译，源库地址是这个博主的：https://github.com/mengzhidaren/Vlc-sdk-lib 可以去star支持下。
 
 * 基于VLC的播放器（Android
   录像，截图），可做二次开发，支持在点播或者直播，播放的时候：录像，截图等等功能。支持RTSP，RTMP，HTTP，HLS，HTTPS等等。支持所有CPU架构。
