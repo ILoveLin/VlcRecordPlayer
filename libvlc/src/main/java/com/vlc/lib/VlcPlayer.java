@@ -31,11 +31,12 @@ import com.vlc.lib.listener.util.LogUtils;
 public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout.OnNewVideoLayoutListener {
     private final String tag = "VlcPlayer";
     private final Handler threadHandler;//工作线程
-    private static final int INIT_OFF_ONLINE = 0x0007;
+
+
     private static final int INIT_START = 0x0008;
     private static final int INIT_STOP = 0x0009;
-    private static final int INIT_PAUSE = 0x00011;
     private static final int INIT_DESTORY = 0x0010;
+
     private static final int STATE_PLAY = 1;
     private static final int STATE_PAUSE = 2;
     private static final int STATE_LOAD = 3;
@@ -45,7 +46,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
     private float speed = 1f;
     private float position = 0f;
     private long time = 0;
-    private String timee;
     //    private final Lock lock = new ReentrantLock();
     //单线程操作视频初始化和释放功能   防止多线程互斥
     private static final HandlerThread sThread = new HandlerThread("VlcPlayThread");
@@ -68,8 +68,8 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
 
     //切换view.parent时的2秒黑屏用seek恢复
     public boolean clearVideoTrackCache = false;
-    //硬件加速 特别注意：如果需要视频录制和截图，需要关闭硬件解码
-    public boolean HWDecoderEnable = false;
+    //硬件加速
+    public boolean HWDecoderEnable=false;
 
     private MediaPlayer mMediaPlayer;
     private Surface surfaceSlave;//字幕画布
@@ -93,17 +93,12 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
     @Override
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
-            case INIT_OFF_ONLINE:
-                break;
             case INIT_START:
                 if (isInitStart)
                     openVideo();
                 break;
             case INIT_STOP:
                 onStopVideo();
-                break;
-            case INIT_PAUSE:
-                onPauseVideo();
                 break;
             case INIT_DESTORY:
                 if (mMediaPlayer != null) {
@@ -216,21 +211,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
         threadHandler.obtainMessage(INIT_STOP).sendToTarget();
     }
 
-    /**
-     * 自己手动新增的方法,onPause,退到后台能继续播放vlc
-     */
-    public void onPause() {
-        LogUtils.i(tag, "onStop=" + isInitStart);
-        if (!isInitStart)
-            return;
-        isInitStart = true;
-        isSufaceDelayerPlay = false;
-        currentState = INIT_PAUSE;
-        if (mediaListenerEvent != null && !isDestory)
-            mediaListenerEvent.eventPlayInit(false);
-        threadHandler.obtainMessage(INIT_PAUSE).sendToTarget();
-    }
-
     @Override
     public void startPlay() {
         LogUtils.i(tag, "startPlay");
@@ -248,10 +228,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
 
     private void reStartPlay() {
         initVideoState();
-        LogUtils.i(tag, "event======reStartPlay=!!!!!!");
-        LogUtils.i(tag, "event======isAttachedSurface=" + isAttachedSurface);
-        LogUtils.i(tag, "event======isLoop=" + isLoop);
-        LogUtils.i(tag, "event======isPrepare=" + isPrepare());
         if (isAttachedSurface && isLoop && isPrepare()) {
             LogUtils.i(tag, "reStartPlay setMedia");
             mMediaPlayer.setMedia(mMediaPlayer.getMedia());
@@ -267,30 +243,15 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
             mediaListenerEvent.eventError(MediaListenerEvent.EVENT_ERROR, true);
     }
 
-    private void onStopVideo() {
-        LogUtils.i(tag, "release");
-        initVideoState();
-        if (mMediaPlayer != null) {
-            final IMedia media = mMediaPlayer.getMedia();
-            if (media != null) {
-                media.setEventListener(null);
-                mMediaPlayer.stop();
-                mMediaPlayer.setMedia(null);
-                media.release();
-            }
-
-        }
-    }
 
     private void openVideo() {
-        indexTime = 0;  //每次开始播放的时候把播放时间轴置为0
         canSeek = false;
         isPlayError = false;
         initVideoState();
         if (mMediaPlayer == null) {
             mMediaPlayer = new MediaPlayer(libVLC);
-//                mMediaPlayer.setAudioOutput(VLCOptions.getAout(PreferenceManager.getDefaultSharedPreferences(mContext)));
-//               mMediaPlayer.setEqualizer(VLCOptions.getEqualizer(mContext));
+            //    mMediaPlayer.setAudioOutput(VLCOptions.getAout(PreferenceManager.getDefaultSharedPreferences(mContext)));
+            //   mMediaPlayer.setEqualizer(VLCOptions.getEqualizer(mContext));
         }
         if (!isAttachedSurface && mMediaPlayer.getVLCVout().areViewsAttached()) {//异常判断
             mMediaPlayer.getVLCVout().detachViews();
@@ -309,67 +270,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
             LogUtils.i("加载 " + isLoadMedia);
         } else {
             LogUtils.i("异常  没有视频可加载");
-        }
-    }
-
-    /**
-     * 自己手动新增的方法,onPause,退到后台能继续播放vlc
-     * //删除,isAttachedSurface(surface是否关联) 的判断条件不然多次进入退出会ANR
-     * //   if (isAttachedSurface && isLoadMedia) {}
-     */
-    private void onPauseVideo() {
-        LogUtils.i(tag, "release");
-        initVideoState();
-        if (mMediaPlayer != null) {
-            final IMedia media = mMediaPlayer.getMedia();
-            if (media != null) {
-//                media.setEventListener(null);
-//                mMediaPlayer.pause();
-//                mMediaPlayer.setMedia(null);
-//                media.parse();
-////                media.release();
-                indexTime = 0;  //每次开始播放的时候把播放时间轴置为0
-                canSeek = false;
-                isPlayError = false;
-                initVideoState();
-                if (mMediaPlayer == null) {
-                    mMediaPlayer = new MediaPlayer(libVLC);
-//                mMediaPlayer.setAudioOutput(VLCOptions.getAout(PreferenceManager.getDefaultSharedPreferences(mContext)));
-//               mMediaPlayer.setEqualizer(VLCOptions.getEqualizer(mContext));
-                }
-                if (!isAttachedSurface && mMediaPlayer.getVLCVout().areViewsAttached()) {//异常判断
-                    mMediaPlayer.getVLCVout().detachViews();
-                    LogUtils.i("异常  isAttachedSurface");
-                }
-                mMediaPlayer.setEventListener(new MediaPlayer.EventListener() {
-                    @Override
-                    public void onEvent(MediaPlayer.Event event) {
-                        onEventNative(event);
-                    }
-                });
-                boolean isLoadMedia = loadMedia(libVLC);
-                attachSurface();
-                LogUtils.i("加载,isSurfaceAvailable " + isSurfaceAvailable);
-                LogUtils.i("加载,isInitStart " + isInitStart);
-                LogUtils.i("加载,isAttachedSurface " + isAttachedSurface);
-                LogUtils.i("加载,isLoadMedia " + isLoadMedia);
-                //删除,isAttachedSurface(surface是否关联) 的判断条件不然多次进入退出会ANR
-                //1	org.videolan.libvlc.MediaPlayer.nativeSetVideoTrack(Native Method)
-                //2	org.videolan.libvlc.MediaPlayer.setVideoTrack(MediaPlayer.java:1052)
-                //3	org.videolan.libvlc.MediaPlayer.setVideoTrackEnabled(MediaPlayer.java:1064)
-                //4	org.videolan.libvlc.MediaPlayer$1.onSurfacesDestroyed(MediaPlayer.java:450)
-                //5	org.videolan.libvlc.AWindow.detachViews(AWindow.java:358)
-                //6	com.vlc.lib.VlcPlayer.onSurfaceTextureDestroyedUI(VlcPlayer.java:188)
-                if (isAttachedSurface && isLoadMedia) {
-//                if (isSurfaceAvailable  && isAttachedSurface && isLoadMedia) {
-                    mMediaPlayer.play();
-                    LogUtils.i("加载 " + isLoadMedia);
-                } else {
-                    LogUtils.i("异常  没有视频可加载");
-                }
-
-            }
-
         }
     }
 
@@ -394,12 +294,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
         } else {
             media = new Media(libVLC, path);
         }
-        /**
-         * 添加或删除hw加速媒体选项
-         *@param1 如果为真，将使用hw解码器
-         *@param2 强制hw加速，即使未知设备
-         */
-//        media.setHWDecoderEnabled(true, true);
         media.setHWDecoderEnabled(HWDecoderEnable, false);
         media.setEventListener(mMediaListener);
         mMediaPlayer.setMedia(media);
@@ -443,25 +337,39 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
         position = 0f;
     }
 
+    private void onStopVideo() {
+        LogUtils.i(tag, "release");
+        initVideoState();
+        if (mMediaPlayer != null) {
+            final IMedia media = mMediaPlayer.getMedia();
+            if (media != null) {
+                media.setEventListener(null);
+                mMediaPlayer.stop();
+                mMediaPlayer.setMedia(null);
+                media.release();
+            }
+
+        }
+    }
+
 
     private void onEventNative(final MediaPlayer.Event event) {
         switch (event.type) {
             case MediaPlayer.Event.Stopped:
-                LogUtils.i(tag + "event=======", "eventStop====Stopped  isLoop=" + isLoop);
+                LogUtils.i(tag, "Stopped  isLoop=" + isLoop);
                 reStartPlay();
                 break;
-            case MediaPlayer.Event.EndReached:   //断开链接
-                LogUtils.i(tag + "event=======", "EndReached---断开链接");
-                mediaListenerEvent.eventSystemEnd("EndReached");
+            case MediaPlayer.Event.EndReached:
+                LogUtils.i(tag, "EndReached");
                 break;
             case MediaPlayer.Event.EncounteredError:
                 isPlayError = true;
                 canReadInfo = false;
-                LogUtils.i(tag + "event=======", "EncounteredError----eventError");
+                LogUtils.i(tag, "EncounteredError");
                 errorEvent();
                 break;
             case MediaPlayer.Event.Opening:
-                LogUtils.i(tag + "event=======", "Opening");
+                LogUtils.i(tag, "Opening");
                 canReadInfo = true;
                 if (getPlaybackSpeed() != 1f) {
                     mMediaPlayer.setRate(1f);
@@ -470,7 +378,7 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
                 loadSlave();
                 break;
             case MediaPlayer.Event.Playing:
-                LogUtils.i(tag + "event=======", "Playing");
+                LogUtils.i(tag, "Playing");
                 if (mediaListenerEvent != null && isInitStart)
                     mediaListenerEvent.eventPlay(true);
                 if (currentState == STATE_PAUSE || !isAttachedSurface) {
@@ -478,13 +386,9 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
                 }
                 break;
             case MediaPlayer.Event.Paused:
-                LogUtils.i(tag + "event=======", "Paused");
+                LogUtils.i(tag, "Paused");
                 if (mediaListenerEvent != null && isInitStart)
                     mediaListenerEvent.eventPlay(false);
-                break;
-            case MediaPlayer.Event.LengthChanged:
-                LogUtils.i(tag + "event=======", "LengthChanged");
-
                 break;
             case MediaPlayer.Event.TimeChanged://TimeChanged   15501
                 // LogUtils.i(tag, "TimeChanged" + event.getTimeChanged());
@@ -493,77 +397,31 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
 //                               seekTo(abTimeStart);
 //                    }
 //                }
-
-//                LogUtils.i(tag + "event====time===", "TimeChanged" + event.getTimeChanged());
-//                LogUtils.i(tag + "event====position===", "TimeChanged" + event.getPositionChanged());
-//                LogUtils.i(tag + "event====Record===", "TimeChanged" + event.getRecording());
-//                imeChanged26900
-                String t = event.getTimeChanged() + "";
-                long lengthChanged = event.getLengthChanged();
-                float buffering = event.getBuffering();
-                int esChangedID = event.getEsChangedID();
-                int esChangedType = event.getEsChangedType();
-                boolean pausable = event.getPausable();
-                float positionChanged = event.getPositionChanged();
-                boolean recording = event.getRecording();
-                String recordPath = event.getRecordPath();
-                boolean seekable = event.getSeekable();
-                int voutCount = event.getVoutCount();
-
-                LogUtils.i(tag + "event==A==lengthChanged===", lengthChanged + "");
-                LogUtils.i(tag + "event==A==buffering===", buffering + "");
-                LogUtils.i(tag + "event==A==esChangedID===", esChangedID + "");
-                LogUtils.i(tag + "event==A==esChangedType===", esChangedType + "");
-                LogUtils.i(tag + "event==A==pausable===", pausable + "");
-                LogUtils.i(tag + "event==A==positionChanged===", positionChanged + "");
-                LogUtils.i(tag + "event==A==recording===", recording + "");
-                LogUtils.i(tag + "event==A==recordPath===", recordPath + "");
-                LogUtils.i(tag + "event==A==seekable===", seekable + "");
-                LogUtils.i(tag + "event==A==voutCount===", voutCount + "");
-
-                String imeChanged = t.replace("imeChanged", "");
-                this.timee = imeChanged;
                 time = event.getTimeChanged();
-                LogUtils.i(tag + "event====time===", time + "");
-
-                if (indexTime == time) {
-                    LogUtils.i(tag + "event====time===", "Time相等");
-
-                } else {
-                    mediaListenerEvent.eventCurrentTime(imeChanged);
-
-                    LogUtils.i(tag + "event====time===", "Time====不相等");
-
-                }
-                indexTime = time;
-                LogUtils.i(tag + "event==A=============================================================================", "");
-                LogUtils.i(tag + "event==A=============================================================================", "");
-                LogUtils.i(tag + "event==A=============================================================================", "");
-
                 break;
             case MediaPlayer.Event.PositionChanged://PositionChanged   0.061593015
                 // LogUtils.i(tag, "PositionChanged" + event.getPositionChanged());
                 position = event.getPositionChanged();
                 break;
             case MediaPlayer.Event.Vout:
-                LogUtils.i(tag + "event=======", "Vout" + event.getVoutCount());
+                LogUtils.i(tag, "Vout" + event.getVoutCount());
                 break;
             case MediaPlayer.Event.ESAdded:
-                LogUtils.i(tag + "event=======", "ESAdded");
+                LogUtils.i(tag, "ESAdded");
                 break;
             case MediaPlayer.Event.ESDeleted:
-                LogUtils.i(tag + "event=======", "ESDeleted");
+                LogUtils.i(tag, "ESDeleted");
                 break;
             case MediaPlayer.Event.SeekableChanged:
                 canSeek = event.getSeekable();
-                LogUtils.i(tag + "event=======", "SeekableChanged=" + canSeek);
+                LogUtils.i(tag, "SeekableChanged=" + canSeek);
                 break;
             case MediaPlayer.Event.PausableChanged:
                 canPause = event.getPausable();
-                LogUtils.i(tag + "event=======", "PausableChanged=" + event.getPausable());
+                LogUtils.i(tag, "PausableChanged=" + event.getPausable());
                 break;
             case MediaPlayer.Event.Buffering:
-//                LogUtils.i(tag + "event=======", "MediaPlayer.Event.Buffering" + event.getBuffering());
+                LogUtils.i(tag, "MediaPlayer.Event.Buffering" + event.getBuffering());
                 if (mediaListenerEvent != null && isInitStart)
                     mediaListenerEvent.eventBuffing(MediaListenerEvent.EVENT_BUFFING, event.getBuffering());
                 if (currentState == STATE_PAUSE || !isAttachedSurface) {//关屏有音 bug
@@ -573,15 +431,13 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
                 }
                 break;
             case MediaPlayer.Event.MediaChanged:
-                LogUtils.i(tag + "event=======", "MediaChanged=" + event.getEsChangedType());
+                LogUtils.i(tag, "MediaChanged=" + event.getEsChangedType());
                 break;
             default:
-                LogUtils.i(tag + "event=======", "event.type=" + event.type);
+                LogUtils.i(tag, "event.type=" + event.type);
                 break;
         }
     }
-
-    private long indexTime = 0;
 
 
     @Override
@@ -613,9 +469,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
 
     }
 
-    public String getTime() {
-        return timee;
-    }
 
     @Override
     public int getDuration() {
@@ -635,41 +488,20 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
 
     @Override
     public void seekTo(int pos) {
-        if (isPrepare() && !isSeeking) {
-            // 对于点播流（有时长），即使 canSeek 未设置也尝试 seek
-            // 因为某些 HLS 流可能延迟触发 SeekableChanged 事件
-            if (canSeek || getDuration() > 0) {
-                isSeeking = true;
-                mMediaPlayer.setTime(pos);
-                isSeeking = false;
-            }
+        if (isPrepare() && canSeek && !isSeeking) {
+            isSeeking = true;
+            mMediaPlayer.setTime(pos);
+            isSeeking = false;
         }
     }
 
     @Override
     public void seekTo(long pos) {
-        if (isPrepare() && !isSeeking) {
-            // 对于点播流（有时长），即使 canSeek 未设置也尝试 seek
-            // 因为某些 HLS 流可能延迟触发 SeekableChanged 事件
-            if (canSeek || getDuration() > 0) {
-                isSeeking = true;
-                mMediaPlayer.setTime(pos);
-                isSeeking = false;
-            }
+        if (isPrepare() && canSeek && !isSeeking) {
+            isSeeking = true;
+            mMediaPlayer.setTime(pos);
+            isSeeking = false;
         }
-    }
-
-    /**
-     * 判断当前流是否可以 seek
-     * 对于点播流（有时长）返回 true，直播流返回 false
-     * @return true 可以 seek
-     */
-    public boolean isSeekable() {
-        // 优先使用 VLC 的 canSeek 标志
-        if (canSeek) return true;
-        // 如果有时长，认为是点播流，可以 seek
-        if (isPrepare() && getDuration() > 0) return true;
-        return false;
     }
 
     @Override
@@ -784,7 +616,6 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
     }
 
     public MediaPlayer getMediaPlayer() {
-
         return mMediaPlayer;
     }
 
@@ -806,6 +637,8 @@ public class VlcPlayer implements MediaPlayerControl, Handler.Callback, IVLCVout
         mMediaPlayer.setMedia(media);
         loadOtherMedia = true;
     }
+
+
 
 
     public void setAddSlave(String addSlave) {

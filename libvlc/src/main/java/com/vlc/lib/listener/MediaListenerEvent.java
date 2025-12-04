@@ -18,8 +18,6 @@ public interface MediaListenerEvent {
     void eventError(final int event, final boolean show);//子线程
 
     void eventPlay(final boolean isPlaying);//子线程
-    void eventSystemEnd(String isStringed);//子线程
-    void eventCurrentTime(String time);//子线程
     /**
      * 初始化开始加载  当前线程为调用者线程
      *

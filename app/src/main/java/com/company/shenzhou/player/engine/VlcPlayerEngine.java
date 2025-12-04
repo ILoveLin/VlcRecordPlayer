@@ -39,6 +39,9 @@ public class VlcPlayerEngine extends BasePlayerEngine {
         mLibVLC = new LibVLC(mContext, options);
         mVlcPlayer = new VlcPlayer(mLibVLC);
         
+        // 提前初始化 RecordEvent，确保 native 库已加载，避免第一次录像失败
+        mRecordEvent = new RecordEvent();
+        
         // 设置事件监听
         mVlcPlayer.setMediaListenerEvent(new MediaListenerEvent() {
             @Override
@@ -82,16 +85,6 @@ public class VlcPlayerEngine extends BasePlayerEngine {
             public void eventPlay(boolean isPlaying) {
                 // eventPlay 只表示播放状态变化，不再用于触发 prepared
                 // prepared 改为在 buffing >= 100% 时触发，这样能确保画面已经准备好
-            }
-
-            @Override
-            public void eventSystemEnd(String message) {
-                notifyOnCompletion();
-            }
-
-            @Override
-            public void eventCurrentTime(String time) {
-                // 当前播放时间更新
             }
         });
         
@@ -274,7 +267,8 @@ public class VlcPlayerEngine extends BasePlayerEngine {
      */
     public boolean isSeekable() {
         if (mVlcPlayer != null) {
-            return mVlcPlayer.isSeekable();
+            // 使用 canControl() 方法判断是否可以控制（包含 canSeek）
+            return mVlcPlayer.canControl();
         }
         // 如果有时长，认为是点播流
         return getDuration() > 0;
@@ -354,6 +348,8 @@ public class VlcPlayerEngine extends BasePlayerEngine {
     private RecordEvent mRecordEvent;
     // 录像目录
     private String mRecordDirectory;
+    // 录像开始时间，用于筛选录像文件
+    private long mRecordStartTime;
 
     @Override
     public boolean isSupportRecord() {
@@ -392,15 +388,14 @@ public class VlcPlayerEngine extends BasePlayerEngine {
             // 保存录像目录，用于后续查找录像文件
             mRecordDirectory = directory;
             
-            // 使用 RecordEvent 的录制方法（参考 MyControlVlcVideoView）
-            if (mRecordEvent == null) {
-                mRecordEvent = new RecordEvent();
-            }
+            // 使用 RecordEvent 的录制方法
+            // mRecordEvent 已在 initVlc() 中初始化，确保 native 库已加载
             boolean result = mRecordEvent.startRecord(mVlcPlayer.getMediaPlayer(), directory, fileName);
             
             if (result) {
                 // VLC 录像文件名是自动生成的，格式类似 vlc-record-yyyy-MM-dd-HHhMMmSSs-xxx.mpg
-                // 先设置目录，停止录像时再查找实际文件
+                // 记录开始时间，用于后续筛选录像文件
+                mRecordStartTime = System.currentTimeMillis();
                 mRecordFilePath = directory;
                 mIsRecording = true;
                 if (mOnRecordListener != null) {
@@ -420,29 +415,64 @@ public class VlcPlayerEngine extends BasePlayerEngine {
     @Override
     public boolean stopRecord() {
         if (!mIsRecording) {
+            notifyOnRecordError("当前没有在录像");
             return false;
         }
         
         if (mVlcPlayer == null || mVlcPlayer.getMediaPlayer() == null) {
+            notifyOnRecordError("播放器未初始化");
+            return false;
+        }
+        
+        if (mRecordEvent == null) {
+            notifyOnRecordError("录像组件未初始化");
             return false;
         }
         
         try {
             // 使用 RecordEvent 停止录像
-            if (mRecordEvent == null) {
-                mRecordEvent = new RecordEvent();
-            }
             boolean result = mRecordEvent.stopRecord(mVlcPlayer.getMediaPlayer());
+            android.util.Log.d("VlcPlayerEngine", "stopRecord result: " + result + ", directory: " + mRecordDirectory);
             
-            if (result) {
-                mIsRecording = false;
-                // 查找最新的录像文件
-                String recordFile = findLatestRecordFile(mRecordDirectory);
+            // 无论 result 如何，都标记为停止录像
+            mIsRecording = false;
+            
+            // 同步等待一小段时间让文件写入完成
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException ignored) {}
+            
+            // 立即查找录像文件
+            String recordFile = findLatestRecordFile(mRecordDirectory, mRecordStartTime);
+            if (recordFile != null) {
                 mRecordFilePath = recordFile;
+                android.util.Log.d("VlcPlayerEngine", "findLatestRecordFile: " + recordFile);
                 notifyOnRecordStop(recordFile);
+            } else {
+                // 如果立即找不到，再延迟一次查找
+                final String directory = mRecordDirectory;
+                final long startTime = mRecordStartTime;
+                mMainHandler.postDelayed(() -> {
+                    String file = findLatestRecordFile(directory, startTime);
+                    if (file != null) {
+                        mRecordFilePath = file;
+                        android.util.Log.d("VlcPlayerEngine", "findLatestRecordFile delayed: " + file);
+                        if (mOnRecordListener != null) {
+                            mOnRecordListener.onRecordStop(file);
+                        }
+                    } else {
+                        android.util.Log.w("VlcPlayerEngine", "录像文件未找到");
+                        if (mOnRecordListener != null) {
+                            mOnRecordListener.onRecordError("录像文件未找到");
+                        }
+                    }
+                }, 500);
             }
-            return result;
+            
+            return true;
         } catch (Exception e) {
+            android.util.Log.e("VlcPlayerEngine", "stopRecord exception", e);
+            mIsRecording = false;
             notifyOnRecordError("停止录像异常: " + e.getMessage());
             return false;
         }
@@ -450,8 +480,10 @@ public class VlcPlayerEngine extends BasePlayerEngine {
     
     /**
      * 查找目录中最新的录像文件
+     * @param directory 录像目录
+     * @param startTime 录像开始时间，用于筛选在此时间之后创建的文件
      */
-    private String findLatestRecordFile(String directory) {
+    private String findLatestRecordFile(String directory, long startTime) {
         if (directory == null) return null;
         
         java.io.File dir = new java.io.File(directory);
@@ -462,15 +494,18 @@ public class VlcPlayerEngine extends BasePlayerEngine {
         
         if (files == null || files.length == 0) return null;
         
-        // 找到最新修改的文件
-        java.io.File latestFile = files[0];
+        // 找到在录像开始时间之后修改的最新文件
+        java.io.File latestFile = null;
         for (java.io.File file : files) {
-            if (file.lastModified() > latestFile.lastModified()) {
-                latestFile = file;
+            // 只考虑在录像开始时间之后修改的文件（允许1秒误差）
+            if (file.lastModified() >= startTime - 1000) {
+                if (latestFile == null || file.lastModified() > latestFile.lastModified()) {
+                    latestFile = file;
+                }
             }
         }
         
-        return latestFile.getAbsolutePath();
+        return latestFile != null ? latestFile.getAbsolutePath() : null;
     }
 
     @Override

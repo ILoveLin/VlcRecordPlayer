@@ -5,22 +5,21 @@ import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.TextureView;
-
-import com.vlc.lib.listener.MediaListenerEvent;
-import com.vlc.lib.listener.MediaPlayerControl;
-import com.vlc.lib.listener.VideoSizeChange;
-import com.vlc.lib.listener.util.LogUtils;
 
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 import org.videolan.libvlc.interfaces.IMedia;
-import org.videolan.libvlc.util.VLCUtil;
 
-import java.util.ArrayList;
+import com.vlc.lib.listener.MediaListenerEvent;
+import com.vlc.lib.listener.MediaPlayerControl;
+import com.vlc.lib.listener.VideoSizeChange;
+import com.vlc.lib.listener.util.LogUtils;
+import com.vlc.lib.listener.util.VLCInstance;
 
 /**
  * 这个类实现了大部分播放器功能
@@ -33,6 +32,7 @@ import java.util.ArrayList;
 public class VlcVideoView extends TextureView implements MediaPlayerControl, VideoSizeChange {
     private VlcPlayer videoMediaLogic;
     private final String tag = "VlcVideoView";
+
     public VlcVideoView(Context context) {
         this(context, null);
     }
@@ -49,163 +49,20 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
         initPlayer(context);
         setSurfaceTextureListener(videoSurfaceListener);
     }
-
     //这里改为子类继承   方便修改libVLC参数
-    public void initPlayer(Context context) {
-
-//        videoMediaLogic = new VlcPlayer(VLCInstance.get(context));
-//        videoMediaLogic.setVideoSizeChange(this);
-
-
-        if (videoMediaLogic != null) {
-            videoMediaLogic.onStop();
-            videoMediaLogic.onDestroy();
-        }
-        ArrayList<String> options = new ArrayList<String>();
-        //正式参数配置
-        //值越大，缓存越大，延迟越大。这三项是延迟设置
-        options.add(":clock-jitter=0");
-        options.add(":clock-synchro=0");
-//        涉及延迟的参数有：network-caching（网络缓存）、live-caching（直播缓存）、file-caching（文件缓存）、sout-mux-caching（输出缓存）。
-        options.add("--rtsp-caching=500");//
-        options.add("--tcp-caching=500");//TCP输入缓存值 (毫秒)
-        options.add("--realrtsp-caching=500");//RTSP缓存值 (毫秒)
-        options.add("--network-caching=500");//网络缓存
-        options.add(":live-caching=500");//直播缓存
-        options.add(":file-caching=500");//文件缓存
-        options.add("--file-caching");//文件缓存
-        options.add("--sout-mux-caching=500");//输出缓存
-        options.add("--no-drop-late-frames");//关闭丢弃晚的帧 (默认打开)
-        options.add("--no-skip-frames");//关闭跳过帧 (默认打开)
-        options.add(":rtsp-frame-buffer-size=500"); //RTSP帧缓冲大小，默认大小为100000
-        options.add("--rtsp-tcp");
-        options.add("--http-reconnect");    //: 重连
-        options.add("--deinterlace");    //: 交错
-        options.add("" + getDeblocking(-1));//这里太大了消耗性能   太小了会花屏
-        options.add("--deinterlace-mode={discard,blend,mean,bob,linear,x}");// 视频译码器 解除交错模式
-        options.add("--network-synchronisation");// 网络同步化 (默认关闭)
-
-//        options.add(":sout-record-dst-prefix=yylpre.mp4");
-
-//        options.add("--sub-source=marq{marquee=\"%Y-%m-%d,%H:%M:%S \",position=10,color=0xFFFFFF,size=40}");  //添加系统时间
-
-
-//        options.add("--audio-time-stretch");
-//        options.add("--sub-source=marq{marquee=\"%Y-%m-%d,%H:%M:%S\",position=10,color=0xFF0000,size=40}");//这行是可以再vlc窗口右下角添加当前时间的
-
-//        =======================注释不执行参数============================
-//        options.add(":file-caching=1500");
-//        options.add("--codec=mediacodec,iomx,all");//文件缓存
-//        options.add("--drop-late-frames");//关闭丢弃晚的帧 (默认打开)
-//        options.add("--skip-frames");//关闭跳过帧 (默认打开)
-//        options.add("--live-caching=1500");//直播缓存
-//        options.add("--sout-mux-caching=1500");//输出缓存
-
-//        --drop-late-frames, --no-drop-late-frames  // 丢弃晚的帧 (默认打开)
-//        --skip-frames, --no-skip-frames   //    跳过帧 (默认打开)
-//        ===================================================
-
-//        options.add("--rtsp-tcp");   //强制rtsp-tcp，加快加载视频速度
-//        options.add("--aout=opensles");
-//        options.add(":network-caching=30");
-//        options.add("--audio-time-stretch");//color=0xFF0000
-//        options.add(":network-caching=30");//网络缓存
-//        options.add(":file-caching=30");//文件缓存
-//        options.add(":live-cacheing=30");//直播缓存
-//        options.add(":latency=10");//直播缓存
-//        options.add(":sout-mux-caching=30");//输出缓存
-//        options.add("--no-drop-late-frames");//关闭丢弃晚的帧 (默认打开)
-//        options.add("--no-skip-frames");//关闭跳过帧 (默认打开)
-//        options.add(":codec=mediacodec,iomx,all");
-//        options.add(":fullscreen");
-
-        LibVLC libVLC = new LibVLC(context, options);
-        videoMediaLogic = new VlcPlayer(libVLC);
+    public void initPlayer(Context context){
+        videoMediaLogic = new VlcPlayer(VLCInstance.get(context));
         videoMediaLogic.setVideoSizeChange(this);
-//        ===================================================
-
-//        =========================案例--测试注释参数==========================
-//        ArrayList<String> libOptions = VLCOptions.getLibOptions(getContext());
-////        mMediaRecorder.setVideoEncodingBitRate(2 * 1024 * 1024);
-//        libOptions.add(":file-caching=100");//文件缓存
-//        libOptions.add(":network-caching=100");//网络缓存
-//        libOptions.add(":live-caching=100");//直播缓存
-//        libOptions.add(":sout-mux-caching=100");//输出缓存
-//        libOptions.add(":codec=mediacodec,iomx,all");
-//        libOptions.add(":rtsp-frame-buffer-size=100"); //RTSP帧缓冲大小，默认大小为100000
-//        libOptions.add(":rtsp-tcp");//RTSP采用TCP传输方式
-//        libOptions.add(":sout-rtp-proto={dccp,sctp,tcp,udp,udplite}");//RTSP采用TCP传输方式
-//        LibVLC libVLC = new LibVLC(getContext(), libOptions);
-//        Media media = new Media(libVLC, Uri.parse(""));
-//        media.setHWDecoderEnabled(true, true);
-//
-////        rtsp://root:root@192.168.129.39:7788/session0.mpg
-//        //   media.addOption(":sout-record-dst-prefix=yylpre.mp4");
-////        media.addOption(":network-caching=1000");
-////        media.addOption(":rtsp-frame-buffer-size=100000");
-////           media.addOption(":rtsp-tcp");
-//        videoMediaLogic = new VlcPlayer(libVLC);
-//        videoMediaLogic.setVideoSizeChange(this);
-
-//        视频译码器
-//        解除交错视频过滤器
-//                --deinterlace-mode {discard,blend,mean,bob,linear,x}
-//        解除交错模式
-//                --sout-deinterlace-mode {discard,blend,mean,bob,linear,x}
-//        串流解除交错模式
-
-//        伪视频译码器
-//        --fake-deinterlace, --no-fake-deinterlace
-//        解除交错视频 (默认关闭)
-//                --fake-deinterlace-module {deinterlace,ffmpeg-deinterlace}
     }
 
-
-    public void setLibVLCPath(LibVLC libVLC) {
+    public void setLibVLC(LibVLC libVLC) {
         videoMediaLogic.onDestroy();
-        videoMediaLogic = new VlcPlayer(libVLC);
+        videoMediaLogic=new VlcPlayer(libVLC);
         videoMediaLogic.setVideoSizeChange(this);
-
-//        rtsp://root:root@192.168.129.39:7788/session0.mpg
-        //   media.addOption(":sout-record-dst-prefix=yylpre.mp4");
-//        media.addOption(":network-caching=1000");
-//        media.addOption(":rtsp-frame-buffer-size=100000");
-//           media.addOption(":rtsp-tcp");
-        Log.e("path=====Start:=====", "我是当前播放的url======setLibVLCPath======");
-
-
     }
 
     public void setMediaListenerEvent(MediaListenerEvent mediaListenerEvent) {
         videoMediaLogic.setMediaListenerEvent(mediaListenerEvent);
-    }
-
-    private static int getDeblocking(int deblocking) {
-        int ret = deblocking;
-        if (deblocking < 0) {
-            /**
-             * Set some reasonable sDeblocking defaults:
-             *
-             * Skip all (4) for armv6 and MIPS by default
-             * Skip non-ref (1) for all armv7 more than 1.2 Ghz and more than 2 cores
-             * Skip non-key (3) for all devices that don't meet anything above
-             */
-            VLCUtil.MachineSpecs m = VLCUtil.getMachineSpecs();
-            if (m == null)
-                return ret;
-            if ((m.hasArmV6 && !(m.hasArmV7)) || m.hasMips)
-                ret = 4;
-            else if (m.frequency >= 1200 && m.processors > 2)
-                ret = 1;
-            else if (m.bogoMIPS >= 1200 && m.processors > 2) {
-                ret = 1;
-                Log.d("TAG", "Used bogoMIPS due to lack of frequency info");
-            } else
-                ret = 3;
-        } else if (deblocking > 4) { // sanity check
-            ret = 3;
-        }
-        return ret;
     }
 
     @Override
@@ -216,11 +73,6 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
     @Override
     public void startPlay() {
         videoMediaLogic.startPlay();
-    }
-
-    @Override
-    public void start() {
-        videoMediaLogic.start();
     }
 
     @Override
@@ -241,25 +93,6 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
     }
 
     /**
-     * 暂停播放器时用
-     */
-    public void onPause() {
-        videoMediaLogic.onPause();
-    }
-
-    /**
-     * 获取播放器
-     * 可以控制播放器声音
-     * mMediaPlayer.getVolume();
-     * mMediaPlayer.setVolume(100);
-     *
-     * @return
-     */
-    public MediaPlayer getMediaPlayer() {
-        return videoMediaLogic.getMediaPlayer();
-    }
-
-    /**
      * 退出界面时回收
      */
     public void onDestroy() {
@@ -275,12 +108,13 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
 
 
     @Override
-    public void pause() {
-        videoMediaLogic.pause();
+    public void start() {
+        videoMediaLogic.start();
     }
 
-    public String getTime() {
-        return videoMediaLogic.getTime();
+    @Override
+    public void pause() {
+        videoMediaLogic.pause();
     }
 
     @Override
@@ -303,10 +137,6 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
         return videoMediaLogic.isPlaying();
     }
 
-    @Override
-    public long getDrawingTime() {
-        return super.getDrawingTime();
-    }
 
     @Override
     public void setMirror(boolean mirror) {
@@ -343,8 +173,8 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
     }
 
     //切换parent时的2秒黑屏用seek恢复 注意：直播时要为false
-    public void setClearVideoTrackCache(boolean clearVideoTrackCache) {
-        videoMediaLogic.clearVideoTrackCache = clearVideoTrackCache;
+    public void setClearVideoTrackCache(boolean clearVideoTrackCache){
+        videoMediaLogic.clearVideoTrackCache=clearVideoTrackCache;
     }
 
     @Override
@@ -460,9 +290,9 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
     /**
      * 如果设备支持opengl这里就不会调用
      *
-     * @param width         w
-     * @param height        h
-     * @param visibleWidth  w
+     * @param width w
+     * @param height h
+     * @param visibleWidth w
      * @param visibleHeight h
      */
     @Override
@@ -496,6 +326,9 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
         videoMediaLogic.setMedia(iMedia);
     }
 
+    public MediaPlayer getMediaPlayer() {
+        return videoMediaLogic.getMediaPlayer();
+    }
 
     public VlcPlayer getVlcPlayer() {
         return videoMediaLogic;
@@ -521,14 +354,14 @@ public class VlcVideoView extends TextureView implements MediaPlayerControl, Vid
         return videoMediaLogic.getAudioSessionId();
     }
 
-    public int widthSurface = 0;
-    public int heightSurface = 0;
+    public int  widthSurface=0;
+    public int  heightSurface=0;
 
     private TextureView.SurfaceTextureListener videoSurfaceListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            widthSurface = width;
-            heightSurface = height;
+            widthSurface=width;
+            heightSurface=height;
             videoMediaLogic.setWindowSize(width, height);
             videoMediaLogic.setSurface(new Surface(surface), null);
         }

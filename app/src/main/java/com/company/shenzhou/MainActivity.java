@@ -47,20 +47,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-//            case R.id.tv_to_zlmkit:     //ZlmMediaKit手机服务器界面
-//                intent = new Intent(MainActivity.this, ZlmMediaKitTestActivity.class);
-//                startActivity(intent);
-//                break;
-            case R.id.tv_to_tencent:     //测试腾讯云直播
-                intent = new Intent(MainActivity.this, TencentLiveActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.tv_to_universal_player:     //统一播放器Demo
-                intent = new Intent(MainActivity.this, PlayerSettingActivity.class);
-                startActivity(intent);
-                break;
+        int id = v.getId();
+        if (id == R.id.tv_to_tencent) {
+            //测试腾讯云直播
+            intent = new Intent(MainActivity.this, TencentLiveActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.tv_to_universal_player) {
+            //统一播放器Demo
+            intent = new Intent(MainActivity.this, PlayerSettingActivity.class);
+            startActivity(intent);
         }
-
     }
 }

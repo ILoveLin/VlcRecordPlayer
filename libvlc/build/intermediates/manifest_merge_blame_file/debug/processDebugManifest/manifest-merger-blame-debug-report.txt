@@ -1,0 +1,14 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.vlc.lib" >
+4
+5    <uses-sdk android:minSdkVersion="17" />
+6
+7    <uses-feature
+7-->E:\tongzhengtong\code\Android\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:5-78
+8        android:glEsVersion="0x00020000"
+8-->E:\tongzhengtong\code\Android\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:19-51
+9        android:required="true" />
+9-->E:\tongzhengtong\code\Android\VlcRecordPlayer\libvlc\src\main\AndroidManifest.xml:4:52-75
+10
+11</manifest>

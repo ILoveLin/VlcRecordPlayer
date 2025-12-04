@@ -2,21 +2,26 @@
 apply from: 'versions.gradle'
 buildscript {
     repositories {
-        mavenCentral()
-        maven {url 'https://maven.aliyun.com/repository/google/'}
-        maven {url 'https://maven.aliyun.com/repository/public/'}
-        // 阿里云云效仓库（Gradle 插件）：https://maven.aliyun.com/mvn/guide
-        maven {url 'https://maven.aliyun.com/repository/gradle-plugin/'}
+        // 国内镜像优先
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
+        maven { url 'https://developer.huawei.com/repo/' }
         maven { url 'https://jitpack.io' }
-        maven {url 'https://developer.huawei.com/repo/'}
+        // 如果国内镜像找不到，最后才尝试官方仓库
+        // gradlePluginPortal()
+        mavenCentral()
+        // google()
 
 
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.0"
-        classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.0'
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0' // add plugin greendao数据库
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'   //rtsp rtmp推流(音频)
+        classpath "com.android.tools.build:gradle:8.4.2"
+//        classpath 'com.jakewharton:butterknife-gradle-plugin:10.2.0'
+//        classpath 'org.greenrobot:greendao-gradle-plugin:3.3.0' // add plugin greendao数据库
+//        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'   //rtsp rtmp推流(音频)
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -24,16 +29,18 @@ buildscript {
 
 allprojects {
     repositories {
-        // 腾讯云镜像（国内访问更快，同步更及时）
-        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
-        maven { url 'https://mirrors.cloud.tencent.com/gradle/' }
-        mavenCentral()
-        maven {url 'https://maven.aliyun.com/repository/google/'}
-        maven {url 'https://maven.aliyun.com/repository/public/'}
-        // 阿里云云效仓库（Gradle 插件）：https://maven.aliyun.com/mvn/guide
-        maven {url 'https://maven.aliyun.com/repository/gradle-plugin/'}
+        // 国内镜像优先
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
+        maven { url 'https://developer.huawei.com/repo/' }
         maven { url 'https://jitpack.io' }
-        maven {url 'https://developer.huawei.com/repo/'}
+        // 如果国内镜像找不到，最后才尝试官方仓库
+        // gradlePluginPortal()
+        mavenCentral()
+        // google()
     }
 
 

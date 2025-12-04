@@ -2,29 +2,47 @@
 //    id 'com.android.application'
 //}
 apply plugin: 'com.android.application' // apply plugin
-apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+//    compileSdkVersion 34
+//    buildToolsVersion "30.0.2"
+//    namespace 'com.company.shenzhou'
+    compileSdk 34
+    namespace 'com.company.shenzhou'
     defaultConfig {
-//        applicationId "com.company.shenzhou1"
-        applicationId "com.company.shenzhou"
-        minSdkVersion 24
-        targetSdkVersion 30
-        versionCode 9
-        versionName "1.1.9"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled true    //避免64K打包bug
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
 
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             // armeabi：万金油架构平台（占用率：0%）
             // armeabi-v7a：曾经主流的架构平台（占用率：10%）
             // arm64-v8a：目前主流架构平台（占用率：95%）
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
-
     }
+
+//    defaultConfig {
+////        applicationId "com.company.shenzhou1"
+////        applicationId "com.company.shenzhou"
+//        minSdkVersion 24
+//        targetSdkVersion 34
+//        versionCode 9
+//        versionName "1.1.9"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        multiDexEnabled true    //避免64K打包bug
+//
+//        ndk {
+//            // armeabi：万金油架构平台（占用率：0%）
+//            // armeabi-v7a：曾经主流的架构平台（占用率：10%）
+//            // arm64-v8a：目前主流架构平台（占用率：95%）
+//            abiFilters 'armeabi-v7a', 'arm64-v8a'
+//        }
+//
+//    }
+
 
     //添加已下配置 不然vlc的model 和 'com.arthenica:ffmpeg-kit-full:5.1'依赖冲突
     packagingOptions {
@@ -58,6 +76,7 @@ android {
 //                abiFilters 'armeabi-v7a' //arm32位
             }
 
+
         }
         debug {
             // 调试模式开关
@@ -68,23 +87,13 @@ android {
             shrinkResources false
             // 代码混淆开关
             minifyEnabled false
-            // 调试模式下只保留一种架构的 so 库，提升打包速度
+            // 调试模式下保留常用架构
             ndk {
-                // armeabi：万金油架构平台（占用率：0%）
-                // armeabi-v7a：曾经主流的架构平台（占用率：10%）
-                // arm64-v8a：目前主流架构平台（占用率：95%）
-                //abiFilters 'armeabi'
-//                ARM架构：
-//                32 位：lib/armeabi-v7a、lib/armeabi
-//                64 位：lib/arm64-v8a
-//                armeabi-v7a是可以兼容armeabi的
-//                x86架构：
-//                32 ：lib/x86
-//                64 ：lib/x86_64
-//                abiFilters 'armeabi-v7a' //32位
-                abiFilters 'x86','armeabi',  'armeabi-v7a'  //arm64位
-//                abiFilters 'armeabi-v7a' //32位
-
+                // armeabi-v7a：32位ARM架构
+                // arm64-v8a：64位ARM架构（主流）
+                // x86：32位x86架构（模拟器）
+                // x86_64：64位x86架构（模拟器）
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
             }
         }
 //        compileOptions {
@@ -94,18 +103,10 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
-    greendao {
-        schemaVersion 7 //数据库版本号
-        daoPackage 'com.company.shenzhou.player.db'
-// 设置DaoMaster、DaoSession、Dao 包名
-        targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录,请注意，这里路径用/不要用.
-        generateTests false //设置为true以自动生成单元测试。
-        targetGenDirTests 'src/main/java' //应存储生成的单元测试的基本目录。默认为 src / androidTest / java。
-    }
 
     repositories {
         flatDir {
@@ -127,9 +128,10 @@ android {
 }
 
 dependencies {
-    implementation project(':libvlc')//vlc
+    //vlc
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation files('libs/zml_debug.aar')//zml把手机作为服务器的苦
+    implementation project(':libvlc')  // 添加libvlc模块依赖
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'

@@ -1,14 +1,9 @@
 package com.vlc.lib;
 
 
-import android.util.Log;
-
-import com.vlc.lib.listener.util.LogUtils;
-
 import org.videolan.libvlc.MediaPlayer;
 
 import java.io.File;
-import java.util.Calendar;
 
 /**
  * vlc input_file --sout="#transcode{vfilter=adjust{gamma=1.5},vcodec=theo,vb=2000,scale=0.67,acodec=vorb,ab=128,channels=2}:standard{access=file,mux=ogg,dst="output_file.ogg"}"
@@ -54,23 +49,12 @@ public class RecordEvent {
     public boolean startRecord(MediaPlayer mediaPlayer, String fileDirectory) {
         if (mediaPlayer != null) {
             new File(fileDirectory).mkdirs();
-
-//            Calendar now = Calendar.getInstance();
-//            int year = now.get(Calendar.YEAR);
-//            String mouth = (now.get(Calendar.MONTH) + 1) + "";
-//            int day = now.get(Calendar.DAY_OF_MONTH);
-//            int hour = now.get(Calendar.HOUR_OF_DAY);
-//            int min = now.get(Calendar.MINUTE);
-//            int second = now.get(Calendar.SECOND);
-//
-//            Log.i("文件名","vlc-record-"+year+"-"+mouth+"-"+day+"-"+hour+"h"+min+"m"+second+"s"+"rtsp___"+"ip_port_seccion0.mpg-");
-            return startRecord(mediaPlayer, fileDirectory, "cme");
+            return startRecord(mediaPlayer, fileDirectory, "");
         }
         return false;
     }
 
     //这里不用了  请用官方的录制方法  MediaPlayer.record(fileDirectory)
-    //vlcVideoView.getMediaPlayer().record()
     @Deprecated
     public native boolean startRecord(MediaPlayer mediaPlayer, String fileDirectory, String fileName);
     //这里不用了  请用官方的录制方法  MediaPlayer.record(null)

@@ -73,38 +73,32 @@ public class TencentLiveActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_save_live:     //拉流播放
-                mPath ="webrtc://www.cme8848.com/live/0fd7899cd217a995?txSecret=17d438b3ab8f3562d4bc0484406c57ac&txTime=66061733";
-//                mPath = mEditLivePath.getText().toString().trim();
-                if (null == mLivePlayer) {
-                    mLivePlayer = new V2TXLivePlayerImpl(TencentLiveActivity.this);
-                } else {
-                    mLivePlayer.stopPlay();
-                    mLivePlayer.setObserver(mV2TXLivePlayerObserver);
-                    mLivePlayer.setRenderView(mPlayRenderView);
-                    // 传⼊低延时协议播放地址，即可开始播放；
-                    mLivePlayer.startLivePlay(mPath);
-                    LogUtils.e(TAG + "播放地址:" + mPath);
-
-                }
-                break;
-            case R.id.btn_mic_push:     //开启-音频推流
-                getXXPermissions();
-                break;
-            case R.id.btn_mic_stop:     //关闭-音频推流
-                if (null != mLivePusher) {
-                    mLivePusher.stopMicrophone();
-                    mMicPushStatue.setText("未-开启");
-                    mLivePusher.stopPush();
-
-                } else {
-                    Toast.makeText(TencentLiveActivity.this, "还未开始推流,你关闭个啥??", Toast.LENGTH_SHORT).show();
-
-                }
-                break;
-
-
+        int id = v.getId();
+        if (id == R.id.bt_save_live) {
+            //拉流播放
+            mPath = "webrtc://www.cme8848.com/live/0fd7899cd217a995?txSecret=17d438b3ab8f3562d4bc0484406c57ac&txTime=66061733";
+            if (null == mLivePlayer) {
+                mLivePlayer = new V2TXLivePlayerImpl(TencentLiveActivity.this);
+            } else {
+                mLivePlayer.stopPlay();
+                mLivePlayer.setObserver(mV2TXLivePlayerObserver);
+                mLivePlayer.setRenderView(mPlayRenderView);
+                // 传⼊低延时协议播放地址，即可开始播放；
+                mLivePlayer.startLivePlay(mPath);
+                LogUtils.e(TAG + "播放地址:" + mPath);
+            }
+        } else if (id == R.id.btn_mic_push) {
+            //开启-音频推流
+            getXXPermissions();
+        } else if (id == R.id.btn_mic_stop) {
+            //关闭-音频推流
+            if (null != mLivePusher) {
+                mLivePusher.stopMicrophone();
+                mMicPushStatue.setText("未-开启");
+                mLivePusher.stopPush();
+            } else {
+                Toast.makeText(TencentLiveActivity.this, "还未开始推流,你关闭个啥??", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
