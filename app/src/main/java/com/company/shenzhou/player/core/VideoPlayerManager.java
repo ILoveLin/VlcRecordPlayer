@@ -42,6 +42,11 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
     
     @PlayerType
     private int mPlayerType = PlayerType.VLC;
+    
+    // 待应用的播放速度（在 prepared 后应用）
+    private float mPendingSpeed = 1.0f;
+    // 标记是否已经应用了待设置的速度
+    private boolean mSpeedApplied = false;
 
     public VideoPlayerManager(Context context) {
         mContext = context.getApplicationContext();
@@ -207,6 +212,8 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
         mUrl = null;
         mHeaders = null;
         mPendingPlay = false;
+        mPendingSpeed = 1.0f;
+        mSpeedApplied = false;
     }
 
     /**
@@ -273,11 +280,15 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
 
     /**
      * 设置播放速度
+     * 注意：如果在播放前调用，速度会在 prepared 后自动应用
      */
     public void setSpeed(float speed) {
-        if (mEngine != null) {
+        mPendingSpeed = speed;
+        if (mEngine != null && mState == PlayerState.PLAYING) {
+            // 已经在播放中，直接设置
             mEngine.setSpeed(speed);
         }
+        // 如果还没开始播放，速度会在 onPrepared 后的 start() 中应用
     }
 
     /**
@@ -379,10 +390,49 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
 
     /**
      * 截图
+     * VLC 内核使用原生截图 API
+     * IJK 和系统内核通过 TextureView 截图
      */
     public boolean takeSnapshot(String filePath, int width, int height) {
-        if (mEngine != null) {
+        if (mEngine == null) {
+            return false;
+        }
+        
+        // VLC 内核使用原生截图
+        if (mPlayerType == PlayerType.VLC) {
             return mEngine.takeSnapshot(filePath, width, height);
+        }
+        
+        // IJK 和系统内核通过 RenderView 截图
+        if (mRenderView != null) {
+            android.graphics.Bitmap bitmap = mRenderView.captureFrame();
+            if (bitmap != null) {
+                try {
+                    // 如果指定了尺寸，缩放 Bitmap
+                    if (width > 0 && height > 0 && (bitmap.getWidth() != width || bitmap.getHeight() != height)) {
+                        android.graphics.Bitmap scaledBitmap = android.graphics.Bitmap.createScaledBitmap(bitmap, width, height, true);
+                        bitmap.recycle();
+                        bitmap = scaledBitmap;
+                    }
+                    
+                    // 保存到文件
+                    java.io.File file = new java.io.File(filePath);
+                    java.io.File parentDir = file.getParentFile();
+                    if (parentDir != null && !parentDir.exists()) {
+                        parentDir.mkdirs();
+                    }
+                    
+                    java.io.FileOutputStream fos = new java.io.FileOutputStream(file);
+                    bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 90, fos);
+                    fos.flush();
+                    fos.close();
+                    bitmap.recycle();
+                    return true;
+                } catch (Exception e) {
+                    android.util.Log.e("VideoPlayerManager", "takeSnapshot failed: " + e.getMessage());
+                    return false;
+                }
+            }
         }
         return false;
     }
@@ -392,6 +442,22 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
      */
     public boolean takeSnapshot(String filePath) {
         return takeSnapshot(filePath, 0, 0);
+    }
+    
+    /**
+     * 获取当前帧的 Bitmap（不保存到文件）
+     * @return 当前帧的 Bitmap，失败返回 null
+     */
+    public android.graphics.Bitmap captureFrame() {
+        if (mEngine == null) {
+            return null;
+        }
+        
+        // 通过 RenderView 截图（适用于所有内核）
+        if (mRenderView != null) {
+            return mRenderView.captureFrame();
+        }
+        return null;
     }
 
     /**
@@ -501,7 +567,18 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
         
         mEngine.setOnPreparedListener(() -> {
             setState(PlayerState.PREPARED);
+            mSpeedApplied = false; // 重置标记
             start();
+            // 对于非 IJK 内核，在播放开始后延迟应用速度
+            // IJK 内核需要等待 MEDIA_INFO_VIDEO_RENDERING_START 事件
+            if (mPendingSpeed != 1.0f && mEngine != null && mPlayerType != PlayerType.IJK) {
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                    if (mEngine != null && !mSpeedApplied && (mState == PlayerState.PLAYING || mState == PlayerState.BUFFERING)) {
+                        mEngine.setSpeed(mPendingSpeed);
+                        mSpeedApplied = true;
+                    }
+                }, 200);
+            }
         });
         
         mEngine.setOnCompletionListener(() -> {
@@ -514,10 +591,37 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
         });
         
         mEngine.setOnBufferingUpdateListener(percent -> {
-            if (percent < 100) {
+            // 系统 MediaPlayer 在低倍速播放时可能不会正确触发缓冲事件
+            // 只在非播放状态时才切换到 BUFFERING 状态
+            if (percent < 100 && mState != PlayerState.PLAYING) {
                 setState(PlayerState.BUFFERING);
-            } else if (mState == PlayerState.BUFFERING) {
+            } else if (percent >= 100 && mState == PlayerState.BUFFERING) {
                 setState(PlayerState.PLAYING);
+            }
+        });
+        
+        // 添加 Info 监听器，用于更准确地判断播放状态
+        mEngine.setOnInfoListener((what, extra) -> {
+            // MEDIA_INFO_BUFFERING_START = 701, MEDIA_INFO_BUFFERING_END = 702
+            // MEDIA_INFO_VIDEO_RENDERING_START = 3
+            if (what == 701) {
+                setState(PlayerState.BUFFERING);
+            } else if (what == 702 || what == 3) {
+                // 缓冲结束或开始渲染视频，切换到播放状态
+                if (mState == PlayerState.BUFFERING) {
+                    setState(PlayerState.PLAYING);
+                }
+                // IJK 内核在收到渲染开始事件后设置速度
+                if (what == 3 && mPlayerType == PlayerType.IJK && mPendingSpeed != 1.0f && !mSpeedApplied) {
+                    // 延迟一点确保播放器完全就绪
+                    new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                        if (mEngine != null && !mSpeedApplied) {
+                            android.util.Log.d("VideoPlayerManager", "IJK: Applying speed " + mPendingSpeed + " after rendering start");
+                            mEngine.setSpeed(mPendingSpeed);
+                            mSpeedApplied = true;
+                        }
+                    }, 100);
+                }
             }
         });
         

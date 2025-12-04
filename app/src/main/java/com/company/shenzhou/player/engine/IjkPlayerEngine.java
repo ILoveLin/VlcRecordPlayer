@@ -76,10 +76,10 @@ public class IjkPlayerEngine extends BasePlayerEngine {
      * 设置IJK播放器选项
      */
     private void setIjkOptions() {
-        // 设置播放前的探测时间
-        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 1);
-        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzemaxduration", 100L);
-        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 1024 * 10);
+        // 设置播放前的探测时间（增大以确保音频参数能被正确解析，支持变速播放）
+        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzeduration", 5000000L);
+        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "analyzemaxduration", 5000L);
+        mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "probesize", 1024 * 1024);
         
         // 设置播放前的最大探测时间
         mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "flush_packets", 1L);
@@ -240,8 +240,11 @@ public class IjkPlayerEngine extends BasePlayerEngine {
     @Override
     public void setSpeed(float speed) {
         super.setSpeed(speed);
-        if (mMediaPlayer != null) {
+        if (mMediaPlayer != null && mIsPrepared) {
+            android.util.Log.d("IjkPlayerEngine", "setSpeed: " + speed + ", isPlaying=" + mMediaPlayer.isPlaying());
             mMediaPlayer.setSpeed(speed);
+        } else {
+            android.util.Log.w("IjkPlayerEngine", "setSpeed failed: mMediaPlayer=" + mMediaPlayer + ", mIsPrepared=" + mIsPrepared);
         }
     }
 
@@ -281,7 +284,7 @@ public class IjkPlayerEngine extends BasePlayerEngine {
 
     @Override
     public boolean isSupportSnapshot() {
-        return false; // IJK不支持截图
+        return true; // IJK 通过 TextureView 支持截图
     }
 
     /**

@@ -251,4 +251,9 @@ public class MediaPlayerEngine extends BasePlayerEngine {
     public int getPlayerType() {
         return PlayerType.MEDIA_PLAYER;
     }
+
+    @Override
+    public boolean isSupportSnapshot() {
+        return true; // MediaPlayer 通过 TextureView 支持截图
+    }
 }

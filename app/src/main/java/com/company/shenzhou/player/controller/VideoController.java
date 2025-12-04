@@ -832,15 +832,22 @@ public class VideoController extends FrameLayout implements IController, PlayerS
             return;
         }
 
-        if (mPlayerManager.getPlayerType() == PlayerType.VLC) {
-            if (mPlayerManager.isSupportRecord() && mRecordBtn != null) {
+        // 录像功能：目前只有 VLC 支持
+        if (mRecordBtn != null) {
+            if (mPlayerManager.isSupportRecord()) {
                 mRecordBtn.setVisibility(VISIBLE);
+            } else {
+                mRecordBtn.setVisibility(GONE);
             }
-            if (mPlayerManager.isSupportSnapshot() && mSnapshotBtn != null) {
+        }
+        
+        // 截图功能：VLC、IJK、系统内核都支持
+        if (mSnapshotBtn != null) {
+            if (mPlayerManager.isSupportSnapshot()) {
                 mSnapshotBtn.setVisibility(VISIBLE);
+            } else {
+                mSnapshotBtn.setVisibility(GONE);
             }
-        } else {
-            hideRecordButtons();
         }
     }
 

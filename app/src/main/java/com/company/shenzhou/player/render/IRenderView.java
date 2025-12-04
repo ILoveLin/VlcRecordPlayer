@@ -1,5 +1,6 @@
 package com.company.shenzhou.player.render;
 
+import android.graphics.Bitmap;
 import android.view.Surface;
 import android.view.View;
 
@@ -55,6 +56,14 @@ public interface IRenderView {
      */
     default void setCenterTransformEnabled(boolean enabled) {
         // 默认空实现，子类可以覆盖
+    }
+
+    /**
+     * 截取当前画面
+     * @return 当前画面的 Bitmap，如果不支持或失败返回 null
+     */
+    default Bitmap captureFrame() {
+        return null;
     }
 
     /**

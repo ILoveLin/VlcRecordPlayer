@@ -95,14 +95,14 @@ public class PlayerSettingActivity extends AppCompatActivity {
         String tip;
         switch (mSelectedPlayerType) {
             case PlayerType.VLC:
-                tip = "VLC 内核：支持 RTSP/RTMP/HTTP，支持录像和截图";
+                tip = "VLC 内核：支持 RTSP/RTMP/HTTP，支持录像和截图(16kb内存页)";
                 break;
             case PlayerType.IJK:
-                tip = "IJK 内核：支持 RTSP/RTMP/HTTP，硬解码，不支持录像截图";
+                tip = "IJK 内核：支持 RTSP/RTMP/HTTP，硬解码，支持截图";
                 break;
             case PlayerType.MEDIA_PLAYER:
             default:
-                tip = "MediaPlayer 内核：支持 HTTP，不支持录像和截图";
+                tip = "MediaPlayer 内核：支持 HTTP，支持截图";
                 break;
         }
         mTvTip.setText(tip);

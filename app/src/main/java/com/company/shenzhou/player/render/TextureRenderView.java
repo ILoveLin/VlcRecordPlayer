@@ -1,6 +1,7 @@
 package com.company.shenzhou.player.render;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.util.AttributeSet;
@@ -219,6 +220,80 @@ public class TextureRenderView extends TextureView implements IRenderView, Textu
         }
         if (mSurfaceListener != null) {
             mSurfaceListener.onSurfaceDestroyed(null);
+        }
+    }
+
+    /**
+     * 截取当前画面
+     * 临时移除变换矩阵获取原始视频帧，然后恢复变换
+     * @return 当前画面的 Bitmap，如果失败返回 null
+     */
+    @Override
+    public Bitmap captureFrame() {
+        if (!mIsSurfaceAvailable) {
+            return null;
+        }
+        try {
+            // 如果没有启用居中变换，直接获取
+            if (!mCenterCropEnabled || mVideoWidth <= 0 || mVideoHeight <= 0) {
+                return getBitmap();
+            }
+            
+            // 保存当前变换矩阵
+            Matrix currentTransform = getTransform(null);
+            
+            // 临时移除变换矩阵，获取原始内容
+            setTransform(null);
+            
+            // 获取原始 Bitmap（此时是未变换的，视频会填满整个 TextureView）
+            Bitmap rawBitmap = getBitmap();
+            
+            // 恢复变换矩阵
+            setTransform(currentTransform);
+            
+            if (rawBitmap == null) {
+                return null;
+            }
+            
+            // 原始 Bitmap 是视频帧拉伸到 TextureView 尺寸的结果
+            // 需要将其缩放到正确的视频宽高比
+            int viewWidth = getWidth();
+            int viewHeight = getHeight();
+            
+            if (viewWidth <= 0 || viewHeight <= 0) {
+                return rawBitmap;
+            }
+            
+            // 计算目标尺寸（保持视频宽高比）
+            float videoRatio = (float) mVideoWidth / mVideoHeight;
+            int targetWidth, targetHeight;
+            
+            // 使用视频的原始宽高比来确定输出尺寸
+            // 以较大的边为基准
+            if (viewWidth > viewHeight) {
+                targetWidth = viewWidth;
+                targetHeight = (int) (viewWidth / videoRatio);
+            } else {
+                targetHeight = viewHeight;
+                targetWidth = (int) (viewHeight * videoRatio);
+            }
+            
+            // 确保尺寸合理
+            targetWidth = Math.max(1, targetWidth);
+            targetHeight = Math.max(1, targetHeight);
+            
+            // 创建正确宽高比的 Bitmap
+            Bitmap resultBitmap = Bitmap.createScaledBitmap(rawBitmap, targetWidth, targetHeight, true);
+            
+            // 释放原始 Bitmap
+            if (resultBitmap != rawBitmap) {
+                rawBitmap.recycle();
+            }
+            
+            return resultBitmap;
+        } catch (Exception e) {
+            android.util.Log.e("TextureRenderView", "captureFrame failed: " + e.getMessage());
+            return null;
         }
     }
 }
