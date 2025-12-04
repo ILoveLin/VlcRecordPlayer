@@ -3,7 +3,7 @@
 
 > author : LoveLin  
 > github : https://github.com/ILoveLin/VlcRecordPlayer.git  
-> time   : 2025/12/3    Android15系统 要求so库16kb内存页，已适配。
+> time   : 2025/12/3    已适配，Android15系统 要求so库16kb内存页。
 
 ##
 
