@@ -66,6 +66,14 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
         mEngine = PlayerFactory.create(mContext, type);
         bindEngineListeners();
         
+        // 根据播放器类型设置渲染视图的居中变换
+        // VLC 内核自己处理视频居中，不需要额外变换
+        // IJK 和系统内核需要通过 Matrix 变换来居中显示
+        if (mRenderView != null) {
+            boolean needCenterTransform = (type != PlayerType.VLC);
+            mRenderView.setCenterTransformEnabled(needCenterTransform);
+        }
+        
         // 重新绑定 Surface（VLC 需要先设置 WindowSize）
         android.util.Log.d("VideoPlayerManager", "setPlayerType: mSurface=" + mSurface + ", mSurfaceWidth=" + mSurfaceWidth + ", mSurfaceHeight=" + mSurfaceHeight);
         if (mSurface != null) {
@@ -90,6 +98,12 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
         }
         mRenderView = renderView;
         mRenderView.setSurfaceListener(this);
+        
+        // 根据当前播放器类型设置居中变换
+        // VLC 内核自己处理视频居中，不需要额外变换
+        // IJK 和系统内核需要通过 Matrix 变换来居中显示
+        boolean needCenterTransform = (mPlayerType != PlayerType.VLC);
+        mRenderView.setCenterTransformEnabled(needCenterTransform);
     }
 
     /**

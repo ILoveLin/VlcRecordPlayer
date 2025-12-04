@@ -68,6 +68,8 @@ public class UniversalVideoView extends FrameLayout {
         mRenderView = new TextureRenderView(context);
         LayoutParams renderParams = new LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        // 设置居中显示，确保视频画面在容器中居中
+        renderParams.gravity = android.view.Gravity.CENTER;
         addView(mRenderView.getView(), renderParams);
         
         // 绑定渲染视图

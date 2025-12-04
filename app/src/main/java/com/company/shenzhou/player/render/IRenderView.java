@@ -46,6 +46,16 @@ public interface IRenderView {
      * 释放资源
      */
     void release();
+    
+    /**
+     * 设置是否启用居中变换
+     * VLC 内核自己处理居中，不需要额外变换（传 false）
+     * IJK 和系统内核需要通过变换来居中（传 true）
+     * @param enabled 是否启用
+     */
+    default void setCenterTransformEnabled(boolean enabled) {
+        // 默认空实现，子类可以覆盖
+    }
 
     /**
      * Surface监听器
