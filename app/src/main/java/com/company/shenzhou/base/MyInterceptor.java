@@ -5,7 +5,6 @@ import android.util.Log;
 
 
 import com.company.shenzhou.util.LogUtils;
-import com.tencent.mmkv.MMKV;
 
 import java.io.IOException;
 
@@ -41,14 +40,6 @@ public class MyInterceptor implements Interceptor {
         for (int i = 0; i < headers.size(); i++) {
             LogUtils.e("跳转播放界面" + "拦截器=:" + headers.name(i));
             LogUtils.e("跳转播放界面" + "拦截器=:" + headers.get(headers.name(i)));
-
-            if ("X-session".equals(headers.name(i))) {
-                MMKV mmkv = MMKV.defaultMMKV();
-                LogUtils.e("跳转播放界面" + "拦截器=:" + headers.name(i));
-                LogUtils.e("跳转播放界面" + "拦截器=:" + headers.get(headers.name(i)));
-                mmkv.encode("RC200XSession", headers.get(headers.name(i)) + "");
-                break;
-            }
 
 
         }

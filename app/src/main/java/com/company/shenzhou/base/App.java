@@ -4,9 +4,6 @@ import android.app.Application;
 
 import com.company.shenzhou.util.LogUtils;
 import com.didichuxing.doraemonkit.DoKit;
-import com.tencent.live2.V2TXLivePremier;
-import com.tencent.mmkv.MMKV;
-import com.tencent.rtmp.TXLiveBase;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.MemoryCookieStore;
@@ -50,10 +47,7 @@ public class App extends Application {
          */
         new DoKit.Builder(this)
                 .build();
-        // MMKV 初始化
-        MMKV.initialize(this);
 
-        initTencentLive();
 
         //请求工具的拦截器  ,可以设置证书,设置可访问所有的https网站,参考https://www.jianshu.com/p/64cc92c52650
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
@@ -75,29 +69,6 @@ public class App extends Application {
 
     }
 
-    private void initTencentLive() {
-
-        String licenceURL = "https://license.vod2.myqcloud.com/license/v2/1255750344_1/v_cube.license"; // 获取到的 licence url
-        String licenceKey = "05fcb2597e0e53dfa98cd026c388455e"; // 获取到的 licence key
-        V2TXLivePremier.setLicence(this, licenceURL, licenceKey);
-        V2TXLivePremier.setObserver(new V2TXLivePremier.V2TXLivePremierObserver() {
-            @Override
-            public void onLicenceLoaded(int result, String reason) {
-                LogUtils.e("MyApplication==腾讯直播初始化" + "onLicenceLoaded: result:" + result + ", reason:" + reason);
-            }
-
-            @Override
-            public void onLog(int level, String log) {
-                super.onLog(level, log);
-                LogUtils.e("MyApplication==腾讯直播初始化" + "onLicenceLoaded: log:" + log );
-
-            }
-        });
-
-        String licenceInfo = TXLiveBase.getInstance().getLicenceInfo(this);
-        LogUtils.e("MyApplication==腾讯直播初始化" + "licenceInfo:" + licenceInfo );
-
-    }
 
 
 }

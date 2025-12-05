@@ -47,65 +47,7 @@
                 android:textColor="#666666"
                 android:textSize="14sp" />
 
-            <!-- 腾讯直播卡片 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground">
 
-                <LinearLayout
-                    android:id="@+id/tv_to_tencent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="#E3F2FD"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_player_play" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="腾讯直播"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="腾讯云直播SDK演示"
-                            android:textColor="#757575"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_player_back"
-                        android:rotation="180" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
 
             <!-- 统一播放器卡片 -->
             <androidx.cardview.widget.CardView
