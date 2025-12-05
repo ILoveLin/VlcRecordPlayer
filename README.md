@@ -144,13 +144,11 @@ player/
 
 ## 支持的播放器内核
 
-| 内核 | 类型常量 | 录像 | 截图 | 硬解码 | 说明 |
-|------|---------|------|------|--------|------|
-| VLC | `PlayerType.VLC` | ✅ | ✅ | ✅ | 支持 RTSP/RTMP/HTTP/HLS，功能最全 |
-| IJK | `PlayerType.IJK` | ❌ | ❌ | ✅ | B站开源播放器，支持硬解码 |
-| MediaPlayer | `PlayerType.MEDIA_PLAYER` | ❌ | ❌ | ✅ | Android 原生，兼容性最好 |
-| ExoPlayer | `PlayerType.EXO` | ❌ | ❌ | ✅ | Google 官方（待实现） |
-| Tencent | `PlayerType.TENCENT` | ❌ | ❌ | ✅ | 腾讯云播放器（待实现） |
+| 内核 | 类型常量 | 录像 | 截图 | 硬解码 | 说明                               |
+|------|---------|------|------|--------|----------------------------------|
+| VLC | `PlayerType.VLC` | ✅ | ✅ | ✅ | 支持 RTSP/RTMP/HTTP/HLS，支持录像截图功能最全 |
+| IJK | `PlayerType.IJK` | ❌ | ✅  | ✅ | B站开源播放器，支持截图，硬解码                 |
+| MediaPlayer | `PlayerType.MEDIA_PLAYER` | ❌ | ✅  | ✅ | Android 原生，支持截图，兼容性最好                 |
 
 ---
 
