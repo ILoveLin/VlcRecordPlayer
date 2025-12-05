@@ -531,10 +531,36 @@ public class VideoPlayerManager implements IRenderView.SurfaceListener {
     }
 
     /**
-     * 横竖屏切换时调用，优化 VLC 切换体验
+     * 横竖屏切换时调用
      * 在 Activity 的 onConfigurationChanged 中调用
+     * @param isLandscape 是否是横屏
      */
+    public void onOrientationChanged(boolean isLandscape) {
+        // 设置 RenderView 的横屏模式（横屏铺满，竖屏居中）
+        // 对 IJK 和系统内核生效
+        if (mRenderView != null) {
+            mRenderView.setLandscapeMode(isLandscape);
+        }
+        
+        // VLC 内核需要额外处理
+        if (mEngine != null && mPlayerType == PlayerType.VLC) {
+            if (mEngine instanceof com.company.shenzhou.player.engine.VlcPlayerEngine) {
+                com.company.shenzhou.player.engine.VlcPlayerEngine vlcEngine = 
+                    (com.company.shenzhou.player.engine.VlcPlayerEngine) mEngine;
+                vlcEngine.onOrientationChanged();
+                // 设置 VLC 的缩放模式
+                vlcEngine.setLandscapeMode(isLandscape);
+            }
+        }
+    }
+    
+    /**
+     * 横竖屏切换时调用（无参数版本，保持兼容）
+     * @deprecated 请使用 {@link #onOrientationChanged(boolean)} 代替
+     */
+    @Deprecated
     public void onOrientationChanged() {
+        // 默认不改变模式，只处理 VLC
         if (mEngine != null && mPlayerType == PlayerType.VLC) {
             if (mEngine instanceof com.company.shenzhou.player.engine.VlcPlayerEngine) {
                 ((com.company.shenzhou.player.engine.VlcPlayerEngine) mEngine).onOrientationChanged();

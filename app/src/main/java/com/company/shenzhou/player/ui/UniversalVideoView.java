@@ -354,6 +354,11 @@ public class UniversalVideoView extends FrameLayout {
         if (mController != null) {
             mController.setFullscreen(true);
         }
+        
+        // 设置横屏模式（视频铺满屏幕）
+        if (mPlayerManager != null) {
+            mPlayerManager.onOrientationChanged(true);
+        }
     }
 
     /**
@@ -381,6 +386,11 @@ public class UniversalVideoView extends FrameLayout {
         if (mController != null) {
             mController.setFullscreen(false);
         }
+        
+        // 设置竖屏模式（视频居中显示）
+        if (mPlayerManager != null) {
+            mPlayerManager.onOrientationChanged(false);
+        }
     }
 
     /**
@@ -402,13 +412,24 @@ public class UniversalVideoView extends FrameLayout {
     }
 
     /**
-     * 横竖屏切换时调用，优化 VLC 切换体验
+     * 横竖屏切换时调用
+     * 在 Activity 的 onConfigurationChanged 中调用
+     * @param isLandscape 是否是横屏
+     */
+    public void onOrientationChanged(boolean isLandscape) {
+        if (mPlayerManager != null) {
+            mPlayerManager.onOrientationChanged(isLandscape);
+        }
+    }
+    
+    /**
+     * 横竖屏切换时调用（无参数版本，自动检测方向）
      * 在 Activity 的 onConfigurationChanged 中调用
      */
     public void onOrientationChanged() {
-        if (mPlayerManager != null) {
-            mPlayerManager.onOrientationChanged();
-        }
+        boolean isLandscape = getResources().getConfiguration().orientation 
+                == android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+        onOrientationChanged(isLandscape);
     }
 
     // ==================== 控制器设置 ====================

@@ -65,6 +65,16 @@ public interface IRenderView {
     default Bitmap captureFrame() {
         return null;
     }
+    
+    /**
+     * 设置是否是横屏模式
+     * 横屏时视频铺满整个屏幕（CENTER_CROP 效果）
+     * 竖屏时保持宽高比居中显示（FIT_CENTER 效果）
+     * @param isLandscape 是否横屏
+     */
+    default void setLandscapeMode(boolean isLandscape) {
+        // 默认空实现，子类可以覆盖
+    }
 
     /**
      * Surface监听器

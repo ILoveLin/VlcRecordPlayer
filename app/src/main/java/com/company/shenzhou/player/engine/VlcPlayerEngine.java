@@ -583,4 +583,23 @@ public class VlcPlayerEngine extends BasePlayerEngine {
             mVlcPlayer.clearVideoTrackCache = true;
         }
     }
+    
+    /**
+     * 设置是否是横屏模式
+     * 横屏时视频铺满整个屏幕（SURFACE_FILL 模式）
+     * 竖屏时保持宽高比居中显示（SURFACE_BEST_FIT 模式）
+     * @param isLandscape 是否横屏
+     */
+    public void setLandscapeMode(boolean isLandscape) {
+        if (mVlcPlayer != null && mVlcPlayer.getMediaPlayer() != null) {
+            org.videolan.libvlc.MediaPlayer mediaPlayer = mVlcPlayer.getMediaPlayer();
+            if (isLandscape) {
+                // 横屏：铺满屏幕
+                mediaPlayer.setVideoScale(org.videolan.libvlc.MediaPlayer.ScaleType.SURFACE_FILL);
+            } else {
+                // 竖屏：保持宽高比
+                mediaPlayer.setVideoScale(org.videolan.libvlc.MediaPlayer.ScaleType.SURFACE_BEST_FIT);
+            }
+        }
+    }
 }

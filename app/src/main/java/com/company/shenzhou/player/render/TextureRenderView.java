@@ -28,6 +28,8 @@ public class TextureRenderView extends TextureView implements IRenderView, Textu
     private int mVideoHeight = 0;
     // 是否启用居中变换（用于 IJK 和系统内核）
     private boolean mCenterCropEnabled = true;
+    // 是否是横屏模式（横屏时铺满屏幕）
+    private boolean mIsLandscape = false;
 
     public TextureRenderView(Context context) {
         this(context, null);
@@ -86,6 +88,20 @@ public class TextureRenderView extends TextureView implements IRenderView, Textu
         mCenterCropEnabled = enabled;
         updateTextureViewTransform();
     }
+    
+    /**
+     * 设置是否是横屏模式
+     * 横屏时视频铺满整个屏幕（CENTER_CROP 效果）
+     * 竖屏时保持宽高比居中显示（FIT_CENTER 效果）
+     */
+    @Override
+    public void setLandscapeMode(boolean isLandscape) {
+        if (mIsLandscape != isLandscape) {
+            mIsLandscape = isLandscape;
+            requestLayout();
+            updateTextureViewTransform();
+        }
+    }
 
     @Override
     public Surface getSurface() {
@@ -117,9 +133,10 @@ public class TextureRenderView extends TextureView implements IRenderView, Textu
     }
     
     /**
-     * 更新 TextureView 的变换矩阵，使视频内容居中显示
+     * 更新 TextureView 的变换矩阵
+     * 统一使用 FIT_CENTER 模式：保持宽高比居中显示（与 VLC 行为一致）
      * 仅对 IJK 和系统内核生效（mCenterCropEnabled = true）
-     * VLC 内核自己处理居中，不需要额外变换
+     * VLC 内核自己处理，不需要额外变换
      */
     private void updateTextureViewTransform() {
         if (!mCenterCropEnabled || mVideoWidth <= 0 || mVideoHeight <= 0) {
@@ -142,7 +159,7 @@ public class TextureRenderView extends TextureView implements IRenderView, Textu
         float scaleX, scaleY;
         float translateX = 0, translateY = 0;
         
-        // FIT_PARENT 模式：保持宽高比，适应视图，居中显示
+        // FIT_CENTER 模式：保持宽高比，适应视图，居中显示（横竖屏统一）
         if (videoRatio > viewRatio) {
             // 视频更宽，以宽度为基准缩放，垂直居中
             scaleX = 1.0f;

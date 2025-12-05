@@ -190,4 +190,14 @@ public class PlayerActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
+    
+    @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // 通知播放器横竖屏切换
+        if (mVideoView != null) {
+            boolean isLandscape = newConfig.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+            mVideoView.onOrientationChanged(isLandscape);
+        }
+    }
 }
